@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:tribecadentalstudio.com)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"tsc exit: $?\")",
+      "WebFetch(domain:apaaesthetic.com)",
+      "WebSearch"
+    ]
+  }
+}
