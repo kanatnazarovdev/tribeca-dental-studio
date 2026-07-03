@@ -63,7 +63,7 @@ export default function Provider({ lang }: ProviderProps) {
           >
             {/* TODO(assets): replace with Dr. Izhaky's portrait. */}
             <Image
-              src="/mission.webp"
+              src="/drNina.webp"
               alt="Dr. Nina Izhaky, founder of Tribeca Dental Studio"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

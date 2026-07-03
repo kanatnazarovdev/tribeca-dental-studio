@@ -62,7 +62,7 @@ export default function Team({ lang }: TeamProps) {
           className="relative aspect-[16/9] w-full overflow-hidden bg-gray-200"
         >
           <Image
-            src="/team.webp"
+            src="/tribeca-team.webp"
             alt="The team at Tribeca Dental Studio"
             fill
             sizes="100vw"
