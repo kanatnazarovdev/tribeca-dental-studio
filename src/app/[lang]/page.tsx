@@ -1,4 +1,3 @@
-// src/app/[lang]/page.tsx
 import { Metadata } from "next";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
@@ -23,15 +22,12 @@ export async function generateMetadata({
 
   return {
     title: {
-      // EXACT legacy <title> for EN — absolute so the layout template doesn't
-      // append a second "| Tribeca Dental Studio".
       absolute: isZh
         ? "纽约翠贝卡最佳牙科诊所 | Tribeca Dental Studio"
         : isEs
           ? "La Mejor Odontología en Tribeca, NY | Tribeca Dental Studio"
           : "The Best Dentistry in Tribeca, NY | Tribeca Dental Studio",
     },
-    // TODO(SEO parity): pull the EXACT legacy meta description from view-source.
     description: isZh
       ? "位于纽约翠贝卡的高端综合牙科诊所，像家人一样待您。预防、修复、美容、种植牙及正畸。"
       : isEs
@@ -52,7 +48,7 @@ export default async function Home({
   return (
     <main>
       <Hero lang={l} />
-      <TribecaAestheticShowcase lang={lang}/>
+      <TribecaAestheticShowcase lang={l} />
       <Services lang={l} />
       <Provider lang={l} />
       <SmileCTA lang={l} />

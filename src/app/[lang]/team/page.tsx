@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Image from "next/image";
 import { Metadata } from "next";
+import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import TeamGrid from "@/components/TeamGrid";
 import { getAlternates } from "@/hooks/helper";
@@ -10,16 +10,18 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const isEs = lang === "es";
 
   const title = isEs
-    ? "Conozca a Nuestro Equipo | Tribeca Dental Studio 4 kids NYC"
-    : "Meet Our Team | Tribeca Dental Studio 4 kids NYC";
+    ? "Maestros de la Estética Dental | Nuestro Equipo | Tribeca Dental Studio"
+    : "Masters of Dental Aesthetics | Meet Our Team | Tribeca Dental Studio";
 
   const description = isEs
-    ? "Conozca a los especialistas de Tribeca Dental Studio 4 kids. Expertos en odontopediatría, salud de las vías respiratorias y tecnología láser en Manhattan."
-    : "Meet the specialized team at Tribeca Dental Studio 4 kids. Experts in pediatric dentistry, airway health, and pain-free laser technology in Manhattan.";
+    ? "Conozca a los cirujanos y diseñadores de sonrisas de élite en Tribeca Dental Studio Manhattan. Odontología multidisciplinaria de lujo."
+    : "Meet the elite smile designers, surgeons, and clinicians at Tribeca Dental Studio Manhattan. Luxury multi-specialty dentistry under one roof.";
 
   return {
     alternates: getAlternates(lang, "team"),
-    title,
+    title: {
+      absolute: title
+    },
     description,
     openGraph: {
       title,
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
           url: "/team.webp",
           width: 1200,
           height: 630,
-          alt: "Tribeca Dental Studio 4 kids Pediatric Team",
+          alt: "Tribeca Dental Studio Elite Specialist Lineup",
         },
       ],
     },
@@ -49,67 +51,56 @@ export default async function TeamPage({ params }: any) {
   const doctors = await client.fetch(TEAM_QUERY);
 
   return (
-    <main className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/team.webp"
-          alt="Our Medical Team of Specialist Doctors in Tribeca"
-          fill
-          priority
-          className="object-cover object-top blur-[3px] scale-110"
-        />
+    <main className="bg-[#FBFBFA] text-[#1A1A1A] min-h-screen relative overflow-hidden">
+      
+      {/* 1. APA STYLE HERO SECTION - DEEP BLURRED IMAGE BACKGROUND */}
+      <section className="relative w-full min-h-[100vh] flex items-center justify-start py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-black text-white">
+        
+        {/* The Blurred Background Image (Scaled up to avoid edge bleeding from blur) */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none scale-100 blur-[1px] opacity-60">
+          <Image
+            src="/tribeca-team.webp" // swap with "/aboutPage.png" if preferred
+            alt="Tribeca Dental Studio Team Backdrop"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+        </div>
 
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Dark vignette overlay to anchor readability */}
+        <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none" />
 
-        <div className="relative z-10 text-center px-4 max-w-4xl">
-          <h1 
-            className="text-white text-5xl md:text-6xl font-light tracking-widest uppercase mb-4"
-            style={{ fontFamily: "var(--font-D-DIN)" }}
-          >
-            {isEs ? "Nuestro Equipo" : "Meet Our Team"}
+        {/* Left-Aligned, High-End Editorial Content */}
+        <div className="relative z-20 max-w-3xl text-left flex flex-col items-start lg:pl-6">
+          <span className="text-[10px] uppercase tracking-[0.6em] text-[#C5A059] font-bold block mb-4">
+            {isEs ? "El Colectivo Clínico • NYC" : "The Clinical Collective • NYC"}
+          </span>
+
+          <h1 className="text-4xl md:text-6xl font-sans font-bold tracking-tight uppercase mb-6 text-white leading-[1.1]">
+            {isEs ? "Conoce Nuestro Equipo" : "Meet Our Team"}
           </h1>
-          <p className="text-gray-200 text-lg font-light max-w-2xl mx-auto tracking-wide">
-            {isEs 
-              ? "Especialistas dedicados comprometidos a brindar atención de clase mundial y atención personalizada."
-              : "Dedicated specialists committed to providing world-class care and personalized attention."
-            }
+
+          <p className="text-base md:text-lg font-light leading-relaxed text-neutral-300 max-w-2xl tracking-wide">
+            {isEs ? (
+              <>
+                Tribeca Dental Studio atrae al más alto nivel de talento de todo el mundo y, a través de una innovación, creatividad y destreza inigualables, promete lo mejor en odontología estética para una clientela selecta.
+              </>
+            ) : (
+              <>
+                Tribeca Dental Studio draws the highest echelon of talent from across the globe and – through unrivaled innovation, creativity and skill – promises the very best in aesthetic dentistry to an elite clientele.
+              </>
+            )}
           </p>
         </div>
       </section>
 
-      {/* SEO Content Section (Similar to your Blog structure) */}
-      <div className="max-w-3xl w-full mx-auto mt-16 text-center px-6">
-        <h2 
-          className="text-2xl font-light uppercase tracking-widest mb-6 text-black" 
-          style={{ fontFamily: "var(--font-D-DIN)" }}
-        >
-          {isEs ? "Cuidado Especializado para Niños" : "Specialized Care for Children"}
-        </h2>
-        <p className="text-zinc-600 leading-relaxed font-light">
-          {isEs ? (
-            <>
-              En <strong>Tribeca Dental Studio 4 kids</strong>, nuestro equipo de especialistas 
-              está enfocado en mucho más que limpiezas. Nos especializamos en la 
-              salud integral, desde el desarrollo de las vías respiratorias hasta 
-              frenectomías con láser sin dolor. Ubicados en el corazón de Manhattan, 
-              nuestros doctores combinan años de experiencia con un enfoque compasivo 
-              para asegurar que cada niño crezca con una sonrisa saludable y funcional.
-            </>
-          ) : (
-            <>
-              At <strong>Tribeca Dental Studio 4 kids</strong>, our team of specialists 
-              is focused on much more than just cleanings. We specialize in total 
-              health, from airway development to pain-free laser frenectomies. 
-              Located in the heart of Manhattan, our doctors combine years of 
-              expertise with a compassionate approach to ensure every child grows 
-              with a healthy, functional smile.
-            </>
-          )}
-        </p>
-      </div>
+      {/* 2. MAIN TEAM GRID SECTION (Clean luxury white layout) */}
+      <section className="relative w-full py-24 md:py-36 px-6 md:px-12 lg:px-24 z-20 bg-[#FBFBFA]">
+        <div className="relative">
+          <TeamGrid doctors={doctors} />
+        </div>
+      </section>
 
-      <TeamGrid doctors={doctors} />
     </main>
   );
 }

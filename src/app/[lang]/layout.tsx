@@ -20,7 +20,6 @@ export async function generateMetadata({
   const isZh = lang === "zh";
 
   return {
-    // Default/site-wide title. Individual routes override with an absolute title.
     title: {
       default: isZh
         ? "翠贝卡牙科诊所 | 纽约翠贝卡牙医"
@@ -29,8 +28,6 @@ export async function generateMetadata({
           : "Tribeca Dental Studio | Dentist in Tribeca, NYC",
       template: "%s | Tribeca Dental Studio",
     },
-    // TODO(SEO parity): replace with the EXACT legacy meta description from
-    // view-source of https://tribecadentalstudio.com/ — this is a placeholder.
     description: isZh
       ? "位于纽约翠贝卡的高端综合牙科诊所，提供预防、修复、美容、种植牙及正畸治疗。"
       : isEs
@@ -45,7 +42,6 @@ export async function generateMetadata({
       siteName: "Tribeca Dental Studio",
       images: [
         {
-          // TODO(assets): swap for the legacy OG image once confirmed.
           url: `${baseUrl}/og-image.webp`,
           width: 1200,
           height: 630,
@@ -69,7 +65,6 @@ export default async function RootLayout(props: {
   const lang = ["es", "zh"].includes(params.lang) ? params.lang : "en";
   const dict = await getDictionary(lang);
 
-  // schema.org Dentist — NAP, hours, and sameAs taken 1:1 from the legacy site.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Dentist",
@@ -140,13 +135,10 @@ export default async function RootLayout(props: {
       style={{ fontFamily: "var(--font-brandon)" }}
     >
       <head>
-        {/* TODO(SEO): replace with the adult site's own Search Console verification token. */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            // TODO(analytics): GTM-NQV9585B is the PEDIATRICS container.
-            // Swap for the tribecadentalstudio.com GTM ID before launch.
             __html: `
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -187,7 +179,6 @@ export default async function RootLayout(props: {
         {children}
         <Footer />
 
-        {/* TrueLark chat widget — businessId 80613 is shared with the main practice booking flow. */}
         <Script
           src="https://truelark.com/dental-chat-widget/js/config.js"
           strategy="lazyOnload"

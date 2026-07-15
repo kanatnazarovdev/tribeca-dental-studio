@@ -36,7 +36,6 @@ const COPY = {
    Set USE_VIDEO to true once your files are in /public.
    ─────────────────────────────────────────────────────────────────────── */
 const USE_VIDEO = true;
-const VIDEO_WEBM = "/banner.webm"; // upload to /public
 const VIDEO_MP4 = "/banner.mp4"; //  upload to /public
 const POSTER = "/banner.webp"; // replace with adult still
 
@@ -61,7 +60,6 @@ export default function Hero({ lang }: HeroProps) {
           poster={POSTER}
           className="absolute inset-0 z-0 h-full w-full object-cover opacity-70"
         >
-          {/* <source src={VIDEO_WEBM} type="video/webm" /> */}
           <source src={VIDEO_MP4} type="video/mp4" />
         </video>
       ) : (
@@ -72,8 +70,8 @@ export default function Hero({ lang }: HeroProps) {
       )}
 
       {/* Cinematic overlays */}
-      <div className="absolute inset-0 z-10 bg-black/40" />
-      <div className="absolute inset-0 z-10 bg-linear-to-b from-black/50 via-transparent to-black/80" />
+      {/* <div className="absolute inset-0 z-10 bg-black/40" /> */}
+      {/* <div className="absolute inset-0 z-10 bg-linear-to-b from-black/50 via-transparent to-black/80" /> */}
 
       <div className="relative z-20 flex h-full flex-col items-start justify-end px-6 pb-28 text-left text-white md:px-16 md:pb-32 lg:px-24">
         <motion.div
