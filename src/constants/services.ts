@@ -12,7 +12,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     titleEn: "Cosmetic Dentistry",
     titleEs: "Odontología Estética",
     slug: "cosmetic-dentistry",
-    image: "/services/cosmetic-dentistry.webp"
+    image: "/cosmetic.jpg"
   },
   {
     num: "02",
@@ -331,4 +331,12 @@ export const AIRWAY_AND_ORTHO_SERVICES: ServiceItem[] = [
     slug: "services/wilckodontics-speed-braces",
     image: "/services/wilckodontics-speed-braces.webp"
   }
+];
+
+
+export const FEATURED_SERVICES: ServiceItem[] = [
+  ...COSMETIC_SERVICES.slice(0, 3),    // Cosmetic Dentistry, Veneers, Whitening
+  ...GENERAL_SERVICES.slice(0, 3),     // Exams, Preventive, Restorative
+  ...SPECIALIZED_SERVICES.slice(0, 3), // Implants, Zygomatic, Oral Surgery
+  ...AIRWAY_AND_ORTHO_SERVICES.slice(0, 3) // Airway, Sleep Apnea, Invisalign
 ];

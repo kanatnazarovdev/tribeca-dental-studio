@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { baseUrl, getAlternates } from "@/hooks/helper";
 import Script from "next/script";
+import ServiceGrid from "@/components/ServiceGrid";
 
 export async function generateMetadata({
   params,
@@ -177,6 +178,7 @@ export default async function RootLayout(props: {
 
         <Header lang={lang} dict={dict} />
         {children}
+        <ServiceGrid lang={lang}/>
         <Footer />
 
         <Script

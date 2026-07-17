@@ -9,6 +9,7 @@ import Instagram from "@/components/Instagram";
 import ContactForm from "@/components/ContactForm";
 import { getAlternates } from "@/hooks/helper";
 import TribecaAestheticShowcase from "@/components/TribecaShowcase";
+import TribecaHeart from "@/components/TribecaHeart";
 
 export async function generateMetadata({
   params,
@@ -53,11 +54,12 @@ export default async function Home({
       <Provider lang={l} />
       <SmileCTA lang={l} />
       <Philosophy lang={l} />
+      <TribecaHeart lang={l}/>
       <Team lang={l} />
       <Instagram lang={l} />
-      <section id="leadForm">
+      {/* <section id="leadForm">
         <ContactForm />
-      </section>
+      </section> */}
     </main>
   );
 }

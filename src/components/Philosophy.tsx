@@ -83,7 +83,7 @@ export default function Philosophy({ lang }: PhilosophyProps) {
               <h3 className="mt-6 text-sm font-bold uppercase tracking-[0.3em] text-black">
                 {p.t}
               </h3>
-              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-relaxed text-gray-500">
+              <p className="mx-auto mt-4 max-w-xs text-[15px] font-light leading-relaxed text-gray-500">
                 {p.d}
               </p>
             </motion.div>

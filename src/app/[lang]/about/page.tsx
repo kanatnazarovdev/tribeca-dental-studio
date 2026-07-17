@@ -111,8 +111,10 @@ export default function TribecaDentalStudioPage({
             key={num}
             className="relative w-full md:w-1/3 aspect-video md:aspect-auto group overflow-hidden bg-neutral-900"
           >
-            <img
-              src={`/apa-image-${num}.jpg`}
+            <Image
+              width={1300}
+              height={1300}
+              src={`/photo${num}.jpg`}
               alt="Smile Architecture"
               className="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-[1500ms] group-hover:scale-105 group-hover:grayscale-0"
             />

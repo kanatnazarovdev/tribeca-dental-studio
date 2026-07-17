@@ -52,42 +52,42 @@ export default function Header({ dict, lang }: HeaderProps) {
   if (isStudio) return null;
 
   const navItems = [
-    {
-      id: "services",
-      label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
-      href: `/${lang}/services/`,
-    },
-    {
-      id: "gallery",
-      label:
-        lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
-      href: `/${lang}/before-and-after-cases/`,
-    },
+    // {
+    //   id: "services",
+    //   label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
+    //   href: `/${lang}/services/`,
+    // },
+    // {
+    //   id: "gallery",
+    //   label:
+    //     lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
+    //   href: `/${lang}/before-and-after-cases/`,
+    // },
     {
       id: "about",
       label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
       href: `/${lang}/about/`,
     },
-    {
-      id: "team",
-      label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
-      href: `/${lang}/team/`,
-    },
-    {
-      id: "blog",
-      label: lang === "zh" ? "博客" : "Blog",
-      href: `/${lang}/blog/`,
-    },
-    {
-      id: "testimonials",
-      label:
-        lang === "zh"
-          ? "患者评价"
-          : lang === "es"
-            ? "Testimonios"
-            : "Testimonials",
-      href: `/${lang}/testimonials/`,
-    },
+    // {
+    //   id: "team",
+    //   label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
+    //   href: `/${lang}/team/`,
+    // },
+    // {
+    //   id: "blog",
+    //   label: lang === "zh" ? "博客" : "Blog",
+    //   href: `/${lang}/blog/`,
+    // },
+    // {
+    //   id: "testimonials",
+    //   label:
+    //     lang === "zh"
+    //       ? "患者评价"
+    //       : lang === "es"
+    //         ? "Testimonios"
+    //         : "Testimonials",
+    //   href: `/${lang}/testimonials/`,
+    // },
   ];
 
   return (
