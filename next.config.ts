@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.sanity.io" },
       { protocol: "https", hostname: "tribeca-dental-studio-omega.vercel.app" },
-      { protocol: "https", hostname: "scontent.cdninstagram.com" },
+      { protocol: "https", hostname: "scontent.cdninstagram.com" }, 
+      
     ],
   },
 };
