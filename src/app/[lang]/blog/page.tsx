@@ -17,7 +17,7 @@ export async function generateMetadata({ params, searchParams }: any) {
   const isZh = lang === "zh";
 
   // Point the base parameters back to the clean primary directory
-  const alternatesConfig = getAlternates(lang, "blog", rawPage);
+  const alternatesConfig = getAlternates(lang, "blog");
 
   return {
     alternates: {
