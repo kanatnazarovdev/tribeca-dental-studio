@@ -1,14 +1,15 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  trailingSlash: true, 
+  trailingSlash: true,
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.sanity.io" },
+      { protocol: "https", hostname: "tribeca-dental-studio-omega.vercel.app" },
+      { protocol: "https", hostname: "scontent.cdninstagram.com" },
+    ],
   },
-  // REMOVE the manual redirect if you have an app/[lang] folder structure.
-  // Next.js middleware is better suited for this.
 };
 
 export default nextConfig;
