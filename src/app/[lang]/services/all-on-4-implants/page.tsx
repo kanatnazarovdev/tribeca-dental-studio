@@ -353,7 +353,7 @@ export default function AllOn4Page({ params }: PageProps) {
                       <h3 className="font-serif text-[18px] font-normal text-black group-hover:text-[#C5A059] transition-colors">
                         {adv.title}
                       </h3>
-                      <p className="text-xs text-neutral-500 font-light leading-relaxed mt-1">{adv.desc}</p>
+                      <p className="text-s text-neutral-500 font-light leading-relaxed mt-1">{adv.desc}</p>
                     </div>
                   </div>
                 ))}

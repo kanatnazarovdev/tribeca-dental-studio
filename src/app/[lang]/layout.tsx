@@ -133,7 +133,6 @@ export default async function RootLayout(props: {
         ${brandonGrotesque.variable}
         ${dDin.variable}
       `}
-      style={{ fontFamily: "var(--font-brandon)" }}
     >
       <head>
         <Script
@@ -154,7 +153,7 @@ export default async function RootLayout(props: {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-white text-foreground antialiased selection:bg-[#C5A059] selection:text-white font-brandon">
+      <body className="bg-white text-foreground antialiased selection:bg-[#C5A059] selection:text-white">
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-NQV9585B"

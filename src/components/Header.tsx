@@ -32,10 +32,37 @@ export default function Header({ dict, lang }: HeaderProps) {
     pathname.includes(`/team`);
   const shouldBeActive = isScrolled || isOpen || isInteriorRoute;
 
-  const toggleLanguage = (newLang: string) => {
-    const segments = pathname.split("/");
-    segments[1] = newLang; // Replace the locale segment
-    const newPath = segments.join("/");
+ const toggleLanguage = (newLang: string) => {
+    if (!pathname) return;
+
+    // 1. Split pathname into clean segments (removes empty strings)
+    const segments = pathname.split("/").filter(Boolean);
+
+    // 2. Check if the first segment is an existing prefix ("es" or "zh")
+    const supportedPrefixes = ["es", "zh"];
+    if (supportedPrefixes.includes(segments[0])) {
+      segments.shift(); // Remove the current locale prefix ('es' or 'zh')
+    }
+
+    // Now `segments` is purely the route path, e.g. ["services", "all-on-4-implants"] or []
+
+    // 3. Rebuild the clean base path
+    const cleanPath = segments.join("/");
+
+    // 4. Construct the target path based on whether the new language is English or prefixed
+    let newPath = "";
+    if (newLang === "en") {
+      // English is prefix-free
+      newPath = cleanPath ? `/${cleanPath}` : "/";
+    } else {
+      // ES and ZH get prefixes
+      newPath = cleanPath ? `/${newLang}/${cleanPath}` : `/${newLang}`;
+    }
+
+    // 5. Preserve trailing slash if trailingSlash: true is configured in next.config
+    if (pathname.endsWith("/") && !newPath.endsWith("/")) {
+      newPath += "/";
+    }
 
     router.push(newPath);
     setIsOpen(false);

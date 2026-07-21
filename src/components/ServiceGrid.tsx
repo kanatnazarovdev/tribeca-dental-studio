@@ -56,9 +56,6 @@ export default function GlobalServiceCarousel({ lang }: CarouselProps) {
 
             {/* CONTENT AREA */}
             <div className="absolute bottom-0 left-0 p-8 w-full flex flex-col justify-end">
-              <span className="text-[10px] font-mono text-[#C5A059] mb-2 block uppercase tracking-[0.2em]">
-                {service.num}
-              </span>
               <h3 className="font-serif text-[22px] font-normal leading-tight text-white transition-colors duration-500">
                 {l === "es" ? service.titleEs : service.titleEn}
               </h3>

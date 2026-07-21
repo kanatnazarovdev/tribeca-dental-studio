@@ -50,9 +50,9 @@ export default async function Home({
     <main>
       <Hero lang={l} />
       <TribecaAestheticShowcase lang={l} />
+      <SmileCTA lang={l} />
       <Services lang={l} />
       <Provider lang={l} />
-      <SmileCTA lang={l} />
       <Philosophy lang={l} />
       <TribecaHeart lang={l}/>
       <Team lang={l} />

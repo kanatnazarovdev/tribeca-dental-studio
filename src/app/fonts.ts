@@ -26,7 +26,7 @@ export const dDin = localFont({
   src: [
     {
       path: "./fonts/D-DIN-Bold.woff",
-      weight: "700",
+      weight: "400 700", // Allows weight 400 through 700 to match D-DIN
       style: "normal",
     },
   ],

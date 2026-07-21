@@ -7,27 +7,25 @@ import { useSmoothScroll } from "@/hooks/useSmoothScroll";
    ─────────────────────────────────────────────────────────────────────── */
 const COPY = {
   en: {
-    badge: "Tribeca, New York",
-    title: "Dentist in Tribeca, NY",
-    tagline:
-      "When it comes to oral health, leave it to the practice that treats you like family.",
-    cta: "Book Your Visit",
-    scroll: "Discover",
+    badge: "Tribeca • New York",
+    title: "The Standard of Dental Architecture",
+    tagline: "Uniting advanced multi-specialty care with bespoke aesthetics in the heart of Lower Manhattan.",
+    cta: "Book Consultation",
+    scroll: "Explore Experience",
   },
   es: {
-    badge: "Tribeca, Nueva York",
-    title: "Dentista en Tribeca, NY",
-    tagline:
-      "Cuando se trata de salud bucal, confíe en la consulta que lo trata como a la familia.",
-    cta: "Reserve su Cita",
-    scroll: "Descubrir",
+    badge: "Tribeca • Nueva York",
+    title: "El Estándar de la Arquitectura Dental",
+    tagline: "Uniendo atención multiespecialidad avanzada con estética personalizada en el corazón de Manhattan.",
+    cta: "Reservar Consulta",
+    scroll: "Explorar Experiencia",
   },
   zh: {
-    badge: "纽约翠贝卡",
-    title: "纽约翠贝卡牙医",
-    tagline: "关乎口腔健康，请交给像家人一样待您的诊所。",
-    cta: "立即预约",
-    scroll: "探索",
+    badge: "纽约 • 翠贝卡",
+    title: "重塑齿科美学架构标准",
+    tagline: "在曼哈顿核心街区，将尖端多专科诊疗与高定私人美学完美融合。",
+    cta: "预约私人咨询",
+    scroll: "探索品牌体验",
   },
 } as const;
 
@@ -91,7 +89,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 0.3 }}
-          className="mb-8 max-w-5xl font-serif text-6xl font-light leading-[1.05] tracking-tight drop-shadow-md md:text-8xl lg:text-[8.5rem]"
+          className="mb-8 max-w-5xl font-ddin font-bold text-4xl leading-[1.05] tracking-tight drop-shadow-md md:text-5xl lg:text-[4.5rem] uppercase"
         >
           {t.title}
         </motion.h1>
