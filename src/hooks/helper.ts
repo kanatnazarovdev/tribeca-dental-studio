@@ -18,3 +18,4 @@ export function getAlternates(lang: string, slug: string) {
     },
   };
 }
+export const bookingUrl = "https://www.patientsreach.com/schedule/TribecaDentalStudio/patient_types/"

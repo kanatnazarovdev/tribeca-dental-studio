@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { bookingUrl } from "@/hooks/helper";
 
 interface SmileCTAProps {
   lang: string;
@@ -96,7 +97,7 @@ export default function SmileCTA({ lang }: SmileCTAProps) {
         {/* LUXURY CTA BUTTON */}
         <div className="mt-10">
           <a
-            href="https://truelark.com/bookonline/#/location?businessId=80613"
+            href={bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-6 overflow-hidden border border-white/30 bg-black/40 px-10 py-4 transition-all duration-500 hover:border-[#C5A059]"

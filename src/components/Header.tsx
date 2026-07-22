@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from '../../public/tribeca-logo-text.svg'
+import { bookingUrl } from "@/hooks/helper";
 interface HeaderProps {
   dict: {
     hero: { studio_name: string };
@@ -35,31 +36,22 @@ export default function Header({ dict, lang }: HeaderProps) {
  const toggleLanguage = (newLang: string) => {
     if (!pathname) return;
 
-    // 1. Split pathname into clean segments (removes empty strings)
     const segments = pathname.split("/").filter(Boolean);
 
-    // 2. Check if the first segment is an existing prefix ("es" or "zh")
     const supportedPrefixes = ["es", "zh"];
     if (supportedPrefixes.includes(segments[0])) {
-      segments.shift(); // Remove the current locale prefix ('es' or 'zh')
+      segments.shift();
     }
 
-    // Now `segments` is purely the route path, e.g. ["services", "all-on-4-implants"] or []
-
-    // 3. Rebuild the clean base path
     const cleanPath = segments.join("/");
 
-    // 4. Construct the target path based on whether the new language is English or prefixed
     let newPath = "";
     if (newLang === "en") {
-      // English is prefix-free
       newPath = cleanPath ? `/${cleanPath}` : "/";
     } else {
-      // ES and ZH get prefixes
       newPath = cleanPath ? `/${newLang}/${cleanPath}` : `/${newLang}`;
     }
 
-    // 5. Preserve trailing slash if trailingSlash: true is configured in next.config
     if (pathname.endsWith("/") && !newPath.endsWith("/")) {
       newPath += "/";
     }
@@ -79,11 +71,11 @@ export default function Header({ dict, lang }: HeaderProps) {
   if (isStudio) return null;
 
   const navItems = [
-    // {
-    //   id: "services",
-    //   label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
-    //   href: `/${lang}/services/`,
-    // },
+    {
+      id: "services",
+      label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
+      href: `/${lang}/services/`,
+    },
     // {
     //   id: "gallery",
     //   label:
@@ -95,11 +87,11 @@ export default function Header({ dict, lang }: HeaderProps) {
       label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
       href: `/${lang}/about/`,
     },
-    // {
-    //   id: "team",
-    //   label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
-    //   href: `/${lang}/team/`,
-    // },
+    {
+      id: "team",
+      label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
+      href: `/${lang}/team/`,
+    },
     // {
     //   id: "blog",
     //   label: lang === "zh" ? "博客" : "Blog",
@@ -187,7 +179,7 @@ export default function Header({ dict, lang }: HeaderProps) {
               {/* Booking CTA */}
               <a
               target="_blank"
-                href={`https://truelark.com/bookonline/#/location?businessId=80613`}
+                href={bookingUrl}
                 className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group
                 ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
               >

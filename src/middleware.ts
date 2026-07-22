@@ -7,8 +7,10 @@ const DEFAULT_LOCALE = 'en';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Skip assets, static files, next system files, and api requests
+  // 1. COMPLETELY BYPASS STUDIO AND STATIC FILES (handles /studio and /en/studio)
   if (
+    pathname.startsWith('/studio') ||
+    pathname.includes('/studio') || // Handles /en/studio or /es/studio
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
@@ -17,19 +19,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Detect if the browser path already starts with a locale prefix
+  // 2. Check if the URL has a supported locale prefix
   const hasLocale = SUPPORTED_LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
+  // 3. Rewrite missing locale to default locale (/en)
   if (!hasLocale) {
-    // 3. Keep the browser URL clean (no /en/) by executing an invisible REWRITE
-    // Serving files from /en/[path] under the hood, but the browser stays at /[path]
     return NextResponse.rewrite(new URL(`/${DEFAULT_LOCALE}${pathname}`, request.url));
   }
 
-  // 4. If a user explicitly navigates to /en/[path], permanently redirect (301) 
-  // them back to /[path] to prevent duplicate URL issues in Google
+  // 4. Strip /en for regular site pages (e.g. /en/about -> /about), but studio was bypassed above!
   if (pathname.startsWith(`/${DEFAULT_LOCALE}/`) || pathname === `/${DEFAULT_LOCALE}`) {
     const cleanPath = pathname.replace(`/${DEFAULT_LOCALE}`, '') || '/';
     return NextResponse.redirect(new URL(cleanPath, request.url), 301);
@@ -37,3 +37,7 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+};

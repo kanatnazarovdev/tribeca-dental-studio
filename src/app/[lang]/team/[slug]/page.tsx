@@ -6,6 +6,8 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
+import { bookingUrl } from "@/hooks/helper";
+
 export const portableTextComponents: any = {
   block: {
     h2: ({ children }: any) => (
@@ -51,12 +53,13 @@ export const portableTextComponents: any = {
     ),
   },
 };
+
 async function getDoctor(slug: string) {
   return await client.fetch(
     `*[_type == "doctor" && slug.current == $slug][0]{
       name,
       role,
-      "imageUrl": image.asset->url,
+      "imageUrl": image.asset->url + "?w=1200&h=1500&fit=crop&crop=focalpoint&q=100&auto=format",
       bio,
       education,
       location,
@@ -228,11 +231,7 @@ export default async function DoctorProfile({
             )}
 
             <div className="mt-12">
-              <a
-                href="https://truelark.com/bookonline/#/location?businessId=80613"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={bookingUrl} target="_blank" rel="noopener noreferrer">
                 <button className="w-full sm:w-auto group relative text-[10px] tracking-[0.4em] uppercase font-bold py-5 px-12 border border-black overflow-hidden transition-all duration-500">
                   <span className="relative z-10 group-hover:text-white transition-colors duration-500">
                     {isZh
@@ -251,14 +250,22 @@ export default async function DoctorProfile({
         {/* Right/Top Column: Image Display */}
         <div className="w-full lg:w-1/2 lg:h-screen lg:sticky lg:top-0 flex items-center justify-center lg:justify-start lg:pl-10 p-0 sm:p-10 lg:p-0 bg-white lg:mt-20">
           <div className="relative w-full max-w-full lg:max-w-[480px] aspect-[4/5] sm:aspect-square lg:aspect-[1/1.25] bg-[#F3F3F3] overflow-hidden">
-            <Image
-              src={doctor.imageUrl}
-              alt={`${doctor.name} - ${doctor.role} at Tribeca Dental Studio 4 Kids`}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-center lg:object-top transition-all duration-1000 ease-in-out hover:scale-105"
-            />
+            {doctor.imageUrl ? (
+              <Image
+                src={doctor.imageUrl}
+                alt={`${doctor.name} - ${doctor.role} at Tribeca Dental Studio 4 Kids`}
+                fill
+                priority
+                quality={100}
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center lg:object-top transition-all duration-1000 ease-in-out hover:scale-105"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs uppercase tracking-widest text-gray-400">
+                No Image Available
+              </div>
+            )}
           </div>
         </div>
       </div>

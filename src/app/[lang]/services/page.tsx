@@ -9,6 +9,7 @@ import {
   GENERAL_SERVICES,
   SPECIALIZED_SERVICES,
   AIRWAY_AND_ORTHO_SERVICES,
+  IMPLANT_SERVICES,
   ServiceItem,
 } from "@/constants/services";
 
@@ -36,12 +37,14 @@ export default function ServicesPage({ params }: PageProps) {
   const activeGeneral = filterItems(GENERAL_SERVICES);
   const activeSpecialized = filterItems(SPECIALIZED_SERVICES);
   const activeAirway = filterItems(AIRWAY_AND_ORTHO_SERVICES);
+  const activeImplants = filterItems(IMPLANT_SERVICES);
 
-  const hasAnyResults = 
+  const hasAnyResults =
     activeCosmetic.length > 0 ||
     activeGeneral.length > 0 ||
     activeSpecialized.length > 0 ||
-    activeAirway.length > 0 ;
+    activeImplants.length > 0 ||
+    activeAirway.length > 0;
 
   const renderServiceList = (items: ServiceItem[]) => {
     return items.map((service) => (
@@ -112,7 +115,9 @@ export default function ServicesPage({ params }: PageProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={isEs ? "BUSCAR TRATAMIENTO..." : "SEARCH SERVICES & TREATMENTS..."}
+            placeholder={
+              isEs ? "BUSCAR TRATAMIENTO..." : "SEARCH SERVICES & TREATMENTS..."
+            }
             className="w-full bg-transparent text-xl md:text-2xl font-light tracking-widest text-[#1A1A1A] placeholder-neutral-300 focus:outline-none uppercase"
             style={{ fontFamily: "var(--font-D-DIN)" }}
           />
@@ -126,12 +131,11 @@ export default function ServicesPage({ params }: PageProps) {
         <div className="absolute inset-y-0 right-6 md:right-12 lg:right-24 w-[1px] bg-black/[0.03] pointer-events-none" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start relative z-30">
-          
           {/* LEFT PANEL: LINK COLUMNS GRID (7 Columns Wide) */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="popLayout">
               {hasAnyResults ? (
-                <motion.div 
+                <motion.div
                   layout
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -142,21 +146,42 @@ export default function ServicesPage({ params }: PageProps) {
                   <div className="flex flex-col space-y-16">
                     {activeCosmetic.length > 0 && (
                       <motion.div layout>
-                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">01 // COSMETIC & DESIGN</span>
+                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
+                          01 // COSMETIC & DESIGN
+                        </span>
                         <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
                           {isEs ? "Alta Estética" : "Cosmetic & Design"}
                         </h2>
-                        <div className="flex flex-col">{renderServiceList(activeCosmetic)}</div>
+                        <div className="flex flex-col">
+                          {renderServiceList(activeCosmetic)}
+                        </div>
                       </motion.div>
                     )}
 
                     {activeSpecialized.length > 0 && (
                       <motion.div layout>
-                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">03 // SPECIALIZED CLINICAL</span>
+                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
+                          03 // SPECIALIZED CLINICAL
+                        </span>
                         <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
                           {isEs ? "Cirugía e Implantes" : "Advanced Surgical"}
                         </h2>
-                        <div className="flex flex-col">{renderServiceList(activeSpecialized)}</div>
+                        <div className="flex flex-col">
+                          {renderServiceList(activeSpecialized)}
+                        </div>
+                      </motion.div>
+                    )}
+                    {activeImplants.length > 0 && (
+                      <motion.div layout>
+                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
+                          DENTAL IMPLANTS 
+                        </span>
+                        <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
+                          {isEs ? "Cirugía e Implantes" : "Dental Implants"}
+                        </h2>
+                        <div className="flex flex-col">
+                          {renderServiceList(activeImplants)}
+                        </div>
                       </motion.div>
                     )}
                   </div>
@@ -165,36 +190,42 @@ export default function ServicesPage({ params }: PageProps) {
                   <div className="flex flex-col space-y-16">
                     {activeGeneral.length > 0 && (
                       <motion.div layout>
-                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">02 // GENERAL CARE</span>
+                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
+                          02 // GENERAL CARE
+                        </span>
                         <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
                           {isEs ? "Cuidado General" : "General Dentistry"}
                         </h2>
-                        <div className="flex flex-col">{renderServiceList(activeGeneral)}</div>
+                        <div className="flex flex-col">
+                          {renderServiceList(activeGeneral)}
+                        </div>
                       </motion.div>
                     )}
 
                     {activeAirway.length > 0 && (
                       <motion.div layout>
-                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">04 // AIRWAY & ORTHODONTICS</span>
+                        <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
+                          04 // AIRWAY & ORTHODONTICS
+                        </span>
                         <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
                           {isEs ? "Vías Respiratorias" : "Airway & Ortho"}
                         </h2>
-                        <div className="flex flex-col">{renderServiceList(activeAirway)}</div>
+                        <div className="flex flex-col">
+                          {renderServiceList(activeAirway)}
+                        </div>
                       </motion.div>
                     )}
-
-                
                   </div>
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   className="py-12 text-left md:pl-6"
                 >
                   <p className="text-lg font-light text-neutral-400 leading-relaxed max-w-md">
-                    {isEs 
+                    {isEs
                       ? "No se encontraron tratamientos correspondientes. Por favor, intente con otra consulta o póngase en contacto con nuestro conserje clínico."
                       : "No matching configurations discovered. Try searching another term, or get in touch directly with our clinical concierge."}
                   </p>
@@ -215,7 +246,7 @@ export default function ServicesPage({ params }: PageProps) {
             />
             {/* Subtle premium vignette overlay for text contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            
+
             <div className="absolute bottom-8 left-8 text-white z-10 flex flex-col items-start">
               <span className="text-[9px] uppercase tracking-[0.4em] text-[#C5A059] mb-2 font-mono">
                 TDS // LOOKBOOK
@@ -225,7 +256,6 @@ export default function ServicesPage({ params }: PageProps) {
               </p>
             </div>
           </div>
-
         </div>
       </section>
 

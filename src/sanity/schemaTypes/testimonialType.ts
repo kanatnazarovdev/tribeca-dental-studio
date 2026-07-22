@@ -1,32 +1,67 @@
-// src/sanity/schemaTypes/testimonialType.ts
 import { defineType, defineField } from 'sanity'
 
 export default defineType({
   name: 'testimonial',
-  title: 'Child Testimonials',
+  title: 'Patient Testimonials',
   type: 'document',
   fields: [
     defineField({
-      name: 'childName',
-      title: 'Child Name',
+      name: 'patientName',
+      title: 'Patient / Family Name',
       type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'treatmentCategory',
+      title: 'Treatment Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Cosmetic Dentistry & Veneers', value: 'cosmetic' },
+          { title: 'Pediatric Dentistry', value: 'pediatric' },
+          { title: 'Orthodontics & Aligners', value: 'orthodontics' },
+          { title: 'Dental Implants', value: 'implants' },
+          { title: 'General & Preventative', value: 'general' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'rating',
+      title: 'Star Rating (1-5)',
+      type: 'number',
+      initialValue: 5,
+      validation: (Rule) => Rule.min(1).max(5),
     }),
     defineField({
       name: 'description',
-      title: 'Experience Description',
+      title: 'Testimonial Text',
       type: 'text',
-      description: 'Describe their visit (e.g., "First visit using Biolase laser technology").'
+      rows: 4,
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'videoUrl',
-      title: 'YouTube Video URL',
+      title: 'Video Testimonial URL (YouTube / Vimeo / Video File)',
       type: 'url',
     }),
     defineField({
       name: 'thumbnail',
-      title: 'Gallery Preview Image',
+      title: 'Patient Photo / Thumbnail',
       type: 'image',
       options: { hotspot: true },
     }),
-  ]
+    defineField({
+      name: 'isFeatured',
+      title: 'Featured on Homepage',
+      type: 'boolean',
+      initialValue: false,
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'patientName',
+      subtitle: 'treatmentCategory',
+      media: 'thumbnail',
+    },
+  },
 })

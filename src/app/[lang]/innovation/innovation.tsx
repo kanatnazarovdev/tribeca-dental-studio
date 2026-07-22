@@ -3,6 +3,7 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { bookingUrl } from "@/hooks/helper";
 
 const categories = (lang: string) => [
   {
@@ -172,7 +173,7 @@ export default function InnovationPage() {
           {isZh ? "准备好体验未来了吗？" : isEs ? "¿Listo para experimentar el futuro?" : "Ready to experience the future?"}
         </h3>
         <a
-          href="https://truelark.com/bookonline/#/location?businessId=80613"
+          href={bookingUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
