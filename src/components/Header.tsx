@@ -23,14 +23,13 @@ export default function Header({ dict, lang }: HeaderProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Interior routes render on white, so the nav should start in its "active"
-  // (dark-on-light) state rather than the transparent hero state.
   const isInteriorRoute =
     pathname.includes(`/blog`) ||
     pathname.includes(`/testimonials`) ||
     pathname.includes(`/about`) ||
     pathname.includes(`/services`) ||
-    pathname.includes(`/team`);
+    pathname.includes(`/team`) ||
+    pathname.includes(`/cases`);
   const shouldBeActive = isScrolled || isOpen || isInteriorRoute;
 
  const toggleLanguage = (newLang: string) => {
@@ -76,12 +75,12 @@ export default function Header({ dict, lang }: HeaderProps) {
       label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
       href: `/${lang}/services/`,
     },
-    // {
-    //   id: "gallery",
-    //   label:
-    //     lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
-    //   href: `/${lang}/before-and-after-cases/`,
-    // },
+    {
+      id: "gallery",
+      label:
+        lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
+      href: `/${lang}/cases/`,
+    },
     {
       id: "about",
       label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
