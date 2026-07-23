@@ -239,7 +239,7 @@ const CATEGORIES = [
         en: "All-on-4® Dental Implants",
         es: "Implantes All-on-4®",
         zh: "All-on-4® 全口种植牙修复",
-        slug: "services/all-on-4-implants",
+        slug: "services/all-on-4-dental-implants",
       },
       {
         en: "Zygomatic Implants",

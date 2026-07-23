@@ -56,7 +56,7 @@ export default async function SingleCasePage({
   }
 
   return (
-    <main className="bg-[#FCFCFC] min-h-screen pt-28 pb-24 px-6 md:px-12 lg:px-20 font-ddin text-black">
+    <main className="bg-[#fafaf4] min-h-screen pt-28 pb-24 px-6 md:px-12 lg:px-20 font-ddin text-black">
       <div className="max-w-7xl mx-auto">
         {/* BACK NAVIGATION */}
         <nav className="mb-12">

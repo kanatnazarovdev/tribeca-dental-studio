@@ -1,14 +1,116 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { useState, useEffect } from "react";
 import { ContainerHeader } from "./Container";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from '../../public/tribeca-logo-text.svg'
+import logo from "../../public/tribeca-logo-text.svg";
 import { bookingUrl } from "@/hooks/helper";
+
+// --- SERVICE CATEGORIES FOR MEGA MENU ---
+const SERVICE_CATEGORIES = (lang: string) => [
+  {
+    category:
+      lang === "zh"
+        ? "美容牙科"
+        : lang === "es"
+        ? "Odontología Estética"
+        : "Cosmetic Dentistry",
+    items: [
+      {
+        name: lang === "zh" ? "瓷贴面" : lang === "es" ? "Carillas de Porcelana" : "Porcelain Veneers",
+        href: `/${lang}/services/porcelain-veneers`,
+      },
+      {
+        name: lang === "zh" ? "牙齿美白" : lang === "es" ? "Blanqueamiento Dental" : "Teeth Whitening",
+        href: `/${lang}/services/teeth-whitening`,
+      },
+      {
+        name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
+        href: `/${lang}/services/invisalign-treatments`,
+      },
+      {
+        name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
+        href: `/${lang}/services/dental-bonding`,
+      },
+    ],
+  },
+  {
+    category:
+      lang === "zh"
+        ? "种植牙"
+        : lang === "es"
+        ? "Implantes Dentales"
+        : "Dental Implants",
+    items: [
+      {
+        name: lang === "zh" ? "种植牙" : lang === "es" ? "Implantes Dentales" : "Dental Implants",
+        href: `/${lang}/services/dental-implants`,
+      },
+      {
+        name: lang === "zh" ? "All-on-4 整体种植" : lang === "es" ? "Implantes All-on-4®" : "All-on-4® Dental Implants",
+        href: `/${lang}/services/all-on-4-dental-implants`,
+      },
+      {
+        name: lang === "zh" ? "颧骨种植牙" : lang === "es" ? "Implantes Cigomáticos" : "Zygomatic Implants",
+        href: `/${lang}/services/zygomatic-implants`,
+      },
+    ],
+  },
+  {
+    category:
+      lang === "zh"
+        ? "通用全科与预防"
+        : lang === "es"
+        ? "Odontología General"
+        : "General & Restorative",
+    items: [
+      {
+        name: lang === "zh" ? "洗牙与全口腔检查" : lang === "es" ? "Exámenes y Limpiezas" : "Dental Exams & Cleanings",
+        href: `/${lang}/services/dental-exams-teeth-cleanings`,
+      },
+      {
+        name: lang === "zh" ? "Curodont™ 牙齿再生修复" : lang === "es" ? "Reparación Curodont™" : "Curodont™ Tooth Repair",
+        href: `/${lang}/services/curodont-regenerative-tooth-repair`,
+      },
+      {
+        name: lang === "zh" ? "根管治疗" : lang === "es" ? "Tratamiento de Conducto" : "Root Canal Treatment",
+        href: `/${lang}/services/root-canal-treatment`,
+      },
+      {
+        name: lang === "zh" ? "牙冠与牙桥" : lang === "es" ? "Coronas y Puentes" : "Crowns & Bridges",
+        href: `/${lang}/services/dental-crowns-bridges`,
+      },
+    ],
+  },
+  {
+    category:
+      lang === "zh"
+        ? "气道与正畸"
+        : lang === "es"
+        ? "Vías Respiratorias y Ortodoncia"
+        : "Airway & Orthodontics",
+    items: [
+      {
+        name: lang === "zh" ? "儿童及青少年正畸" : lang === "es" ? "Ortodoncia Pediátrica" : "Pediatric Orthodontics",
+        href: `/${lang}/services/orthodontics`,
+      },
+      {
+        name: lang === "zh" ? "睡眠呼吸暂停与气道" : lang === "es" ? "Tratamientos de Vías Respiratorias" : "Airway & Sleep Apnea",
+        href: `/${lang}/services/airway-treatments`,
+      },
+      {
+        name: lang === "zh" ? "上颌骨扩展 (MSE/MARPE)" : lang === "es" ? "Expansión Palatina (MSE)" : "Palatal Expansion (MSE)",
+        href: `/${lang}/services/palatal-expansion-marpe`,
+      },
+    ],
+  },
+];
+
 interface HeaderProps {
   dict: {
     hero: { studio_name: string };
@@ -17,11 +119,16 @@ interface HeaderProps {
   lang: string;
 }
 
-export default function Header({ dict, lang }: HeaderProps) {
+export default function Header({ lang }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isServicesHovered, setIsServicesHovered] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+
+  // Normalize path by stripping trailing slash for precise matching
+  const cleanCurrentPath = pathname.replace(/\/$/, "");
 
   const isInteriorRoute =
     pathname.includes(`/blog`) ||
@@ -30,20 +137,18 @@ export default function Header({ dict, lang }: HeaderProps) {
     pathname.includes(`/services`) ||
     pathname.includes(`/team`) ||
     pathname.includes(`/cases`);
-  const shouldBeActive = isScrolled || isOpen || isInteriorRoute;
+  const shouldBeActive = isScrolled || isOpen || isInteriorRoute || isServicesHovered;
 
- const toggleLanguage = (newLang: string) => {
+  const toggleLanguage = (newLang: string) => {
     if (!pathname) return;
 
     const segments = pathname.split("/").filter(Boolean);
-
     const supportedPrefixes = ["es", "zh"];
     if (supportedPrefixes.includes(segments[0])) {
       segments.shift();
     }
 
     const cleanPath = segments.join("/");
-
     let newPath = "";
     if (newLang === "en") {
       newPath = cleanPath ? `/${cleanPath}` : "/";
@@ -69,107 +174,180 @@ export default function Header({ dict, lang }: HeaderProps) {
     pathname.startsWith(`/${lang}/studio`) || pathname.startsWith("/studio");
   if (isStudio) return null;
 
+  const serviceCategoriesData = SERVICE_CATEGORIES(lang);
+
   const navItems = [
     {
       id: "services",
-      label: lang === "zh" ? "服务项目" : lang === "es" ? "Servicios" : "Services",
-      href: `/${lang}/services/`,
+      label: lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
+      href: `/${lang}/services`,
+      hasDropdown: true,
     },
     {
       id: "gallery",
       label:
         lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
-      href: `/${lang}/cases/`,
+      href: `/${lang}/cases`,
     },
     {
       id: "about",
       label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
-      href: `/${lang}/about/`,
+      href: `/${lang}/about`,
     },
     {
       id: "team",
       label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
-      href: `/${lang}/team/`,
+      href: `/${lang}/team`,
     },
-    // {
-    //   id: "blog",
-    //   label: lang === "zh" ? "博客" : "Blog",
-    //   href: `/${lang}/blog/`,
-    // },
-    // {
-    //   id: "testimonials",
-    //   label:
-    //     lang === "zh"
-    //       ? "患者评价"
-    //       : lang === "es"
-    //         ? "Testimonios"
-    //         : "Testimonials",
-    //   href: `/${lang}/testimonials/`,
-    // },
   ];
 
   return (
     <>
       <nav
         className={`fixed top-0 w-full z-[60] transition-all duration-500 py-2 h-[100px] flex items-center
-        ${shouldBeActive ? "bg-white/90 backdrop-blur-md border-b border-black/5" : "bg-transparent text-white"}`}
+        ${shouldBeActive ? "bg-white/95 backdrop-blur-md border-b border-black/5" : "bg-transparent text-white"}`}
       >
         <ContainerHeader>
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link href={`/${lang}`} className="z-[70]">
               <span
                 className={`text-[20px] md:text-[24px] font-serif tracking-tight leading-[1.1]
                 ${shouldBeActive ? "text-black" : "text-white"}`}
               >
-<Image 
-  src={logo} 
-  alt="Tribeca Logo"
-  className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
-/>           </span>
+                <Image
+                width={100}
+                  src={logo}
+                  alt="Tribeca Logo"
+                  className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
+                />
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
-              {navItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={`uppercase tracking-[2px] text-[14px] hover:text-[#C5A059] transition-colors ${shouldBeActive ? "text-black" : "text-white"}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const itemCleanHref = item.href.replace(/\/$/, "");
+                const isNavActive =
+                  cleanCurrentPath === itemCleanHref ||
+                  (item.id === "services" && pathname.includes("/services"));
+
+                return (
+                  <div
+                    key={item.id}
+                    className="relative py-8"
+                    onMouseEnter={() => item.hasDropdown && setIsServicesHovered(true)}
+                    onMouseLeave={() => item.hasDropdown && setIsServicesHovered(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${
+                        isNavActive
+                          ? "text-[#C5A059]"
+                          : shouldBeActive
+                          ? "text-black hover:text-[#C5A059]"
+                          : "text-white hover:text-[#C5A059]"
+                      }`}
+                    >
+                      {item.label}
+                      {item.hasDropdown && (
+                        <ChevronDown
+                          size={14}
+                          className={`transition-transform duration-300 ${
+                            isServicesHovered ? "rotate-180 text-[#C5A059]" : ""
+                          }`}
+                        />
+                      )}
+                    </Link>
+
+                    {/* DESKTOP MEGA MENU DROPDOWN */}
+                    {item.hasDropdown && (
+                      <AnimatePresence>
+                        {isServicesHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
+                            className="fixed top-[95px] left-0 w-full bg-white border-b border-neutral-200 shadow-2xl text-black py-12 px-8 md:px-20 z-50 font-ddin"
+                          >
+                            <div className="max-w-7xl mx-auto grid grid-cols-4 gap-10">
+                              {serviceCategoriesData.map((cat, idx) => (
+                                <div key={idx} className="flex flex-col">
+                                  <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-4 pb-2 border-b border-neutral-100">
+                                    {cat.category}
+                                  </h4>
+                                  <ul className="space-y-3">
+                                    {cat.items.map((svc, sIdx) => {
+                                      const svcCleanHref = svc.href.replace(/\/$/, "");
+                                      const isSubServiceActive = cleanCurrentPath === svcCleanHref;
+
+                                      return (
+                                        <li key={sIdx}>
+                                          <Link
+                                            href={svc.href}
+                                            className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
+                                              isSubServiceActive
+                                                ? "text-[#C5A059]"
+                                                : "text-neutral-600 hover:text-black hover:translate-x-1"
+                                            }`}
+                                          >
+                                            {svc.name}
+                                          </Link>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* BOTTOM BAR INSIDE DROPDOWN */}
+                            <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
+                              <span>Tribeca Dental Studio • Multi-Specialty Care</span>
+                              <Link
+                                href={`/${lang}/services`}
+                                className="text-black hover:text-[#C5A059] underline underline-offset-4 transition-colors"
+                              >
+                                {lang === "zh" ? "查看所有服务 →" : lang === "es" ? "Ver Todos los Servicios →" : "View All Services →"}
+                              </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
+            {/* Right Side Actions */}
             <div className="flex items-center gap-4">
               {/* Desktop Language Toggle */}
-              <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4">
+              <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
                 <button
                   onClick={() => toggleLanguage("en")}
-                  className={`text-[12px] font-bold transition-colors ${lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"}`}
+                  className={`text-[12px] font-bold transition-colors ${
+                    lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  }`}
                 >
                   EN
                 </button>
-                <span
-                  className={shouldBeActive ? "text-black/20" : "text-white/20"}
-                >
-                  |
-                </span>
+                <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
                 <button
                   onClick={() => toggleLanguage("es")}
-                  className={`text-[12px] font-bold transition-colors ${lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"}`}
+                  className={`text-[12px] font-bold transition-colors ${
+                    lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  }`}
                 >
                   ES
                 </button>
-                <span
-                  className={shouldBeActive ? "text-black/20" : "text-white/20"}
-                >
-                  |
-                </span>
+                <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
                 <button
                   onClick={() => toggleLanguage("zh")}
-                  // Check that this says lang === "zh"
-                  className={`text-[12px] font-bold transition-colors ${lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"}`}
+                  className={`text-[12px] font-bold transition-colors ${
+                    lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  }`}
                 >
                   中文
                 </button>
@@ -177,17 +355,14 @@ export default function Header({ dict, lang }: HeaderProps) {
 
               {/* Booking CTA */}
               <a
-              target="_blank"
+                target="_blank"
+                rel="noopener noreferrer"
                 href={bookingUrl}
-                className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group
+                className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group font-ddin font-bold
                 ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
               >
                 <span className="relative z-10 group-hover:text-white">
-                  {lang === "zh"
-                    ? "立即预约"
-                    : lang === "es"
-                      ? "Reservar"
-                      : "Book"}
+                  {lang === "zh" ? "立即预约" : lang === "es" ? "Reservar" : "Book"}
                 </span>
                 <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </a>
@@ -211,38 +386,113 @@ export default function Header({ dict, lang }: HeaderProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 bg-white z-[55] flex flex-col justify-center px-10 gap-8"
+            className="fixed inset-0 bg-white z-[55] flex flex-col justify-start pt-28 pb-12 px-8 overflow-y-auto font-ddin"
           >
-            <div className="flex gap-6 mb-4">
+            {/* Language Selector */}
+            <div className="flex gap-6 mb-8 border-b border-neutral-100 pb-6">
               <button
                 onClick={() => toggleLanguage("en")}
-                className={`text-2xl font-bold ${lang === "en" ? "text-[#C5A059]" : "text-black/40"}`}
+                className={`text-xl font-bold ${lang === "en" ? "text-[#C5A059]" : "text-black/40"}`}
               >
                 English
               </button>
               <button
                 onClick={() => toggleLanguage("es")}
-                className={`text-2xl font-bold ${lang === "es" ? "text-[#C5A059]" : "text-black/40"}`}
+                className={`text-xl font-bold ${lang === "es" ? "text-[#C5A059]" : "text-black/40"}`}
               >
                 Español
               </button>
               <button
                 onClick={() => toggleLanguage("zh")}
-                className={`text-2xl font-bold ${lang === "zh" ? "text-[#C5A059]" : "text-black/40"}`}
+                className={`text-xl font-bold ${lang === "zh" ? "text-[#C5A059]" : "text-black/40"}`}
               >
                 中文
               </button>
             </div>
-            {navItems.map((item) => (
+
+            {/* Nav Items */}
+            <div className="flex flex-col gap-6">
+              {/* Accordion for Services */}
+              <div>
+                <button
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
+                    pathname.includes("/services") ? "text-[#C5A059]" : "text-black"
+                  }`}
+                >
+                  <span>{lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services"}</span>
+                  <ChevronDown
+                    size={28}
+                    className={`transition-transform duration-300 ${
+                      mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
+                    }`}
+                  />
+                </button>
+
+                {mobileServicesOpen && (
+                  <div className="mt-4 pl-4 space-y-6 border-l-2 border-[#C5A059]">
+                    {serviceCategoriesData.map((cat, cIdx) => (
+                      <div key={cIdx}>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-2">
+                          {cat.category}
+                        </p>
+                        <ul className="space-y-2">
+                          {cat.items.map((svc, sIdx) => {
+                            const svcCleanHref = svc.href.replace(/\/$/, "");
+                            const isSubActive = cleanCurrentPath === svcCleanHref;
+
+                            return (
+                              <li key={sIdx}>
+                                <Link
+                                  href={svc.href}
+                                  onClick={() => setIsOpen(false)}
+                                  className={`text-sm font-bold uppercase ${
+                                    isSubActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
+                                  }`}
+                                >
+                                  {svc.name}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Other Pages */}
               <Link
-                key={item.id}
-                href={item.href}
+                href={`/${lang}/cases`}
                 onClick={() => setIsOpen(false)}
-                className="text-4xl font-serif text-black italic capitalize"
+                className={`text-3xl font-bold uppercase tracking-tight ${
+                  pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
+                }`}
               >
-                {item.label}
+                {lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery"}
               </Link>
-            ))}
+
+              <Link
+                href={`/${lang}/about`}
+                onClick={() => setIsOpen(false)}
+                className={`text-3xl font-bold uppercase tracking-tight ${
+                  pathname.includes("/about") ? "text-[#C5A059]" : "text-black"
+                }`}
+              >
+                {lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About"}
+              </Link>
+
+              <Link
+                href={`/${lang}/team`}
+                onClick={() => setIsOpen(false)}
+                className={`text-3xl font-bold uppercase tracking-tight ${
+                  pathname.includes("/team") ? "text-[#C5A059]" : "text-black"
+                }`}
+              >
+                {lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team"}
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

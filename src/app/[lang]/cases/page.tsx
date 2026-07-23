@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { Metadata } from "next";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider"; // Adjust path if needed
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -103,49 +103,23 @@ export default async function CasesPage({
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
         {cases.length > 0 ? (
           cases.map((item) => (
-            <Link
+            <div
               key={item._id}
-              href={`/${lang}/cases/${item.slug}`}
               className="group flex flex-col bg-white border border-neutral-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
             >
-              {/* BEFORE / AFTER DUAL IMAGE CONTAINER */}
-              <div className="relative w-full aspect-square bg-neutral-100 overflow-hidden">
-                {/* AFTER IMAGE (DEFAULT VISIBLE) */}
-                <Image
-                  src={item.afterUrl}
-                  alt={`${item.title} - After`}
-                  fill
-                  unoptimized
-                  className="object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0"
-                />
+              {/* INTERACTIVE BEFORE/AFTER SLIDER */}
+              <BeforeAfterSlider
+                beforeUrl={item.beforeUrl}
+                afterUrl={item.afterUrl}
+                title={item.title}
+                treatmentDuration={item.treatmentDuration}
+              />
 
-                {/* BEFORE IMAGE (SHOWN ON HOVER) */}
-                <Image
-                  src={item.beforeUrl}
-                  alt={`${item.title} - Before`}
-                  fill
-                  unoptimized
-                  className="object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100"
-                />
-
-                {/* BADGES */}
-                <div className="absolute top-4 left-4 z-10 flex gap-2">
-                  <span className="bg-black/80 backdrop-blur-md text-white font-bold text-[9px] uppercase tracking-widest px-3 py-1">
-                    Hover for Before
-                  </span>
-                </div>
-
-                {item.treatmentDuration && (
-                  <div className="absolute bottom-4 right-4 z-10">
-                    <span className="bg-white/90 backdrop-blur-md text-black font-bold text-[9px] uppercase tracking-widest px-3 py-1">
-                      {item.treatmentDuration}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* CARD INFO */}
-              <div className="p-6 md:p-8 flex flex-col justify-between flex-grow">
+              {/* CARD INFO & LINK TO CASE DETAILS */}
+              <Link
+                href={`/${lang}/cases/${item.slug}`}
+                className="p-6 md:p-8 flex flex-col justify-between flex-grow"
+              >
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#C5A059] block mb-2">
                     {item.category}
@@ -164,8 +138,8 @@ export default async function CasesPage({
                   <span>View Full Case</span>
                   <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))
         ) : (
           <div className="col-span-full py-20 text-center text-neutral-400 uppercase tracking-widest text-xs">
