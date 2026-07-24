@@ -11,8 +11,8 @@ import Image from "next/image";
 import logo from "../../public/tribeca-logo-text.svg";
 import { bookingUrl } from "@/hooks/helper";
 
-// --- SERVICE CATEGORIES FOR MEGA MENU ---
-const SERVICE_CATEGORIES = (lang: string) => [
+// --- SERVICE CATEGORIES CONFIGURATION ---
+export const SERVICE_CATEGORIES = (lang: string) => [
   {
     category:
       lang === "zh"
@@ -31,7 +31,8 @@ const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
-        href: `/${lang}/services/invisalign-clear-aligner-braces`,
+        href: `/${lang}/services/invisalign-clear-aligner-braces`, // Preserved legacy slug
+        aliases: [`/${lang}/services/invisalign-treatments`], // Alternate alias match
       },
       {
         name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
@@ -64,14 +65,19 @@ const SERVICE_CATEGORIES = (lang: string) => [
   {
     category:
       lang === "zh"
-        ? "通用全科与预防"
+        ? "通用全科与外科"
         : lang === "es"
-        ? "Odontología General"
-        : "General & Restorative",
+        ? "Odontología General y Cirugía"
+        : "General & Surgery",
     items: [
       {
         name: lang === "zh" ? "洗牙与全口腔检查" : lang === "es" ? "Exámenes y Limpiezas" : "Dental Exams & Cleanings",
         href: `/${lang}/services/dental-exams-teeth-cleanings`,
+      },
+      {
+        name: lang === "zh" ? "智齿拔除" : lang === "es" ? "Extracción de Muelas del Juicio" : "Wisdom Teeth Removal",
+        href: `/${lang}/services/wisdom-tooth-removal`, // Preserved legacy slug
+        aliases: [`/${lang}/services/wisdom-teeth-removal`], // Alternate alias match
       },
       {
         name: lang === "zh" ? "Curodont™ 牙齿再生修复" : lang === "es" ? "Reparación Curodont™" : "Curodont™ Tooth Repair",
@@ -111,10 +117,27 @@ const SERVICE_CATEGORIES = (lang: string) => [
   },
 ];
 
+// Helper function to handle exact path matching including fallback aliases
+function isLinkActive(currentPath: string, targetHref: string, aliases: string[] = []): boolean {
+  const cleanCurrent = currentPath.replace(/\/$/, "");
+  const cleanTarget = targetHref.replace(/\/$/, "");
+
+  // Direct route match
+  if (cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`)) {
+    return true;
+  }
+
+  // Alias route match
+  return aliases.some((alias) => {
+    const cleanAlias = alias.replace(/\/$/, "");
+    return cleanCurrent === cleanAlias || cleanCurrent.startsWith(`${cleanAlias}/`);
+  });
+}
+
 interface HeaderProps {
-  dict: {
-    hero: { studio_name: string };
-    nav?: { technology: string; results: string; faq: string };
+  dict?: {
+    hero?: { studio_name?: string };
+    nav?: { technology?: string; results?: string; faq?: string };
   };
   lang: string;
 }
@@ -127,7 +150,7 @@ export default function Header({ lang }: HeaderProps) {
   const [isServicesHovered, setIsServicesHovered] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
-  // Normalize path by stripping trailing slash for precise matching
+  // Normalize path by stripping trailing slashes
   const cleanCurrentPath = pathname.replace(/\/$/, "");
 
   const isInteriorRoute =
@@ -169,10 +192,13 @@ export default function Header({ lang }: HeaderProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const isStudio =
     pathname.startsWith(`/${lang}/studio`) || pathname.startsWith("/studio");
   if (isStudio) return null;
+
   const serviceCategoriesData = SERVICE_CATEGORIES(lang);
+
   const navItems = [
     {
       id: "services",
@@ -213,13 +239,14 @@ export default function Header({ lang }: HeaderProps) {
                 ${shouldBeActive ? "text-black" : "text-white"}`}
               >
                 <Image
-                width={200}
+                  width={200}
                   src={logo}
                   alt="Tribeca Logo"
                   className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
                 />
               </span>
             </Link>
+
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
               {navItems.map((item) => {
@@ -255,6 +282,8 @@ export default function Header({ lang }: HeaderProps) {
                         />
                       )}
                     </Link>
+
+                    {/* Mega Menu Dropdown */}
                     {item.hasDropdown && (
                       <AnimatePresence>
                         {isServicesHovered && (
@@ -273,16 +302,19 @@ export default function Header({ lang }: HeaderProps) {
                                   </h4>
                                   <ul className="space-y-3">
                                     {cat.items.map((svc, sIdx) => {
-                                      const svcCleanHref = svc.href.replace(/\/$/, "");
-                                      const isSubServiceActive = cleanCurrentPath === svcCleanHref;
+                                      const isSubActive = isLinkActive(
+                                        cleanCurrentPath,
+                                        svc.href,
+                                        (svc as any).aliases
+                                      );
 
                                       return (
                                         <li key={sIdx}>
                                           <Link
                                             href={svc.href}
                                             className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
-                                              isSubServiceActive
-                                                ? "text-[#C5A059]"
+                                              isSubActive
+                                                ? "text-[#C5A059]" // Active service turns gold
                                                 : "text-neutral-600 hover:text-black hover:translate-x-1"
                                             }`}
                                           >
@@ -295,6 +327,7 @@ export default function Header({ lang }: HeaderProps) {
                                 </div>
                               ))}
                             </div>
+
                             <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
                               <span>Tribeca Dental Studio • Multi-Specialty Care</span>
                               <Link
@@ -312,6 +345,8 @@ export default function Header({ lang }: HeaderProps) {
                 );
               })}
             </div>
+
+            {/* Right Side Actions */}
             <div className="flex items-center gap-4">
               <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
                 <button
@@ -341,6 +376,7 @@ export default function Header({ lang }: HeaderProps) {
                   中文
                 </button>
               </div>
+
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -353,6 +389,7 @@ export default function Header({ lang }: HeaderProps) {
                 </span>
                 <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </a>
+
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
@@ -373,7 +410,6 @@ export default function Header({ lang }: HeaderProps) {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 bg-white z-[55] flex flex-col justify-start pt-28 pb-12 px-8 overflow-y-auto font-ddin"
           >
-            {/* Language Selector */}
             <div className="flex gap-6 mb-8 border-b border-neutral-100 pb-6">
               <button
                 onClick={() => toggleLanguage("en")}
@@ -395,9 +431,7 @@ export default function Header({ lang }: HeaderProps) {
               </button>
             </div>
 
-            {/* Nav Items */}
             <div className="flex flex-col gap-6">
-              {/* Accordion for Services */}
               <div>
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
@@ -423,8 +457,11 @@ export default function Header({ lang }: HeaderProps) {
                         </p>
                         <ul className="space-y-2">
                           {cat.items.map((svc, sIdx) => {
-                            const svcCleanHref = svc.href.replace(/\/$/, "");
-                            const isSubActive = cleanCurrentPath === svcCleanHref;
+                            const isSubActive = isLinkActive(
+                              cleanCurrentPath,
+                              svc.href,
+                              (svc as any).aliases
+                            );
 
                             return (
                               <li key={sIdx}>
@@ -447,7 +484,6 @@ export default function Header({ lang }: HeaderProps) {
                 )}
               </div>
 
-              {/* Other Pages */}
               <Link
                 href={`/${lang}/cases`}
                 onClick={() => setIsOpen(false)}

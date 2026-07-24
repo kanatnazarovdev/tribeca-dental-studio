@@ -39,7 +39,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "05",
     titleEn: "Invisalign® Treatments",
     titleEs: "Tratamientos Invisalign®",
-    slug: "invisalign-treatments",
+    slug: "services/invisalign-clear-aligner-braces",
     image: "/services/invisalign-treatments.webp"
   },
   {
@@ -196,9 +196,9 @@ export const SPECIALIZED_SERVICES: ServiceItem[] = [
   },
   {
     num: "27",
-    titleEn: "Wisdom Teeth Removal",
+    titleEn: "Wisdom Tooth Removal",
     titleEs: "Extracción de Muelas del Juicio",
-    slug: "services/wisdom-teeth-removal",
+    slug: "services/wisdom-tooth-removal",
     image: "/services/wisdom-teeth-removal.webp"
   },
   {

@@ -12,6 +12,16 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'patientName',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'treatmentCategory',
       title: 'Treatment Category',
       type: 'string',
@@ -41,7 +51,7 @@ export default defineType({
     }),
     defineField({
       name: 'videoUrl',
-      title: 'Video Testimonial URL (YouTube / Vimeo / Video File)',
+      title: 'YouTube / Video URL',
       type: 'url',
     }),
     defineField({
