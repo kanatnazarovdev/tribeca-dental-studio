@@ -31,7 +31,7 @@ const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
-        href: `/${lang}/services/invisalign-treatments`,
+        href: `/${lang}/services/invisalign-clear-aligner-braces`,
       },
       {
         name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
@@ -169,13 +169,10 @@ export default function Header({ lang }: HeaderProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   const isStudio =
     pathname.startsWith(`/${lang}/studio`) || pathname.startsWith("/studio");
   if (isStudio) return null;
-
   const serviceCategoriesData = SERVICE_CATEGORIES(lang);
-
   const navItems = [
     {
       id: "services",
@@ -216,14 +213,13 @@ export default function Header({ lang }: HeaderProps) {
                 ${shouldBeActive ? "text-black" : "text-white"}`}
               >
                 <Image
-                width={100}
+                width={200}
                   src={logo}
                   alt="Tribeca Logo"
                   className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
                 />
               </span>
             </Link>
-
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
               {navItems.map((item) => {
@@ -259,8 +255,6 @@ export default function Header({ lang }: HeaderProps) {
                         />
                       )}
                     </Link>
-
-                    {/* DESKTOP MEGA MENU DROPDOWN */}
                     {item.hasDropdown && (
                       <AnimatePresence>
                         {isServicesHovered && (
@@ -301,8 +295,6 @@ export default function Header({ lang }: HeaderProps) {
                                 </div>
                               ))}
                             </div>
-
-                            {/* BOTTOM BAR INSIDE DROPDOWN */}
                             <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
                               <span>Tribeca Dental Studio • Multi-Specialty Care</span>
                               <Link
@@ -320,10 +312,7 @@ export default function Header({ lang }: HeaderProps) {
                 );
               })}
             </div>
-
-            {/* Right Side Actions */}
             <div className="flex items-center gap-4">
-              {/* Desktop Language Toggle */}
               <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
                 <button
                   onClick={() => toggleLanguage("en")}
@@ -352,8 +341,6 @@ export default function Header({ lang }: HeaderProps) {
                   中文
                 </button>
               </div>
-
-              {/* Booking CTA */}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -366,8 +353,6 @@ export default function Header({ lang }: HeaderProps) {
                 </span>
                 <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </a>
-
-              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
