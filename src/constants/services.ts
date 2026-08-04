@@ -18,7 +18,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "02",
     titleEn: "Porcelain Veneers",
     titleEs: "Carillas de Porcelana",
-    slug: "porcelain-veneers",
+    slug: "porcelain-veneers-lumineers",
     image: "/services/porcelain-veneers.webp"
   },
   {
@@ -271,8 +271,8 @@ export const AIRWAY_AND_ORTHO_SERVICES: ServiceItem[] = [
     num: "37",
     titleEn: "Airway Treatments",
     titleEs: "Tratamientos de Vías Respiratorias",
-    slug: "services/airway-treatments",
-    image: "/services/airway-treatments.webp"
+    slug: "services/airway-orthodontics",
+    image: "/services/orthodontics.png"
   },
   {
     num: "38",

@@ -104,7 +104,7 @@ const CATEGORIES = [
         en: "Porcelain Veneers",
         es: "Carillas de Porcelana",
         zh: "全瓷美学贴面",
-        slug: "porcelain-veneers",
+        slug: "porcelain-veneers-lumineers",
       },
       {
         en: "Crown Lengthening & Gingivectomy",

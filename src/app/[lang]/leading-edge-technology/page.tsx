@@ -1,637 +1,530 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "../../public/tribeca-logo-text.svg";
+import { Metadata } from "next";
 import { bookingUrl } from "@/hooks/helper";
+import { Zap, Scan, Radio, ShieldCheck, Cpu, CheckCircle2, ArrowRight } from "lucide-react";
 
-// --- SERVICE CATEGORIES CONFIGURATION ---
-export const SERVICE_CATEGORIES = (lang: string) => [
-  {
-    category:
-      lang === "zh"
-        ? "美容牙科"
-        : lang === "es"
-        ? "Odontología Estética"
-        : "Cosmetic Dentistry",
-    items: [
-      {
-        name: lang === "zh" ? "瓷贴面" : lang === "es" ? "Carillas de Porcelana" : "Porcelain Veneers",
-        href: `/${lang}/services/porcelain-veneers`,
-      },
-      {
-        name: lang === "zh" ? "牙齿美白" : lang === "es" ? "Blanqueamiento Dental" : "Teeth Whitening",
-        href: `/${lang}/services/teeth-whitening`,
-      },
-      {
-        name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
-        href: `/${lang}/services/invisalign-clear-aligner-braces`,
-        aliases: [`/${lang}/services/invisalign-treatments`],
-      },
-      {
-        name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
-        href: `/${lang}/services/dental-bonding`,
-      },
+// --- MAXIMUM SEO METADATA & OPENGRAPH CONFIGURATION ---
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const isZh = lang === "zh";
+  const isEs = lang === "es";
+
+  const title = isZh
+    ? "前沿齿科数字科技与微创激光 | 纽约 Tribeca Dental Studio"
+    : isEs
+    ? "Tecnología Dental Avanzada y Láser en NYC | Tribeca Dental Studio"
+    : "Leading-Edge Dental Technology & Lasers NYC | Tribeca Dental Studio";
+
+  const description = isZh
+    ? "体验纽约 Tribeca 前沿数字齿科：Fotona & Biolase 微创水激光、无辐射 iTero® 3D 口内扫描仪与低剂量 CBCT 锥体 CT 诊断，享无痛高效看牙体验。"
+    : isEs
+    ? "Descubra nuestra tecnología dental de vanguardia en Lower Manhattan: odontología láser Fotona y Biolase, escáner 3D iTero® y tomografía CBCT."
+    : "Experience premier laser & 3D digital dentistry in Lower Manhattan, NYC. Featuring Fotona & Biolase non-invasive lasers, radiation-free iTero® 3D scanners, and low-dose CBCT 3D imaging.";
+
+  return {
+    title,
+    description,
+    keywords: [
+      "Laser Dentistry NYC",
+      "Fotona Laser Dentist Tribeca",
+      "Biolase Laser Dentistry Lower Manhattan",
+      "iTero 3D Scanner NYC",
+      "CBCT 3D Dental X-Ray Tribeca",
+      "Digital Dentistry Manhattan",
+      "Radiation-Free Dental Scanning",
+      "Laser Periodontal Treatment NYC",
+      "NightLase Snoring Treatment Manhattan",
     ],
-  },
-  {
-    category:
-      lang === "zh"
-        ? "种植牙"
-        : lang === "es"
-        ? "Implantes Dentales"
-        : "Dental Implants",
-    items: [
-      {
-        name: lang === "zh" ? "种植牙" : lang === "es" ? "Implantes Dentales" : "Dental Implants",
-        href: `/${lang}/services/dental-implants`,
+    authors: [{ name: "Tribeca Dental Studio" }],
+    creator: "Tribeca Dental Studio",
+    publisher: "Tribeca Dental Studio",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
-      {
-        name: lang === "zh" ? "All-on-4 整体种植" : lang === "es" ? "Implantes All-on-4®" : "All-on-4® Dental Implants",
-        href: `/${lang}/services/all-on-4-dental-implants`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://tribecadentalstudio.com/${lang}/leading-edge-technology`,
+      siteName: "Tribeca Dental Studio",
+      images: [
+        {
+          url: "https://tribecadentalstudio.com/leading-edge.webp",
+          width: 1200,
+          height: 630,
+          alt: "3D CBCT CT Scan and Digital Dentistry Technology at Tribeca Dental Studio NYC",
+        },
+      ],
+      locale: lang === "zh" ? "zh_CN" : lang === "es" ? "es_ES" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["https://tribecadentalstudio.com/leading-edge.webp"],
+    },
+    alternates: {
+      canonical: `https://tribecadentalstudio.com/${lang}/leading-edge-technology`,
+      languages: {
+        en: "https://tribecadentalstudio.com/en/leading-edge-technology",
+        es: "https://tribecadentalstudio.com/es/leading-edge-technology",
+        zh: "https://tribecadentalstudio.com/zh/leading-edge-technology",
       },
-      {
-        name: lang === "zh" ? "颧骨种植牙" : lang === "es" ? "Implantes Cigomáticos" : "Zygomatic Implants",
-        href: `/${lang}/services/zygomatic-implants`,
-      },
-    ],
-  },
-  {
-    category:
-      lang === "zh"
-        ? "通用全科与外科"
-        : lang === "es"
-        ? "Odontología General y Cirugía"
-        : "General & Surgery",
-    items: [
-      {
-        name: lang === "zh" ? "洗牙与全口腔检查" : lang === "es" ? "Exámenes y Limpiezas" : "Dental Exams & Cleanings",
-        href: `/${lang}/services/dental-exams-teeth-cleanings`,
-      },
-      {
-        name: lang === "zh" ? "智齿拔除" : lang === "es" ? "Extracción de Muelas del Juicio" : "Wisdom Teeth Removal",
-        href: `/${lang}/services/wisdom-tooth-removal`,
-        aliases: [`/${lang}/services/wisdom-teeth-removal`],
-      },
-      {
-        name: lang === "zh" ? "Curodont™ 牙齿再生修复" : lang === "es" ? "Reparación Curodont™" : "Curodont™ Tooth Repair",
-        href: `/${lang}/services/curodont-regenerative-tooth-repair`,
-      },
-      {
-        name: lang === "zh" ? "根管治疗" : lang === "es" ? "Tratamiento de Conducto" : "Root Canal Treatment",
-        href: `/${lang}/services/root-canal-treatment`,
-      },
-      {
-        name: lang === "zh" ? "牙冠与牙桥" : lang === "es" ? "Coronas y Puentes" : "Crowns & Bridges",
-        href: `/${lang}/services/dental-crowns-bridges`,
-      },
-    ],
-  },
-  {
-    category:
-      lang === "zh"
-        ? "气道与正畸"
-        : lang === "es"
-        ? "Vías Respiratorias y Ortodoncia"
-        : "Airway & Orthodontics",
-    items: [
-      {
-        name: lang === "zh" ? "儿童及青少年正畸" : lang === "es" ? "Ortodoncia Pediátrica" : "Pediatric Orthodontics",
-        href: `/${lang}/services/orthodontics`,
-      },
-      {
-        name: lang === "zh" ? "睡眠呼吸暂停与气道" : lang === "es" ? "Tratamientos de Vías Respiratorias" : "Airway & Sleep Apnea",
-        href: `/${lang}/services/airway-treatments`,
-      },
-      {
-        name: lang === "zh" ? "上颌骨扩展 (MSE/MARPE)" : lang === "es" ? "Expansión Palatina (MSE)" : "Palatal Expansion (MSE)",
-        href: `/${lang}/services/palatal-expansion-marpe`,
-      },
-    ],
-  },
-];
-
-// --- ABOUT DROPDOWN ITEMS CONFIGURATION ---
-export const ABOUT_SUBMENU = (lang: string) => [
-  {
-    name: lang === "zh" ? "关于诊所" : lang === "es" ? "Sobre Nosotros" : "About TDS",
-    href: `/${lang}/about`,
-  },
-  {
-    name: lang === "zh" ? "前沿齿科科技" : lang === "es" ? "Tecnología de Vanguardia" : "Leading-Edge Technology",
-    href: `/${lang}/leading-edge-technology`,
-  },
-  {
-    name: lang === "zh" ? "纽约顶尖诊所荣誉" : lang === "es" ? "El Mejor Dentista en NYC" : "Best Dentist in NYC",
-    href: `/${lang}/best-dentist-in-nyc`,
-  },
-];
-
-// Helper function to handle exact path matching including fallback aliases
-function isLinkActive(currentPath: string, targetHref: string, aliases: string[] = []): boolean {
-  const cleanCurrent = currentPath.replace(/\/$/, "");
-  const cleanTarget = targetHref.replace(/\/$/, "");
-
-  if (cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`)) {
-    return true;
-  }
-
-  return aliases.some((alias) => {
-    const cleanAlias = alias.replace(/\/$/, "");
-    return cleanCurrent === cleanAlias || cleanCurrent.startsWith(`${cleanAlias}/`);
-  });
+    },
+  };
 }
 
-interface HeaderProps {
-  dict?: {
-    hero?: { studio_name?: string };
-    nav?: { technology?: string; results?: string; faq?: string };
+export default async function LeadingEdgeTechnologyPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const isZh = lang === "zh";
+  const isEs = lang === "es";
+
+  // --- JSON-LD STRUCTURED DATA (Schema.org Dentist & MedicalProcedure) ---
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Dentist",
+        "@id": "https://tribecadentalstudio.com/#organization",
+        "name": "Tribeca Dental Studio",
+        "url": "https://tribecadentalstudio.com",
+        "logo": "https://tribecadentalstudio.com/tribeca-logo-text.svg",
+        "image": "https://tribecadentalstudio.com/leading-edge.webp",
+        "telephone": "+1-212-561-5303",
+        "priceRange": "$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "54 Warren St",
+          "addressLocality": "New York",
+          "addressRegion": "NY",
+          "postalCode": "10007",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.7145,
+          "longitude": -74.0082
+        },
+        "knowsAbout": [
+          "Laser Dentistry",
+          "Fotona Laser Treatments",
+          "Biolase Laser Dentistry",
+          "iTero 3D Digital Impressions",
+          "CBCT 3D Cone Beam Computed Tomography",
+          "Panoramic Digital Dental X-Rays"
+        ]
+      },
+      {
+        "@type": "MedicalProcedure",
+        "name": "Laser Dentistry & 3D CBCT Imaging",
+        "procedureType": "Non-invasive Diagnostic & Surgical Dental Procedure",
+        "bodyLocation": "Mouth, Teeth, Jaws, Sinuses, Airway",
+        "relevantSpecialty": {
+          "@type": "MedicalSpecialty",
+          "name": "Dentistry"
+        }
+      }
+    ]
   };
-  lang: string;
-}
 
-export default function Header({ lang }: HeaderProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isServicesHovered, setIsServicesHovered] = useState(false);
-  const [isAboutHovered, setIsAboutHovered] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const content = {
+    badge: isZh ? "前沿数字齿科科技" : isEs ? "Tecnología Avanzada" : "Leading-Edge Technology",
+    title: isZh
+      ? "突破传统，体验前沿科技带来的微创舒适诊疗"
+      : isEs
+      ? "Tecnología Dental de Vanguardia en Lower Manhattan"
+      : "Leading-Edge Technology in Tribeca, NYC",
+    subtitle: isZh
+      ? "告别传统不适。在 Tribeca Dental Studio，我们结合先进微创水激光、无辐射 3D 扫描与精确影像，让看牙更快速、更舒心、更安全。"
+      : isEs
+      ? "Avances tecnológicos que hacen que su consulta sea más rápida, cómoda y segura: desde odontología láser hasta impresiones 3D sin moldes ni radiación."
+      : "Every successful advancement eventually leaves patients feeling grateful we no longer do it the old way. We combine advanced non-invasive lasers, radiation-free 3D digital scans, and ultra-precise diagnostics under one roof.",
 
-  const cleanCurrentPath = pathname.replace(/\/$/, "");
+    laserTitle: isZh ? "Fotona & Biolase® 微创激光牙科" : isEs ? "Odontología Láser (Fotona y Biolase)" : "Laser Dentistry (Fotona & Biolase)",
+    laserSubtitle: isZh
+      ? "我们配备三台先进的 Fotona 及 Biolase 激光设备，替代传统侵入性手术，显著降低创伤与术后不适感："
+      : isEs
+      ? "Contamos con tres avanzados equipos láser para tratamientos prácticamente indoloros y de rápida cicatrización:"
+      : "Our three Fotona and Biolase laser systems replace traditional invasive tools, dramatically reducing discomfort and recovery time:",
+    laserPoints: [
+      isZh ? "微创治疗牙周病，免受痛苦的刮治与根面平整" : isEs ? "Tratamiento de enfermedad periodontal sin raspado doloroso" : "Treat gum disease without painful scaling & root planing",
+      isZh ? "刺激龈组织与骨骼再生，修复牙龈退缩" : isEs ? "Estimula el regeneramiento natural de tejido encía y hueso" : "Stimulate new gum tissue and bone growth",
+      isZh ? "水激光露龈笑矫正（龈切术与冠延长）" : isEs ? "Corrección de sonrisa gingival (gingivectomía de precisión)" : "Fix a gummy smile with precise gingivectomy or crown lengthening",
+      isZh ? "无创淡化唇周及鼻翼皱纹 (皮肤焕活 NightLase®)" : isEs ? "Reducción de arrugas peribucales y rejuvenecimiento facial" : "Reduce wrinkles around lips and nose with non-invasive skin resurfacing",
+      isZh ? "改善或消除打鼾与睡眠呼吸暂停症状" : isEs ? "Tratamientos para el ronquido y la apnea del sueño" : "Reduce or eliminate sleep apnea and snoring symptoms",
+      isZh ? "舌系带及唇系带微创切除术 (Frenectomy)" : isEs ? "Frenectomía sin sangrado ni molestias para niños y adultos" : "Eliminate tongue and lip ties with gentle frenectomy",
+      isZh ? "无损安全拆除旧瓷冠，保护天然牙结构" : isEs ? "Remoción segura de coronas de porcelana sin dañar el diente" : "Safely remove porcelain crowns without damaging underlying tooth structure",
+    ],
 
-  const isInteriorRoute =
-    pathname.includes(`/blog`) ||
-    pathname.includes(`/testimonials`) ||
-    pathname.includes(`/about`) ||
-    pathname.includes(`/services`) ||
-    pathname.includes(`/team`) ||
-    pathname.includes(`/cases`) ||
-    pathname.includes(`/leading-edge-technology`) ||
-    pathname.includes(`/best-dentist-in-nyc`);
+    // Section 2: iTero Scanner
+    iteroTitle: isZh ? "iTero® 3D 无辐射口内扫描仪" : isEs ? "Escáner iTero® 3D" : "iTero® 3D Digital Scanner",
+    iteroSubtitle: isZh
+      ? "采用小型手持探头，数秒内精准捕捉口内 3D 图像，零辐射，无需传统黏腻取模膏。"
+      : isEs
+      ? "Captura imágenes 3D de alta precisión sin radiación y sin moldes molestos."
+      : "Captures precise 3D digital impressions using radiation-free infrared technology—eliminating messy, gag-inducing impression putty.",
+    iteroPoints: [
+      isZh ? "精准检测牙齿邻面隐蔽蛀牙" : isEs ? "Detección temprana de caries entre dientes" : "Detect interproximal cavities missed by standard X-rays",
+      isZh ? "定位 TMJ 颞下颌关节紊乱的肌肉紧张点" : isEs ? "Localiza tensión muscular en pacientes con TMJ" : "Locate muscle tension in TMJ sufferers for targeted therapy",
+      isZh ? "跨年度动态对比跟踪牙齿位移与磨损" : isEs ? "Monitoreo del movimiento dental y encías año tras año" : "Monitor tooth, gum, and bone progression over years of visits",
+      isZh ? "实时预演 Invisalign® 正畸排齐效果" : isEs ? "Simula los resultados del tratamiento con Invisalign®" : "Simulate orthodontic transformation previews in digital 3D",
+    ],
 
-  const shouldBeActive = isScrolled || isOpen || isInteriorRoute || isServicesHovered || isAboutHovered;
+    // Section 3: CBCT Scanner
+    cbctTitle: isZh ? "CBCT 锥形束 3D 锥体 CT 扫描" : isEs ? "Tomografía Computarizada CBCT 3D" : "CBCT 3D Cone-Beam Computed Tomography",
+    cbctSubtitle: isZh
+      ? "提供包含牙齿、颌骨、窦腔、神经走形与气道在内的完整解剖图像。"
+      : isEs
+      ? "Imágenes tridimensionales completas para evaluar huesos, nervios, senos y vías respiratorias."
+      : "Captures complete 3D anatomical visualization of teeth, jawbone, nerves, sinus cavities, and airway volume.",
+    cbctPoints: [
+      isZh ? "微创种植牙、根管治疗与外科手术规划" : isEs ? "Planificación de precisión para implantes, endodoncia y ortodoncia" : "Accurately plan oral surgery, root canals, and orthodontic therapy",
+      isZh ? "评估骨密度与骨量，精准定位潜在感染源" : isEs ? "Evaluación de pérdida ósea e identificación de infecciones" : "Assess bone density, bone loss, and locate hidden sources of pain",
+      isZh ? "气道阻塞筛查（扁桃体、鼻中隔偏曲等）" : isEs ? "Análisis de obstrucciones respiratorias y apnea del sueño" : "Analyze airway obstructions for custom sleep apnea and growth planning",
+    ],
+    cbctSafety: isZh
+      ? "【辐射安全说明】CBCT 产生的辐射剂量比医院标准 CT 扫描降低高至 90%（小于一次跨大西洋飞行），仅在您治疗确有需求时使用。"
+      : isEs
+      ? "【Seguridad】Genera hasta un 90% menos de radiación que una CT estándar y solo se realiza cuando su tratamiento específico lo requiere."
+      : "Safety Note: A CBCT scan delivers up to 90% less radiation than a traditional medical CT scan—less than a single transatlantic flight. We only order CBCT scans when clinically needed.",
 
-  const toggleLanguage = (newLang: string) => {
-    if (!pathname) return;
-
-    const segments = pathname.split("/").filter(Boolean);
-    const supportedPrefixes = ["es", "zh"];
-    if (supportedPrefixes.includes(segments[0])) {
-      segments.shift();
-    }
-
-    const cleanPath = segments.join("/");
-    let newPath = "";
-    if (newLang === "en") {
-      newPath = cleanPath ? `/${cleanPath}` : "/";
-    } else {
-      newPath = cleanPath ? `/${newLang}/${cleanPath}` : `/${newLang}`;
-    }
-
-    if (pathname.endsWith("/") && !newPath.endsWith("/")) {
-      newPath += "/";
-    }
-
-    router.push(newPath);
-    setIsOpen(false);
+    panoTitle: isZh ? "全景数字 X 光片 (Panoramic X-Ray)" : isEs ? "Radiografía Panorámica Digital" : "Panoramic Digital X-Rays",
+    panoSubtitle: isZh
+      ? "无需将咬合块深入口腔，专为咽反射极敏感患者打造的全颌 2D 成像方案。"
+      : isEs
+      ? "Visión panoramica completa ideal para evaluar muelas del juicio e implantes sin introducir herramientas molestos."
+      : "Captures a full 2D view of your entire jaw, dentition, and TMJ without requiring sensor placement inside the mouth—perfect for gag-sensitive patients.",
   };
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const isStudio =
-    pathname.startsWith(`/${lang}/studio`) || pathname.startsWith("/studio");
-  if (isStudio) return null;
-
-  const serviceCategoriesData = SERVICE_CATEGORIES(lang);
-  const aboutSubmenuData = ABOUT_SUBMENU(lang);
-
-  const navItems = [
-    {
-      id: "services",
-      label: lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
-      href: `/${lang}/services`,
-      hasDropdown: true,
-      dropdownType: "services",
-    },
-    {
-      id: "gallery",
-      label:
-        lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
-      href: `/${lang}/cases`,
-    },
-    {
-      id: "about",
-      label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
-      href: `/${lang}/about`,
-      hasDropdown: true,
-      dropdownType: "about",
-    },
-    {
-      id: "team",
-      label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
-      href: `/${lang}/team`,
-    },
-  ];
 
   return (
     <>
-      <nav
-        className={`fixed top-0 w-full z-[60] transition-all duration-500 py-2 h-[100px] flex items-center
-        ${shouldBeActive ? "bg-white/95 backdrop-blur-md border-b border-black/5" : "bg-transparent text-white"}`}
-      >
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
-          {/* Logo */}
-          <Link href={`/${lang}`} className="z-[70]">
-            <span
-              className={`text-[20px] md:text-[24px] font-serif tracking-tight leading-[1.1]
-              ${shouldBeActive ? "text-black" : "text-white"}`}
-            >
-              <Image
-                width={200}
-                src={logo}
-                alt="Tribeca Logo"
-                className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
-              />
-            </span>
-          </Link>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
-            {navItems.map((item) => {
-              const itemCleanHref = item.href.replace(/\/$/, "");
-              const isNavActive =
-                cleanCurrentPath === itemCleanHref ||
-                (item.id === "services" && pathname.includes("/services")) ||
-                (item.id === "about" &&
-                  (pathname.includes("/about") ||
-                    pathname.includes("/leading-edge-technology") ||
-                    pathname.includes("/best-dentist-in-nyc")));
-
-              const isHovered =
-                item.dropdownType === "services"
-                  ? isServicesHovered
-                  : item.dropdownType === "about"
-                  ? isAboutHovered
-                  : false;
-
-              return (
-                <div
-                  key={item.id}
-                  className="relative py-8"
-                  onMouseEnter={() => {
-                    if (item.dropdownType === "services") setIsServicesHovered(true);
-                    if (item.dropdownType === "about") setIsAboutHovered(true);
-                  }}
-                  onMouseLeave={() => {
-                    if (item.dropdownType === "services") setIsServicesHovered(false);
-                    if (item.dropdownType === "about") setIsAboutHovered(false);
-                  }}
+      <main className="bg-[#FCFCFC] text-black min-h-screen pt-32 pb-24 font-ddin">
+        
+        <section className="px-6 md:px-12 lg:px-20 max-w-7xl mx-auto mb-20" aria-label="Hero Section">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* LEFT COLUMN: HERO TEXT */}
+            <header>
+              <nav className="mb-8" aria-label="Breadcrumb">
+                <Link
+                  href={`/${lang}/services`}
+                  className="text-xs uppercase tracking-[0.25em] font-bold text-neutral-400 hover:text-black transition-colors"
                 >
-                  <Link
-                    href={item.href}
-                    className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${
-                      isNavActive
-                        ? "text-[#C5A059]"
-                        : shouldBeActive
-                        ? "text-black hover:text-[#C5A059]"
-                        : "text-white hover:text-[#C5A059]"
-                    }`}
-                  >
-                    {item.label}
-                    {item.hasDropdown && (
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-300 ${
-                          isHovered ? "rotate-180 text-[#C5A059]" : ""
-                        }`}
-                      />
-                    )}
-                  </Link>
+                  ← {isZh ? "返回诊疗服务" : isEs ? "Volver a Servicios" : "Back to Services"}
+                </Link>
+              </nav>
 
-                  {/* MEGA MENU: SERVICES */}
-                  {item.dropdownType === "services" && (
-                    <AnimatePresence>
-                      {isServicesHovered && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.25, ease: "easeOut" }}
-                          className="fixed top-[95px] left-0 w-full bg-white border-b border-neutral-200 shadow-2xl text-black py-12 px-8 md:px-20 z-50 font-ddin"
-                        >
-                          <div className="max-w-7xl mx-auto grid grid-cols-4 gap-10">
-                            {serviceCategoriesData.map((cat, idx) => (
-                              <div key={idx} className="flex flex-col">
-                                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-4 pb-2 border-b border-neutral-100">
-                                  {cat.category}
-                                </h4>
-                                <ul className="space-y-3">
-                                  {cat.items.map((svc, sIdx) => {
-                                    const isSubActive = isLinkActive(
-                                      cleanCurrentPath,
-                                      svc.href,
-                                      (svc as any).aliases
-                                    );
+              <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#C5A059] block mb-3">
+                {content.badge}
+              </span>
 
-                                    return (
-                                      <li key={sIdx}>
-                                        <Link
-                                          href={svc.href}
-                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
-                                            isSubActive
-                                              ? "text-[#C5A059]"
-                                              : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                          }`}
-                                        >
-                                          {svc.name}
-                                        </Link>
-                                      </li>
-                                    );
-                                  })}
-                                </ul>
-                              </div>
-                            ))}
-                          </div>
+              <h1 className="text-4xl md:text-6xl font-light uppercase tracking-tight leading-[1.05] mb-6 text-neutral-900">
+                {content.title}
+              </h1>
 
-                          <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
-                            <span>Tribeca Dental Studio • Multi-Specialty Care</span>
-                            <Link
-                              href={`/${lang}/services`}
-                              className="text-black hover:text-[#C5A059] underline underline-offset-4 transition-colors"
-                            >
-                              {lang === "zh" ? "查看所有服务 →" : lang === "es" ? "Ver Todos los Servicios →" : "View All Services →"}
-                            </Link>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
+              <p className="font-brandon text-base md:text-lg text-neutral-600 leading-relaxed mb-8 max-w-xl">
+                {content.subtitle}
+              </p>
 
-                  {/* DROPDOWN MENU: ABOUT */}
-                  {item.dropdownType === "about" && (
-                    <AnimatePresence>
-                      {isAboutHovered && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.25, ease: "easeOut" }}
-                          className="absolute top-[80px] left-0 w-64 bg-white border border-neutral-200 shadow-2xl text-black py-4 px-6 z-50 font-ddin"
-                        >
-                          <ul className="space-y-3">
-                            {aboutSubmenuData.map((sub, subIdx) => {
-                              const isChildActive = isLinkActive(
-                                cleanCurrentPath,
-                                sub.href
-                              );
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-black hover:bg-[#C5A059] text-white font-bold uppercase tracking-[0.2em] text-xs px-8 py-4 transition-all duration-300 shadow-sm"
+                >
+                  {isZh ? "预约科技诊疗体验" : isEs ? "Agendar Cita con Tecnología" : "Book High-Tech Consultation"}
+                </a>
+                <a
+                  href="tel:2125615303"
+                  className="inline-flex items-center justify-center border border-black/20 hover:border-black text-black font-bold uppercase tracking-[0.2em] text-xs px-8 py-4 transition-all duration-300"
+                >
+                  212-561-5303
+                </a>
+              </div>
+            </header>
 
-                              return (
-                                <li key={subIdx}>
-                                  <Link
-                                    href={sub.href}
-                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${
-                                      isChildActive
-                                        ? "text-[#C5A059]"
-                                        : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                    }`}
-                                  >
-                                    {sub.name}
-                                  </Link>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
-              <button
-                onClick={() => toggleLanguage("en")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                }`}
-              >
-                EN
-              </button>
-              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
-              <button
-                onClick={() => toggleLanguage("es")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                }`}
-              >
-                ES
-              </button>
-              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
-              <button
-                onClick={() => toggleLanguage("zh")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                }`}
-              >
-                中文
-              </button>
+            {/* RIGHT COLUMN: HERO IMAGE (X-RAY) */}
+            <div className="relative aspect-[4/3] bg-neutral-100 border border-neutral-200 overflow-hidden shadow-sm group">
+              <Image
+                src="/leading-edge.webp"
+                alt="Tribeca Dental Studio High-Resolution CBCT 3D Jaw CT Scan Technology"
+                fill
+                priority
+                unoptimized
+                className="object-cover object-center filter contrast-[1.05] brightness-95 group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+              
+              <div className="absolute bottom-6 left-6 right-6 p-5 bg-white/90 backdrop-blur-md border border-neutral-200 shadow-md">
+                <p className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">
+                  Advanced Digital Diagnostics
+                </p>
+                <p className="font-brandon text-xs text-neutral-600 mt-1 leading-relaxed">
+                  {isZh
+                    ? "高清数字化 3D 立体成像，毫米级精准辨识牙齿与颌骨病变。"
+                    : isEs
+                    ? "Diagnóstico digital 3D de alta definición para una precisión milimétrica."
+                    : "High-resolution 3D visualization for precision diagnostic planning."}
+                </p>
+              </div>
             </div>
 
+          </div>
+        </section>
+
+        {/* 2. LASER DENTISTRY SECTION */}
+        <section className="bg-neutral-50 py-20 px-6 md:px-12 lg:px-20 border-y border-neutral-200 mb-20" id="laser-dentistry">
+          <div className="max-w-7xl mx-auto">
+            <header className="max-w-2xl mb-12">
+              <div className="flex items-center gap-2 text-[#C5A059] mb-2">
+                <Zap size={20} aria-hidden="true" />
+                <span className="text-xs uppercase tracking-[0.3em] font-bold block">
+                  Next-Gen Precision
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-light uppercase tracking-tight text-black mb-4">
+                {content.laserTitle}
+              </h2>
+              <p className="font-brandon text-sm text-neutral-600 leading-relaxed">
+                {content.laserSubtitle}
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {content.laserPoints.map((pt, idx) => (
+                <article key={idx} className="p-6 bg-white border border-neutral-200 shadow-sm flex items-start gap-3">
+                  <CheckCircle2 size={18} className="text-[#C5A059] shrink-0 mt-0.5" aria-hidden="true" />
+                  <span className="font-brandon text-xs font-bold text-neutral-700 leading-relaxed uppercase">
+                    {pt}
+                  </span>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. ITERO 3D SCANNER SECTION */}
+        <section className="py-20 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto" id="itero-scanner">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <header className="mb-8">
+                <div className="flex items-center gap-2 text-[#C5A059] mb-2">
+                  <Scan size={20} aria-hidden="true" />
+                  <span className="text-xs uppercase tracking-[0.3em] font-bold block">
+                    100% Radiation-Free
+                  </span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-light uppercase tracking-tight text-black mb-4">
+                  {content.iteroTitle}
+                </h2>
+                <p className="font-brandon text-sm text-neutral-600 leading-relaxed">
+                  {content.iteroSubtitle}
+                </p>
+              </header>
+
+              <div className="space-y-4">
+                {content.iteroPoints.map((pt, idx) => (
+                  <article key={idx} className="flex items-start gap-3 p-4 bg-white border border-neutral-200 shadow-sm">
+                    <span className="text-xs font-bold text-[#C5A059]">0{idx + 1}</span>
+                    <p className="font-brandon text-xs text-neutral-700 leading-relaxed uppercase font-bold">
+                      {pt}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            {/* ITERO VISUAL CARD */}
+            <article className="bg-neutral-900 text-white p-8 md:p-12 border border-neutral-900 shadow-md flex flex-col justify-between h-full">
+              <div>
+                <Cpu size={32} className="text-[#C5A059] mb-6" aria-hidden="true" />
+                <h3 className="text-2xl font-bold uppercase tracking-tight text-white mb-4">
+                  Instant 3D Smile Simulation
+                </h3>
+                <p className="font-brandon text-sm text-neutral-300 leading-relaxed mb-8">
+                  {isZh
+                    ? "无需使用传统的压印模膏。在您的首次初诊中，iTero® 即刻生成全口三维模型，并在屏幕上模拟展示正畸或修复后的完美齿列效果。"
+                    : isEs
+                    ? "Elimine los moldes incomodos. El escáner iTero® genera una simulación digital instantánea de su futura sonrisa."
+                    : "Say goodbye to messy gag-inducing impression putty. Experience real-time 3D smile outcomes mapped directly during your consultation."}
+                </p>
+              </div>
+              <div className="pt-6 border-t border-white/20 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-[#C5A059]">
+                <span>Zero Radiation • 100% Digital</span>
+                <span>iTero® Element</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* 4. CBCT 3D SCANNER & PANORAMIC X-RAYS */}
+        <section className="bg-neutral-50 py-20 px-6 md:px-12 lg:px-20 border-y border-neutral-200 mb-20" id="3d-imaging">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              
+              {/* CBCT SCANNER */}
+              <article className="bg-white border border-neutral-200 p-8 md:p-10 shadow-sm">
+                <header className="mb-6">
+                  <div className="flex items-center gap-2 text-[#C5A059] mb-2">
+                    <Radio size={20} aria-hidden="true" />
+                    <span className="text-xs uppercase tracking-[0.3em] font-bold block">
+                      3D Anatomical Precision
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold uppercase tracking-tight text-black mb-2">
+                    {content.cbctTitle}
+                  </h3>
+                  <p className="font-brandon text-xs text-neutral-600 leading-relaxed">
+                    {content.cbctSubtitle}
+                  </p>
+                </header>
+
+                <div className="space-y-3 mb-6">
+                  {content.cbctPoints.map((pt, idx) => (
+                    <div key={idx} className="flex items-start gap-2.5">
+                      <CheckCircle2 size={16} className="text-[#C5A059] shrink-0 mt-0.5" aria-hidden="true" />
+                      <span className="font-brandon text-xs font-bold text-neutral-700 leading-relaxed uppercase">
+                        {pt}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="font-brandon text-[11px] text-neutral-500 bg-neutral-100 p-4 border border-neutral-200 leading-relaxed italic">
+                  {content.cbctSafety}
+                </p>
+              </article>
+
+              {/* PANORAMIC X-RAYS */}
+              <article className="bg-white border border-neutral-200 p-8 md:p-10 shadow-sm flex flex-col justify-between">
+                <div>
+                  <header className="mb-6">
+                    <div className="flex items-center gap-2 text-[#C5A059] mb-2">
+                      <ShieldCheck size={20} aria-hidden="true" />
+                      <span className="text-xs uppercase tracking-[0.3em] font-bold block">
+                        Gag-Reflex Friendly
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-bold uppercase tracking-tight text-black mb-2">
+                      {content.panoTitle}
+                    </h3>
+                    <p className="font-brandon text-xs text-neutral-600 leading-relaxed">
+                      {content.panoSubtitle}
+                    </p>
+                  </header>
+
+                  <p className="font-brandon text-xs text-neutral-600 leading-relaxed mb-6">
+                    {isZh
+                      ? "机器围绕面部旋转一周生成全颌 2D 视角，尤其适合阻生智齿检查、全口种植规划与咽反射敏感患者。"
+                      : isEs
+                      ? "Visión panorámica completa ideal para evaluar muelas del juicio, implantes y desórdenes de la ATM sin molestia alguna."
+                      : "Provides a full panoramic perspective in a single external rotation—ideal for wisdom teeth impaction checks, implant planning, and sensitive patients."}
+                  </p>
+                </div>
+
+                <div className="p-4 bg-neutral-900 text-white border border-neutral-900 text-xs font-bold uppercase tracking-wider">
+                  Minimal Dose • Full-Jaw Coverage
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </section>
+
+        {/* 5. INTERNAL LINKING HUB FOR SEO */}
+        <section className="py-16 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
+          <div className="border border-neutral-200 bg-white p-8 md:p-12 shadow-sm">
+            <h3 className="text-xs uppercase tracking-[0.3em] font-bold text-[#C5A059] mb-4">
+              Explore Specialized Digital Treatments
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Link
+                href={`/${lang}/services/invisalign-clear-aligner-braces`}
+                className="group flex items-center justify-between p-4 bg-neutral-50 border border-neutral-200 hover:border-[#C5A059] transition-colors"
+              >
+                <span className="font-brandon text-xs font-bold uppercase tracking-wider text-black">
+                  3D Invisalign® Aligners
+                </span>
+                <ArrowRight size={14} className="text-[#C5A059] group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href={`/${lang}/services/wisdom-tooth-removal`}
+                className="group flex items-center justify-between p-4 bg-neutral-50 border border-neutral-200 hover:border-[#C5A059] transition-colors"
+              >
+                <span className="font-brandon text-xs font-bold uppercase tracking-wider text-black">
+                  3D Wisdom Extractions
+                </span>
+                <ArrowRight size={14} className="text-[#C5A059] group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href={`/${lang}/best-dentist-in-nyc`}
+                className="group flex items-center justify-between p-4 bg-neutral-50 border border-neutral-200 hover:border-[#C5A059] transition-colors"
+              >
+                <span className="font-brandon text-xs font-bold uppercase tracking-wider text-black">
+                  Boutique Clinical Care
+                </span>
+                <ArrowRight size={14} className="text-[#C5A059] group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href={`/${lang}/testimonials`}
+                className="group flex items-center justify-between p-4 bg-neutral-50 border border-neutral-200 hover:border-[#C5A059] transition-colors"
+              >
+                <span className="font-brandon text-xs font-bold uppercase tracking-wider text-black">
+                  Patient Video Reviews
+                </span>
+                <ArrowRight size={14} className="text-[#C5A059] group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. BOTTOM CTA BANNER */}
+        <section className="px-6 md:px-12 lg:px-20 max-w-7xl mx-auto pb-24">
+          <div className="bg-black text-white p-10 md:p-16 text-center border border-black">
+            <h2 className="text-2xl md:text-4xl font-light uppercase tracking-tight text-white mb-4">
+              {isZh ? "感受纽约前沿高精度的舒适齿科诊疗" : isEs ? "¿Listo para Experimentar la Odontología Moderna?" : "Experience Advanced Dentistry in Lower Manhattan"}
+            </h2>
+            <p className="font-brandon text-sm text-neutral-300 max-w-lg mx-auto mb-8">
+              {isZh ? "访问我们在 Tribeca 的前沿数码诊所，让精细化科技为您带来无痛、高效的看牙体验。" : isEs ? "Reserve su cita en nuestra clínica boutique en Tribeca." : "Book an appointment at our Lower Manhattan studio to experience non-invasive lasers and precise 3D digital care."}
+            </p>
             <a
+              href={bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              href={bookingUrl}
-              className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group font-ddin font-bold
-              ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
+              className="inline-block bg-[#C5A059] hover:bg-white hover:text-black text-black font-bold uppercase tracking-[0.3em] text-xs px-10 py-5 transition-all duration-300"
             >
-              <span className="relative z-10 group-hover:text-white">
-                {lang === "zh" ? "立即预约" : lang === "es" ? "Reservar" : "Book"}
-              </span>
-              <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              {isZh ? "立即在线预约" : isEs ? "Reservar Cita Ahora" : "Book Online Now"}
             </a>
-
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 bg-white z-[55] flex flex-col justify-start pt-28 pb-12 px-8 overflow-y-auto font-ddin"
-          >
-            <div className="flex gap-6 mb-8 border-b border-neutral-100 pb-6">
-              <button
-                onClick={() => toggleLanguage("en")}
-                className={`text-xl font-bold ${lang === "en" ? "text-[#C5A059]" : "text-black/40"}`}
-              >
-                English
-              </button>
-              <button
-                onClick={() => toggleLanguage("es")}
-                className={`text-xl font-bold ${lang === "es" ? "text-[#C5A059]" : "text-black/40"}`}
-              >
-                Español
-              </button>
-              <button
-                onClick={() => toggleLanguage("zh")}
-                className={`text-xl font-bold ${lang === "zh" ? "text-[#C5A059]" : "text-black/40"}`}
-              >
-                中文
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-6">
-              {/* Accordion for Services */}
-              <div>
-                <button
-                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/services") ? "text-[#C5A059]" : "text-black"
-                  }`}
-                >
-                  <span>{lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services"}</span>
-                  <ChevronDown
-                    size={28}
-                    className={`transition-transform duration-300 ${
-                      mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
-                    }`}
-                  />
-                </button>
-
-                {mobileServicesOpen && (
-                  <div className="mt-4 pl-4 space-y-6 border-l-2 border-[#C5A059]">
-                    {serviceCategoriesData.map((cat, cIdx) => (
-                      <div key={cIdx}>
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-2">
-                          {cat.category}
-                        </p>
-                        <ul className="space-y-2">
-                          {cat.items.map((svc, sIdx) => {
-                            const isSubActive = isLinkActive(
-                              cleanCurrentPath,
-                              svc.href,
-                              (svc as any).aliases
-                            );
-
-                            return (
-                              <li key={sIdx}>
-                                <Link
-                                  href={svc.href}
-                                  onClick={() => setIsOpen(false)}
-                                  className={`text-sm font-bold uppercase ${
-                                    isSubActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
-                                  }`}
-                                >
-                                  {svc.name}
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Smile Gallery */}
-              <Link
-                href={`/${lang}/cases`}
-                onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${
-                  pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
-                }`}
-              >
-                {lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery"}
-              </Link>
-
-              {/* Accordion for About */}
-              <div>
-                <button
-                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/about") ||
-                    pathname.includes("/leading-edge-technology") ||
-                    pathname.includes("/best-dentist-in-nyc")
-                      ? "text-[#C5A059]"
-                      : "text-black"
-                  }`}
-                >
-                  <span>{lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About"}</span>
-                  <ChevronDown
-                    size={28}
-                    className={`transition-transform duration-300 ${
-                      mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
-                    }`}
-                  />
-                </button>
-
-                {mobileAboutOpen && (
-                  <div className="mt-4 pl-4 space-y-3 border-l-2 border-[#C5A059]">
-                    {aboutSubmenuData.map((sub, sIdx) => {
-                      const isChildActive = isLinkActive(
-                        cleanCurrentPath,
-                        sub.href
-                      );
-
-                      return (
-                        <div key={sIdx}>
-                          <Link
-                            href={sub.href}
-                            onClick={() => setIsOpen(false)}
-                            className={`text-sm font-bold uppercase ${
-                              isChildActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
-                            }`}
-                          >
-                            {sub.name}
-                          </Link>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Team */}
-              <Link
-                href={`/${lang}/team`}
-                onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${
-                  pathname.includes("/team") ? "text-[#C5A059]" : "text-black"
-                }`}
-              >
-                {lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team"}
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </section>
+      </main>
     </>
   );
 }

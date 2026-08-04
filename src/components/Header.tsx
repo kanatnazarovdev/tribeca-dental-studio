@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ContainerHeader } from "./Container";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -23,7 +22,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
     items: [
       {
         name: lang === "zh" ? "瓷贴面" : lang === "es" ? "Carillas de Porcelana" : "Porcelain Veneers",
-        href: `/${lang}/services/porcelain-veneers`,
+        href: `/${lang}/services/porcelain-veneers-lumineers`,
       },
       {
         name: lang === "zh" ? "牙齿美白" : lang === "es" ? "Blanqueamiento Dental" : "Teeth Whitening",
@@ -31,8 +30,8 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
-        href: `/${lang}/services/invisalign-clear-aligner-braces`, // Preserved legacy slug
-        aliases: [`/${lang}/services/invisalign-treatments`], // Alternate alias match
+        href: `/${lang}/services/invisalign-clear-aligner-braces`,
+        aliases: [`/${lang}/services/invisalign-treatments`],
       },
       {
         name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
@@ -76,8 +75,8 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "智齿拔除" : lang === "es" ? "Extracción de Muelas del Juicio" : "Wisdom Teeth Removal",
-        href: `/${lang}/services/wisdom-tooth-removal`, // Preserved legacy slug
-        aliases: [`/${lang}/services/wisdom-teeth-removal`], // Alternate alias match
+        href: `/${lang}/services/wisdom-tooth-removal`,
+        aliases: [`/${lang}/services/wisdom-teeth-removal`],
       },
       {
         name: lang === "zh" ? "Curodont™ 牙齿再生修复" : lang === "es" ? "Reparación Curodont™" : "Curodont™ Tooth Repair",
@@ -103,11 +102,11 @@ export const SERVICE_CATEGORIES = (lang: string) => [
     items: [
       {
         name: lang === "zh" ? "儿童及青少年正畸" : lang === "es" ? "Ortodoncia Pediátrica" : "Pediatric Orthodontics",
-        href: `/${lang}/services/orthodontics`,
+        href: `https://pediatrics.tribecadentalstudio.com/en/services/orthodontics/`,
       },
       {
         name: lang === "zh" ? "睡眠呼吸暂停与气道" : lang === "es" ? "Tratamientos de Vías Respiratorias" : "Airway & Sleep Apnea",
-        href: `/${lang}/services/airway-treatments`,
+        href: `/${lang}/services/airway-orthodontics`,
       },
       {
         name: lang === "zh" ? "上颌骨扩展 (MSE/MARPE)" : lang === "es" ? "Expansión Palatina (MSE)" : "Palatal Expansion (MSE)",
@@ -117,17 +116,31 @@ export const SERVICE_CATEGORIES = (lang: string) => [
   },
 ];
 
+// --- ABOUT DROPDOWN ITEMS CONFIGURATION ---
+export const ABOUT_SUBMENU = (lang: string) => [
+  {
+    name: lang === "zh" ? "诊所简介" : lang === "es" ? "Sobre la Clínica" : "About Practice",
+    href: `/${lang}/about`,
+  },
+  {
+    name: lang === "zh" ? "前沿齿科科技" : lang === "es" ? "Tecnología de Vanguardia" : "Leading Technology",
+    href: `/${lang}/leading-edge-technology`,
+  },
+  {
+    name: lang === "zh" ? "纽约顶尖诊所" : lang === "es" ? "El Mejor Dentista en NYC" : "Best Dentist in NYC",
+    href: `/${lang}/best-dentist-in-nyc`,
+  },
+];
+
 // Helper function to handle exact path matching including fallback aliases
 function isLinkActive(currentPath: string, targetHref: string, aliases: string[] = []): boolean {
   const cleanCurrent = currentPath.replace(/\/$/, "");
   const cleanTarget = targetHref.replace(/\/$/, "");
 
-  // Direct route match
   if (cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`)) {
     return true;
   }
 
-  // Alias route match
   return aliases.some((alias) => {
     const cleanAlias = alias.replace(/\/$/, "");
     return cleanCurrent === cleanAlias || cleanCurrent.startsWith(`${cleanAlias}/`);
@@ -148,9 +161,10 @@ export default function Header({ lang }: HeaderProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesHovered, setIsServicesHovered] = useState(false);
+  const [isAboutHovered, setIsAboutHovered] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
-  // Normalize path by stripping trailing slashes
   const cleanCurrentPath = pathname.replace(/\/$/, "");
 
   const isInteriorRoute =
@@ -159,8 +173,11 @@ export default function Header({ lang }: HeaderProps) {
     pathname.includes(`/about`) ||
     pathname.includes(`/services`) ||
     pathname.includes(`/team`) ||
-    pathname.includes(`/cases`);
-  const shouldBeActive = isScrolled || isOpen || isInteriorRoute || isServicesHovered;
+    pathname.includes(`/cases`) ||
+    pathname.includes(`/leading-edge-technology`) ||
+    pathname.includes(`/best-dentist-in-nyc`);
+
+  const shouldBeActive = isScrolled || isOpen || isInteriorRoute || isServicesHovered || isAboutHovered;
 
   const toggleLanguage = (newLang: string) => {
     if (!pathname) return;
@@ -198,6 +215,7 @@ export default function Header({ lang }: HeaderProps) {
   if (isStudio) return null;
 
   const serviceCategoriesData = SERVICE_CATEGORIES(lang);
+  const aboutSubmenuData = ABOUT_SUBMENU(lang);
 
   const navItems = [
     {
@@ -205,6 +223,7 @@ export default function Header({ lang }: HeaderProps) {
       label: lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
       href: `/${lang}/services`,
       hasDropdown: true,
+      dropdownType: "services",
     },
     {
       id: "gallery",
@@ -216,6 +235,8 @@ export default function Header({ lang }: HeaderProps) {
       id: "about",
       label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
       href: `/${lang}/about`,
+      hasDropdown: true,
+      dropdownType: "about",
     },
     {
       id: "team",
@@ -230,175 +251,229 @@ export default function Header({ lang }: HeaderProps) {
         className={`fixed top-0 w-full z-[60] transition-all duration-500 py-2 h-[100px] flex items-center
         ${shouldBeActive ? "bg-white/95 backdrop-blur-md border-b border-black/5" : "bg-transparent text-white"}`}
       >
-        <ContainerHeader>
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href={`/${lang}`} className="z-[70]">
-              <span
-                className={`text-[20px] md:text-[24px] font-serif tracking-tight leading-[1.1]
-                ${shouldBeActive ? "text-black" : "text-white"}`}
-              >
-                <Image
-                  width={200}
-                  src={logo}
-                  alt="Tribeca Logo"
-                  className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
-                />
-              </span>
-            </Link>
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
+          {/* Logo */}
+          <Link href={`/${lang}`} className="z-[70]">
+            <span
+              className={`text-[20px] md:text-[24px] font-serif tracking-tight leading-[1.1]
+              ${shouldBeActive ? "text-black" : "text-white"}`}
+            >
+              <Image
+                width={200}
+                src={logo}
+                alt="Tribeca Logo"
+                className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
+              />
+            </span>
+          </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
-              {navItems.map((item) => {
-                const itemCleanHref = item.href.replace(/\/$/, "");
-                const isNavActive =
-                  cleanCurrentPath === itemCleanHref ||
-                  (item.id === "services" && pathname.includes("/services"));
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8 font-brandon font-bold">
+            {navItems.map((item) => {
+              const itemCleanHref = item.href.replace(/\/$/, "");
+              const isNavActive =
+                cleanCurrentPath === itemCleanHref ||
+                (item.id === "services" && pathname.includes("/services")) ||
+                (item.id === "about" &&
+                  (pathname.includes("/about") ||
+                    pathname.includes("/leading-edge-technology") ||
+                    pathname.includes("/best-dentist-in-nyc")));
 
-                return (
-                  <div
-                    key={item.id}
-                    className="relative py-8"
-                    onMouseEnter={() => item.hasDropdown && setIsServicesHovered(true)}
-                    onMouseLeave={() => item.hasDropdown && setIsServicesHovered(false)}
+              const isHovered =
+                item.dropdownType === "services"
+                  ? isServicesHovered
+                  : item.dropdownType === "about"
+                  ? isAboutHovered
+                  : false;
+
+              return (
+                <div
+                  key={item.id}
+                  className="relative py-8"
+                  onMouseEnter={() => {
+                    if (item.dropdownType === "services") setIsServicesHovered(true);
+                    if (item.dropdownType === "about") setIsAboutHovered(true);
+                  }}
+                  onMouseLeave={() => {
+                    if (item.dropdownType === "services") setIsServicesHovered(false);
+                    if (item.dropdownType === "about") setIsAboutHovered(false);
+                  }}
+                >
+                  <Link
+                    href={item.href}
+                    className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${
+                      isNavActive
+                        ? "text-[#C5A059]"
+                        : shouldBeActive
+                        ? "text-black hover:text-[#C5A059]"
+                        : "text-white hover:text-[#C5A059]"
+                    }`}
                   >
-                    <Link
-                      href={item.href}
-                      className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${
-                        isNavActive
-                          ? "text-[#C5A059]"
-                          : shouldBeActive
-                          ? "text-black hover:text-[#C5A059]"
-                          : "text-white hover:text-[#C5A059]"
-                      }`}
-                    >
-                      {item.label}
-                      {item.hasDropdown && (
-                        <ChevronDown
-                          size={14}
-                          className={`transition-transform duration-300 ${
-                            isServicesHovered ? "rotate-180 text-[#C5A059]" : ""
-                          }`}
-                        />
-                      )}
-                    </Link>
-
-                    {/* Mega Menu Dropdown */}
+                    {item.label}
                     {item.hasDropdown && (
-                      <AnimatePresence>
-                        {isServicesHovered && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.25, ease: "easeOut" }}
-                            className="fixed top-[95px] left-0 w-full bg-white border-b border-neutral-200 shadow-2xl text-black py-12 px-8 md:px-20 z-50 font-ddin"
-                          >
-                            <div className="max-w-7xl mx-auto grid grid-cols-4 gap-10">
-                              {serviceCategoriesData.map((cat, idx) => (
-                                <div key={idx} className="flex flex-col">
-                                  <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-4 pb-2 border-b border-neutral-100">
-                                    {cat.category}
-                                  </h4>
-                                  <ul className="space-y-3">
-                                    {cat.items.map((svc, sIdx) => {
-                                      const isSubActive = isLinkActive(
-                                        cleanCurrentPath,
-                                        svc.href,
-                                        (svc as any).aliases
-                                      );
-
-                                      return (
-                                        <li key={sIdx}>
-                                          <Link
-                                            href={svc.href}
-                                            className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
-                                              isSubActive
-                                                ? "text-[#C5A059]" // Active service turns gold
-                                                : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                            }`}
-                                          >
-                                            {svc.name}
-                                          </Link>
-                                        </li>
-                                      );
-                                    })}
-                                  </ul>
-                                </div>
-                              ))}
-                            </div>
-
-                            <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
-                              <span>Tribeca Dental Studio • Multi-Specialty Care</span>
-                              <Link
-                                href={`/${lang}/services`}
-                                className="text-black hover:text-[#C5A059] underline underline-offset-4 transition-colors"
-                              >
-                                {lang === "zh" ? "查看所有服务 →" : lang === "es" ? "Ver Todos los Servicios →" : "View All Services →"}
-                              </Link>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform duration-300 ${
+                          isHovered ? "rotate-180 text-[#C5A059]" : ""
+                        }`}
+                      />
                     )}
-                  </div>
-                );
-              })}
-            </div>
+                  </Link>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
-                <button
-                  onClick={() => toggleLanguage("en")}
-                  className={`text-[12px] font-bold transition-colors ${
-                    lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                  }`}
-                >
-                  EN
-                </button>
-                <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
-                <button
-                  onClick={() => toggleLanguage("es")}
-                  className={`text-[12px] font-bold transition-colors ${
-                    lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                  }`}
-                >
-                  ES
-                </button>
-                <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
-                <button
-                  onClick={() => toggleLanguage("zh")}
-                  className={`text-[12px] font-bold transition-colors ${
-                    lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
-                  }`}
-                >
-                  中文
-                </button>
-              </div>
+                  {/* MEGA MENU: SERVICES */}
+                  {item.dropdownType === "services" && (
+                    <AnimatePresence>
+                      {isServicesHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.25, ease: "easeOut" }}
+                          className="fixed top-[95px] left-0 w-full bg-white border-b border-neutral-200 shadow-2xl text-black py-12 px-8 md:px-20 z-50 font-ddin"
+                        >
+                          <div className="max-w-7xl mx-auto grid grid-cols-4 gap-10">
+                            {serviceCategoriesData.map((cat, idx) => (
+                              <div key={idx} className="flex flex-col">
+                                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-4 pb-2 border-b border-neutral-100">
+                                  {cat.category}
+                                </h4>
+                                <ul className="space-y-3">
+                                  {cat.items.map((svc, sIdx) => {
+                                    const isSubActive = isLinkActive(
+                                      cleanCurrentPath,
+                                      svc.href,
+                                      (svc as any).aliases
+                                    );
 
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={bookingUrl}
-                className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group font-ddin font-bold
-                ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
-              >
-                <span className="relative z-10 group-hover:text-white">
-                  {lang === "zh" ? "立即预约" : lang === "es" ? "Reservar" : "Book"}
-                </span>
-                <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              </a>
+                                    return (
+                                      <li key={sIdx}>
+                                        <Link
+                                          href={svc.href}
+                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
+                                            isSubActive
+                                              ? "text-[#C5A059]"
+                                              : "text-neutral-600 hover:text-black hover:translate-x-1"
+                                          }`}
+                                        >
+                                          {svc.name}
+                                        </Link>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
 
+                          <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
+                            <span>Tribeca Dental Studio • Multi-Specialty Care</span>
+                            <Link
+                              href={`/${lang}/services`}
+                              className="text-black hover:text-[#C5A059] underline underline-offset-4 transition-colors"
+                            >
+                              {lang === "zh" ? "查看所有服务 →" : lang === "es" ? "Ver Todos los Servicios →" : "View All Services →"}
+                            </Link>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+
+                  {/* DROPDOWN MENU: ABOUT */}
+                  {item.dropdownType === "about" && (
+                    <AnimatePresence>
+                      {isAboutHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.25, ease: "easeOut" }}
+                          className="absolute top-[80px] left-0 w-64 bg-white border border-neutral-200 shadow-2xl text-black py-4 px-6 z-50 font-ddin"
+                        >
+                          <ul className="space-y-3">
+                            {aboutSubmenuData.map((sub, subIdx) => {
+                              const isChildActive = isLinkActive(
+                                cleanCurrentPath,
+                                sub.href
+                              );
+
+                              return (
+                                <li key={subIdx}>
+                                  <Link
+                                    href={sub.href}
+                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${
+                                      isChildActive
+                                        ? "text-[#C5A059]"
+                                        : "text-neutral-600 hover:text-black hover:translate-x-1"
+                                    }`}
+                                  >
+                                    {sub.name}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
               <button
-                onClick={() => setIsOpen(!isOpen)}
-                className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
+                onClick={() => toggleLanguage("en")}
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                }`}
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                EN
+              </button>
+              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
+              <button
+                onClick={() => toggleLanguage("es")}
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                }`}
+              >
+                ES
+              </button>
+              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
+              <button
+                onClick={() => toggleLanguage("zh")}
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                }`}
+              >
+                中文
               </button>
             </div>
+
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={bookingUrl}
+              className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group font-ddin font-bold
+              ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
+            >
+              <span className="relative z-10 group-hover:text-white">
+                {lang === "zh" ? "立即预约" : lang === "es" ? "Reservar" : "Book"}
+              </span>
+              <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+            </a>
+
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
-        </ContainerHeader>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
@@ -432,6 +507,7 @@ export default function Header({ lang }: HeaderProps) {
             </div>
 
             <div className="flex flex-col gap-6">
+              {/* Accordion for Services */}
               <div>
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
@@ -484,6 +560,7 @@ export default function Header({ lang }: HeaderProps) {
                 )}
               </div>
 
+              {/* Smile Gallery */}
               <Link
                 href={`/${lang}/cases`}
                 onClick={() => setIsOpen(false)}
@@ -494,16 +571,54 @@ export default function Header({ lang }: HeaderProps) {
                 {lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery"}
               </Link>
 
-              <Link
-                href={`/${lang}/about`}
-                onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${
-                  pathname.includes("/about") ? "text-[#C5A059]" : "text-black"
-                }`}
-              >
-                {lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About"}
-              </Link>
+              {/* Accordion for About */}
+              <div>
+                <button
+                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
+                    pathname.includes("/about") ||
+                    pathname.includes("/leading-edge-technology") ||
+                    pathname.includes("/best-dentist-in-nyc")
+                      ? "text-[#C5A059]"
+                      : "text-black"
+                  }`}
+                >
+                  <span>{lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About"}</span>
+                  <ChevronDown
+                    size={28}
+                    className={`transition-transform duration-300 ${
+                      mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
+                    }`}
+                  />
+                </button>
 
+                {mobileAboutOpen && (
+                  <div className="mt-4 pl-4 space-y-3 border-l-2 border-[#C5A059]">
+                    {aboutSubmenuData.map((sub, sIdx) => {
+                      const isChildActive = isLinkActive(
+                        cleanCurrentPath,
+                        sub.href
+                      );
+
+                      return (
+                        <div key={sIdx}>
+                          <Link
+                            href={sub.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`text-sm font-bold uppercase ${
+                              isChildActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            {sub.name}
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Team */}
               <Link
                 href={`/${lang}/team`}
                 onClick={() => setIsOpen(false)}

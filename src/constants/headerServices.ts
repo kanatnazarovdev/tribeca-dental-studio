@@ -9,7 +9,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
     items: [
       {
         name: lang === "zh" ? "瓷贴面" : lang === "es" ? "Carillas de Porcelana" : "Porcelain Veneers",
-        href: `/${lang}/services/porcelain-veneers`,
+        href: `/${lang}/services/porcelain-veneers-lumineers`,
       },
       {
         name: lang === "zh" ? "牙齿美白" : lang === "es" ? "Blanqueamiento Dental" : "Teeth Whitening",
@@ -91,7 +91,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "睡眠呼吸暂停与气道" : lang === "es" ? "Tratamientos de Vías Respiratorias" : "Airway & Sleep Apnea",
-        href: `/${lang}/services/airway-treatments`,
+        href: `/${lang}/services/airway-orthodontics`,
       },
       {
         name: lang === "zh" ? "上颌骨扩展 (MSE/MARPE)" : lang === "es" ? "Expansión Palatina (MSE)" : "Palatal Expansion (MSE)",

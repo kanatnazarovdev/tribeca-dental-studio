@@ -26,7 +26,7 @@ const CARDS_DATA = [
   },
   {
     id: "02",
-    slug: "services/porcelain-veneers",
+    slug: "services/porcelain-veneers-lumineers",
     image: "/photo2.jpeg",
     title: {
       en: "NYC’s Premier Dental Destination",
