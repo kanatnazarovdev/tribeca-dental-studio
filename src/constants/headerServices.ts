@@ -35,7 +35,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
     items: [
       {
         name: lang === "zh" ? "种植牙" : lang === "es" ? "Implantes Dentales" : "Dental Implants",
-        href: `/${lang}/services/dental-implants`,
+        href: `https://implants.tribecadentalstudio.com/en`,
       },
       {
         name: lang === "zh" ? "All-on-4 整体种植" : lang === "es" ? "Implantes All-on-4®" : "All-on-4® Dental Implants",
@@ -57,7 +57,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
     items: [
       {
         name: lang === "zh" ? "洗牙与全口腔检查" : lang === "es" ? "Exámenes y Limpiezas" : "Dental Exams & Cleanings",
-        href: `/${lang}/services/dental-exams-teeth-cleanings`,
+        href: `/${lang}/services/dental-checkups-teeth-cleaning`,
       },
       {
         name: lang === "zh" ? "智齿拔除" : lang === "es" ? "Extracción de Muelas del Juicio" : "Wisdom Teeth Removal",

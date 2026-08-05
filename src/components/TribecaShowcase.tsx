@@ -118,7 +118,7 @@ export default function TribecaExperienceCards({
                 fill
                 priority={index === 0}
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 filter grayscale group-hover:grayscale-0"
+                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 group-hover:grayscale-0"
               />
             </Link>
 

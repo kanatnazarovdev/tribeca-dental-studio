@@ -133,7 +133,7 @@ export default async function BestDentistNYCPage({
           {/* HERO IMAGE / EDITORIAL BANNER */}
           <div className="relative aspect-[4/3] bg-neutral-100 border border-neutral-200 overflow-hidden shadow-sm">
             <Image
-              src="/about-studio.jpg" // Ensure an appropriate studio image exists in public folder
+              src="/services/bestDentist.png" // Ensure an appropriate studio image exists in public folder
               alt="Tribeca Dental Studio Premier Interior"
               fill
               priority

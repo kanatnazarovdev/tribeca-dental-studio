@@ -24,7 +24,7 @@ const CATEGORIES = [
         en: "Dental Exams & Cleanings",
         es: "Exámenes y Limpiezas Dentales",
         zh: "牙科检查与牙齿洁治",
-        slug: "services/dental-exams-teeth-cleanings",
+        slug: "services/dental-checkups-teeth-cleaning",
       },
       {
         en: "Oral Cancer Screening",
@@ -73,7 +73,7 @@ const CATEGORIES = [
         en: "Dental Implants",
         es: "Implantes Dentales",
         zh: "种植牙修复",
-        slug: "services/dental-implants",
+        slug: "https://implants.tribecadentalstudio.com/en",
       },
       {
         en: "Dentures",

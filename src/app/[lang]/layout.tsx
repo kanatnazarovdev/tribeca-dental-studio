@@ -23,22 +23,22 @@ export async function generateMetadata({
   return {
     title: {
       default: isZh
-        ? "翠贝卡牙科诊所 | 纽约翠贝卡牙医"
+        ? "翠贝卡牙科诊所 | 纽约翠贝卡高级多专科牙医"
         : isEs
-          ? "Tribeca Dental Studio | Dentista en Tribeca, NYC"
-          : "Tribeca Dental Studio | Dentist in Tribeca, NYC",
+          ? "Tribeca Dental Studio | Dentista de Lujo en Tribeca, NYC"
+          : "Tribeca Dental Studio | Multi-Specialty Dentist in Tribeca, NYC",
       template: "%s | Tribeca Dental Studio",
     },
     description: isZh
-      ? "位于纽约翠贝卡的高端综合牙科诊所，提供预防、修复、美容、种植牙及正畸治疗。"
+      ? "位于纽约翠贝卡的高端多专科综合牙科诊所。提供隐形高定瓷贴面、气道正畸扩弓 (MSE)、无痛微创拔牙与口腔外科、种植牙及儿童牙科。"
       : isEs
-        ? "Consultorio dental integral en Tribeca, NYC. Odontología preventiva, restauradora, estética, implantes y ortodoncia."
-        : "Comprehensive dental care in Tribeca, NYC. Preventive, restorative, cosmetic, implant, and orthodontic dentistry from a practice that treats you like family.",
+        ? "Consultorio dental multi-especializado de lujo en Tribeca, NYC. Carillas de porcelana, ortodoncia de vías respiratorias, implantes dentales, cirugía oral y odontopediatría."
+        : "Comprehensive luxury multi-specialty dental practice in Tribeca, NYC. Specializing in handcrafted porcelain veneers, airway orthodontics (MSE), painless oral surgery, dental implants, and pediatric dentistry.",
     metadataBase: new URL(baseUrl),
     alternates: getAlternates(lang, ""),
     openGraph: {
-      title: "Tribeca Dental Studio",
-      description: "The best dentistry in Tribeca, NY.",
+      title: "Tribeca Dental Studio | Premier NYC Dentistry",
+      description: "Bespoke cosmetic, airway, surgical, and multi-specialty dental care in Lower Manhattan, NY.",
       url: `${baseUrl}/${lang}/`,
       siteName: "Tribeca Dental Studio",
       images: [
@@ -46,7 +46,7 @@ export async function generateMetadata({
           url: `${baseUrl}/og-image.webp`,
           width: 1200,
           height: 630,
-          alt: "Tribeca Dental Studio — Dentist in Tribeca, NY",
+          alt: "Tribeca Dental Studio — Premier Multi-Specialty Dental Studio in Tribeca, NY",
         },
       ],
       locale: isZh ? "zh_CN" : isEs ? "es_ES" : "en_US",
@@ -66,63 +66,110 @@ export default async function RootLayout(props: {
   const lang = ["es", "zh"].includes(params.lang) ? params.lang : "en";
   const dict = await getDictionary(lang);
 
+  // --- MAXIMUM SEO / GOOGLE KNOWLEDGE GRAPH JSON-LD SCHEMA ---
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    name: "Tribeca Dental Studio",
-    image: `${baseUrl}/og-image.webp`,
-    "@id": baseUrl,
-    url: baseUrl,
-    telephone: "212-561-5303",
-    priceRange: "$$",
-    knowsAbout: [
-      "General Dentistry",
-      "Preventive Dentistry",
-      "Restorative Dentistry",
-      "Cosmetic Dentistry",
-      "Dental Implants",
-      "Orthodontics",
-      "Oral Surgery",
-      "Endodontics",
-    ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "54 Warren Street",
-      addressLocality: "New York",
-      addressRegion: "NY",
-      postalCode: "10007",
-      addressCountry: "US",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 40.714885,
-      longitude: -74.00906,
-    },
-    openingHoursSpecification: [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "08:00",
-        closes: "18:00",
+        "@type": ["Dentist", "MedicalBusiness", "MedicalClinic"],
+        "@id": `${baseUrl}#organization`,
+        name: "Tribeca Dental Studio",
+        url: `${baseUrl}/${lang}/`,
+        logo: `${baseUrl}/tribeca-logo-text.svg`,
+        image: `${baseUrl}/og-image.webp`,
+        telephone: "+1-212-561-5303",
+        priceRange: "$$$$",
+        currenciesAccepted: "USD",
+        paymentAccepted: "Credit Card, Debit Card, Financing, Insurance",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "54 Warren Street",
+          addressLocality: "New York",
+          addressRegion: "NY",
+          postalCode: "10007",
+          addressCountry: "US",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 40.714885,
+          longitude: -74.00906,
+        },
+        areaServed: [
+          { "@type": "AdministrativeArea", name: "Tribeca" },
+          { "@type": "AdministrativeArea", name: "Lower Manhattan" },
+          { "@type": "AdministrativeArea", name: "SoHo" },
+          { "@type": "AdministrativeArea", name: "Financial District" },
+          { "@type": "AdministrativeArea", name: "Manhattan" },
+          { "@type": "AdministrativeArea", name: "New York City" },
+        ],
+        knowsAbout: [
+          "Handcrafted Porcelain Veneers",
+          "Digital Smile Design (DSD)",
+          "Airway Orthodontics & Maxillary Skeletal Expansion (MSE)",
+          "Sleep Apnea & Snoring Oral Appliances",
+          "Painless Tooth Extractions & Socket Preservation",
+          "Single & All-on-4 Dental Implants",
+          "Invisalign Clear Aligners",
+          "Pediatric & Adolescent Dentistry",
+          "Periodontics & Gum Disease Therapy",
+        ],
+        medicalSpecialty: [
+          "CosmeticDentistry",
+          "PediatricDentistry",
+          "Orthodontics",
+          "Periodontics",
+          "OralAndMaxillofacialSurgery",
+        ],
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "08:00",
+            closes: "18:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Saturday",
+            opens: "09:00",
+            closes: "16:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Sunday",
+            opens: "09:00",
+            closes: "14:00",
+          },
+        ],
+        sameAs: [
+          "https://www.instagram.com/tribeca_dental_studio",
+          "https://www.facebook.com/TribecaDentalStudio/",
+          "https://www.youtube.com/@tribecadentalstudio6006",
+          "https://www.linkedin.com/company/tribeca-dental-studio",
+        ],
       },
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Saturday",
-        opens: "09:00",
-        closes: "16:00",
+        "@type": "Physician",
+        "@id": `${baseUrl}#dr-cameron-lewis`,
+        name: "Dr. Cameron Lewis, DDS",
+        jobTitle: "Oral & Maxillofacial Surgeon",
+        medicalSpecialty: "OralAndMaxillofacialSurgery",
+        worksFor: { "@id": `${baseUrl}#organization` },
       },
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Sunday",
-        opens: "09:00",
-        closes: "14:00",
+        "@type": "Physician",
+        "@id": `${baseUrl}#dr-igor-chikunov`,
+        name: "Dr. Igor Chikunov, DDS",
+        jobTitle: "Cosmetic & Restorative Dentist",
+        medicalSpecialty: "CosmeticDentistry",
+        worksFor: { "@id": `${baseUrl}#organization` },
       },
-    ],
-    sameAs: [
-      "https://www.instagram.com/tribeca_dental_studio",
-      "https://www.facebook.com/TribecaDentalStudio/",
-      "https://www.youtube.com/@tribecadentalstudio6006",
-      "https://www.linkedin.com/company/tribeca-dental-studio",
+      {
+        "@type": "Physician",
+        "@id": `${baseUrl}#dr-nina-izhaky`,
+        name: "Dr. Nina Izhaky, DDS",
+        jobTitle: "Founder & Airway General Dentist",
+        worksFor: { "@id": `${baseUrl}#organization` },
+      },
     ],
   };
 

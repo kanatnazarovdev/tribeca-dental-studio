@@ -17,24 +17,44 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       lang === "zh"
         ? "美容牙科"
         : lang === "es"
-        ? "Odontología Estética"
-        : "Cosmetic Dentistry",
+          ? "Odontología Estética"
+          : "Cosmetic Dentistry",
     items: [
       {
-        name: lang === "zh" ? "瓷贴面" : lang === "es" ? "Carillas de Porcelana" : "Porcelain Veneers",
+        name:
+          lang === "zh"
+            ? "瓷贴面"
+            : lang === "es"
+              ? "Carillas de Porcelana"
+              : "Porcelain Veneers",
         href: `/${lang}/services/porcelain-veneers-lumineers`,
       },
       {
-        name: lang === "zh" ? "牙齿美白" : lang === "es" ? "Blanqueamiento Dental" : "Teeth Whitening",
+        name:
+          lang === "zh"
+            ? "牙齿美白"
+            : lang === "es"
+              ? "Blanqueamiento Dental"
+              : "Teeth Whitening",
         href: `/${lang}/services/teeth-whitening`,
       },
       {
-        name: lang === "zh" ? "隐适美正畸" : lang === "es" ? "Tratamientos Invisalign®" : "Invisalign® Treatments",
+        name:
+          lang === "zh"
+            ? "隐适美正畸"
+            : lang === "es"
+              ? "Tratamientos Invisalign®"
+              : "Invisalign® Treatments",
         href: `/${lang}/services/invisalign-clear-aligner-braces`,
         aliases: [`/${lang}/services/invisalign-treatments`],
       },
       {
-        name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
+        name:
+          lang === "zh"
+            ? "牙齿粘接"
+            : lang === "es"
+              ? "Adhesión Dental"
+              : "Dental Bonding",
         href: `/${lang}/services/dental-bonding`,
       },
     ],
@@ -44,19 +64,34 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       lang === "zh"
         ? "种植牙"
         : lang === "es"
-        ? "Implantes Dentales"
-        : "Dental Implants",
+          ? "Implantes Dentales"
+          : "Dental Implants",
     items: [
       {
-        name: lang === "zh" ? "种植牙" : lang === "es" ? "Implantes Dentales" : "Dental Implants",
-        href: `/${lang}/services/dental-implants`,
+        name:
+          lang === "zh"
+            ? "种植牙"
+            : lang === "es"
+              ? "Implantes Dentales"
+              : "Dental Implants",
+        href: `https://implants.tribecadentalstudio.com/en`,
       },
       {
-        name: lang === "zh" ? "All-on-4 整体种植" : lang === "es" ? "Implantes All-on-4®" : "All-on-4® Dental Implants",
+        name:
+          lang === "zh"
+            ? "All-on-4 整体种植"
+            : lang === "es"
+              ? "Implantes All-on-4®"
+              : "All-on-4® Dental Implants",
         href: `/${lang}/services/all-on-4-dental-implants`,
       },
       {
-        name: lang === "zh" ? "颧骨种植牙" : lang === "es" ? "Implantes Cigomáticos" : "Zygomatic Implants",
+        name:
+          lang === "zh"
+            ? "颧骨种植牙"
+            : lang === "es"
+              ? "Implantes Cigomáticos"
+              : "Zygomatic Implants",
         href: `/${lang}/services/zygomatic-implants`,
       },
     ],
@@ -66,28 +101,53 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       lang === "zh"
         ? "通用全科与外科"
         : lang === "es"
-        ? "Odontología General y Cirugía"
-        : "General & Surgery",
+          ? "Odontología General y Cirugía"
+          : "General & Surgery",
     items: [
       {
-        name: lang === "zh" ? "洗牙与全口腔检查" : lang === "es" ? "Exámenes y Limpiezas" : "Dental Exams & Cleanings",
-        href: `/${lang}/services/dental-exams-teeth-cleanings`,
+        name:
+          lang === "zh"
+            ? "洗牙与全口腔检查"
+            : lang === "es"
+              ? "Exámenes y Limpiezas"
+              : "Dental Exams & Cleanings",
+        href: `/${lang}/services/dental-checkups-teeth-cleaning`,
       },
       {
-        name: lang === "zh" ? "智齿拔除" : lang === "es" ? "Extracción de Muelas del Juicio" : "Wisdom Teeth Removal",
+        name:
+          lang === "zh"
+            ? "智齿拔除"
+            : lang === "es"
+              ? "Extracción de Muelas del Juicio"
+              : "Wisdom Teeth Removal",
         href: `/${lang}/services/wisdom-tooth-removal`,
         aliases: [`/${lang}/services/wisdom-teeth-removal`],
       },
       {
-        name: lang === "zh" ? "Curodont™ 牙齿再生修复" : lang === "es" ? "Reparación Curodont™" : "Curodont™ Tooth Repair",
+        name:
+          lang === "zh"
+            ? "Curodont™ 牙齿再生修复"
+            : lang === "es"
+              ? "Reparación Curodont™"
+              : "Curodont™ Tooth Repair",
         href: `/${lang}/services/curodont-regenerative-tooth-repair`,
       },
       {
-        name: lang === "zh" ? "根管治疗" : lang === "es" ? "Tratamiento de Conducto" : "Root Canal Treatment",
+        name:
+          lang === "zh"
+            ? "根管治疗"
+            : lang === "es"
+              ? "Tratamiento de Conducto"
+              : "Root Canal Treatment",
         href: `/${lang}/services/root-canal-treatment`,
       },
       {
-        name: lang === "zh" ? "牙冠与牙桥" : lang === "es" ? "Coronas y Puentes" : "Crowns & Bridges",
+        name:
+          lang === "zh"
+            ? "牙冠与牙桥"
+            : lang === "es"
+              ? "Coronas y Puentes"
+              : "Crowns & Bridges",
         href: `/${lang}/services/dental-crowns-bridges`,
       },
     ],
@@ -97,53 +157,95 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       lang === "zh"
         ? "气道与正畸"
         : lang === "es"
-        ? "Vías Respiratorias y Ortodoncia"
-        : "Airway & Orthodontics",
+          ? "Vías Respiratorias y Ortodoncia"
+          : "Airway & Orthodontics",
     items: [
       {
-        name: lang === "zh" ? "儿童及青少年正畸" : lang === "es" ? "Ortodoncia Pediátrica" : "Pediatric Orthodontics",
+        name:
+          lang === "zh"
+            ? "儿童及青少年正畸"
+            : lang === "es"
+              ? "Ortodoncia Pediátrica"
+              : "Pediatric Orthodontics",
         href: `https://pediatrics.tribecadentalstudio.com/en/services/orthodontics/`,
       },
       {
-        name: lang === "zh" ? "睡眠呼吸暂停与气道" : lang === "es" ? "Tratamientos de Vías Respiratorias" : "Airway & Sleep Apnea",
+        name:
+          lang === "zh"
+            ? "睡眠呼吸暂停与气道"
+            : lang === "es"
+              ? "Tratamientos de Vías Respiratorias"
+              : "Airway & Sleep Apnea",
         href: `/${lang}/services/airway-orthodontics`,
       },
       {
-        name: lang === "zh" ? "上颌骨扩展 (MSE/MARPE)" : lang === "es" ? "Expansión Palatina (MSE)" : "Palatal Expansion (MSE)",
+        name:
+          lang === "zh"
+            ? "上颌骨扩展 (MSE/MARPE)"
+            : lang === "es"
+              ? "Expansión Palatina (MSE)"
+              : "Palatal Expansion (MSE)",
         href: `/${lang}/services/palatal-expansion-marpe`,
       },
     ],
   },
 ];
 
-// --- ABOUT DROPDOWN ITEMS CONFIGURATION ---
 export const ABOUT_SUBMENU = (lang: string) => [
   {
-    name: lang === "zh" ? "诊所简介" : lang === "es" ? "Sobre la Clínica" : "About Practice",
+    name:
+      lang === "zh"
+        ? "诊所简介"
+        : lang === "es"
+          ? "Sobre la Clínica"
+          : "About Practice",
     href: `/${lang}/about`,
   },
   {
-    name: lang === "zh" ? "前沿齿科科技" : lang === "es" ? "Tecnología de Vanguardia" : "Leading Technology",
+    name: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
+    href: `/${lang}/team`,
+  },
+  {
+    name:
+      lang === "zh"
+        ? "前沿齿科科技"
+        : lang === "es"
+          ? "Tecnología de Vanguardia"
+          : "Leading Technology",
     href: `/${lang}/leading-edge-technology`,
   },
   {
-    name: lang === "zh" ? "纽约顶尖诊所" : lang === "es" ? "El Mejor Dentista en NYC" : "Best Dentist in NYC",
+    name:
+      lang === "zh"
+        ? "纽约顶尖诊所"
+        : lang === "es"
+          ? "El Mejor Dentista en NYC"
+          : "Best Dentist in NYC",
     href: `/${lang}/best-dentist-in-nyc`,
   },
 ];
 
 // Helper function to handle exact path matching including fallback aliases
-function isLinkActive(currentPath: string, targetHref: string, aliases: string[] = []): boolean {
+function isLinkActive(
+  currentPath: string,
+  targetHref: string,
+  aliases: string[] = [],
+): boolean {
   const cleanCurrent = currentPath.replace(/\/$/, "");
   const cleanTarget = targetHref.replace(/\/$/, "");
 
-  if (cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`)) {
+  if (
+    cleanCurrent === cleanTarget ||
+    cleanCurrent.startsWith(`${cleanTarget}/`)
+  ) {
     return true;
   }
 
   return aliases.some((alias) => {
     const cleanAlias = alias.replace(/\/$/, "");
-    return cleanCurrent === cleanAlias || cleanCurrent.startsWith(`${cleanAlias}/`);
+    return (
+      cleanCurrent === cleanAlias || cleanCurrent.startsWith(`${cleanAlias}/`)
+    );
   });
 }
 
@@ -177,7 +279,12 @@ export default function Header({ lang }: HeaderProps) {
     pathname.includes(`/leading-edge-technology`) ||
     pathname.includes(`/best-dentist-in-nyc`);
 
-  const shouldBeActive = isScrolled || isOpen || isInteriorRoute || isServicesHovered || isAboutHovered;
+  const shouldBeActive =
+    isScrolled ||
+    isOpen ||
+    isInteriorRoute ||
+    isServicesHovered ||
+    isAboutHovered;
 
   const toggleLanguage = (newLang: string) => {
     if (!pathname) return;
@@ -220,7 +327,8 @@ export default function Header({ lang }: HeaderProps) {
   const navItems = [
     {
       id: "services",
-      label: lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
+      label:
+        lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
       href: `/${lang}/services`,
       hasDropdown: true,
       dropdownType: "services",
@@ -228,7 +336,11 @@ export default function Header({ lang }: HeaderProps) {
     {
       id: "gallery",
       label:
-        lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery",
+        lang === "zh"
+          ? "案例展示"
+          : lang === "es"
+            ? "Galería"
+            : "Smile Gallery",
       href: `/${lang}/cases`,
     },
     {
@@ -239,9 +351,10 @@ export default function Header({ lang }: HeaderProps) {
       dropdownType: "about",
     },
     {
-      id: "team",
-      label: lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team",
-      href: `/${lang}/team`,
+      id: "blog",
+      label: lang === "zh" ? "博客文章" : lang === "es" ? "Blog" : "Blog",
+      href: `/${lang}/blog`,
+      hasDropdown: false,
     },
   ];
 
@@ -283,19 +396,21 @@ export default function Header({ lang }: HeaderProps) {
                 item.dropdownType === "services"
                   ? isServicesHovered
                   : item.dropdownType === "about"
-                  ? isAboutHovered
-                  : false;
+                    ? isAboutHovered
+                    : false;
 
               return (
                 <div
                   key={item.id}
                   className="relative py-8"
                   onMouseEnter={() => {
-                    if (item.dropdownType === "services") setIsServicesHovered(true);
+                    if (item.dropdownType === "services")
+                      setIsServicesHovered(true);
                     if (item.dropdownType === "about") setIsAboutHovered(true);
                   }}
                   onMouseLeave={() => {
-                    if (item.dropdownType === "services") setIsServicesHovered(false);
+                    if (item.dropdownType === "services")
+                      setIsServicesHovered(false);
                     if (item.dropdownType === "about") setIsAboutHovered(false);
                   }}
                 >
@@ -305,8 +420,8 @@ export default function Header({ lang }: HeaderProps) {
                       isNavActive
                         ? "text-[#C5A059]"
                         : shouldBeActive
-                        ? "text-black hover:text-[#C5A059]"
-                        : "text-white hover:text-[#C5A059]"
+                          ? "text-black hover:text-[#C5A059]"
+                          : "text-white hover:text-[#C5A059]"
                     }`}
                   >
                     {item.label}
@@ -342,7 +457,7 @@ export default function Header({ lang }: HeaderProps) {
                                     const isSubActive = isLinkActive(
                                       cleanCurrentPath,
                                       svc.href,
-                                      (svc as any).aliases
+                                      (svc as any).aliases,
                                     );
 
                                     return (
@@ -366,12 +481,18 @@ export default function Header({ lang }: HeaderProps) {
                           </div>
 
                           <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-400 uppercase tracking-widest font-bold">
-                            <span>Tribeca Dental Studio • Multi-Specialty Care</span>
+                            <span>
+                              Tribeca Dental Studio • Multi-Specialty Care
+                            </span>
                             <Link
                               href={`/${lang}/services`}
                               className="text-black hover:text-[#C5A059] underline underline-offset-4 transition-colors"
                             >
-                              {lang === "zh" ? "查看所有服务 →" : lang === "es" ? "Ver Todos los Servicios →" : "View All Services →"}
+                              {lang === "zh"
+                                ? "查看所有服务 →"
+                                : lang === "es"
+                                  ? "Ver Todos los Servicios →"
+                                  : "View All Services →"}
                             </Link>
                           </div>
                         </motion.div>
@@ -394,7 +515,7 @@ export default function Header({ lang }: HeaderProps) {
                             {aboutSubmenuData.map((sub, subIdx) => {
                               const isChildActive = isLinkActive(
                                 cleanCurrentPath,
-                                sub.href
+                                sub.href,
                               );
 
                               return (
@@ -428,25 +549,45 @@ export default function Header({ lang }: HeaderProps) {
               <button
                 onClick={() => toggleLanguage("en")}
                 className={`text-[12px] font-bold transition-colors ${
-                  lang === "en" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  lang === "en"
+                    ? "text-[#C5A059]"
+                    : shouldBeActive
+                      ? "text-black/40"
+                      : "text-white/40"
                 }`}
               >
                 EN
               </button>
-              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
+              <span
+                className={shouldBeActive ? "text-black/20" : "text-white/20"}
+              >
+                |
+              </span>
               <button
                 onClick={() => toggleLanguage("es")}
                 className={`text-[12px] font-bold transition-colors ${
-                  lang === "es" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  lang === "es"
+                    ? "text-[#C5A059]"
+                    : shouldBeActive
+                      ? "text-black/40"
+                      : "text-white/40"
                 }`}
               >
                 ES
               </button>
-              <span className={shouldBeActive ? "text-black/20" : "text-white/20"}>|</span>
+              <span
+                className={shouldBeActive ? "text-black/20" : "text-white/20"}
+              >
+                |
+              </span>
               <button
                 onClick={() => toggleLanguage("zh")}
                 className={`text-[12px] font-bold transition-colors ${
-                  lang === "zh" ? "text-[#C5A059]" : shouldBeActive ? "text-black/40" : "text-white/40"
+                  lang === "zh"
+                    ? "text-[#C5A059]"
+                    : shouldBeActive
+                      ? "text-black/40"
+                      : "text-white/40"
                 }`}
               >
                 中文
@@ -461,7 +602,11 @@ export default function Header({ lang }: HeaderProps) {
               ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
             >
               <span className="relative z-10 group-hover:text-white">
-                {lang === "zh" ? "立即预约" : lang === "es" ? "Reservar" : "Book"}
+                {lang === "zh"
+                  ? "立即预约"
+                  : lang === "es"
+                    ? "Reservar"
+                    : "Book"}
               </span>
               <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
             </a>
@@ -512,10 +657,18 @@ export default function Header({ lang }: HeaderProps) {
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                   className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/services") ? "text-[#C5A059]" : "text-black"
+                    pathname.includes("/services")
+                      ? "text-[#C5A059]"
+                      : "text-black"
                   }`}
                 >
-                  <span>{lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services"}</span>
+                  <span>
+                    {lang === "zh"
+                      ? "诊疗服务"
+                      : lang === "es"
+                        ? "Servicios"
+                        : "Services"}
+                  </span>
                   <ChevronDown
                     size={28}
                     className={`transition-transform duration-300 ${
@@ -536,7 +689,7 @@ export default function Header({ lang }: HeaderProps) {
                             const isSubActive = isLinkActive(
                               cleanCurrentPath,
                               svc.href,
-                              (svc as any).aliases
+                              (svc as any).aliases,
                             );
 
                             return (
@@ -545,7 +698,9 @@ export default function Header({ lang }: HeaderProps) {
                                   href={svc.href}
                                   onClick={() => setIsOpen(false)}
                                   className={`text-sm font-bold uppercase ${
-                                    isSubActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
+                                    isSubActive
+                                      ? "text-[#C5A059]"
+                                      : "text-neutral-600 hover:text-black"
                                   }`}
                                 >
                                   {svc.name}
@@ -568,7 +723,11 @@ export default function Header({ lang }: HeaderProps) {
                   pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
                 }`}
               >
-                {lang === "zh" ? "案例展示" : lang === "es" ? "Galería" : "Smile Gallery"}
+                {lang === "zh"
+                  ? "案例展示"
+                  : lang === "es"
+                    ? "Galería"
+                    : "Smile Gallery"}
               </Link>
 
               {/* Accordion for About */}
@@ -583,7 +742,13 @@ export default function Header({ lang }: HeaderProps) {
                       : "text-black"
                   }`}
                 >
-                  <span>{lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About"}</span>
+                  <span>
+                    {lang === "zh"
+                      ? "关于我们"
+                      : lang === "es"
+                        ? "Nosotros"
+                        : "About"}
+                  </span>
                   <ChevronDown
                     size={28}
                     className={`transition-transform duration-300 ${
@@ -597,7 +762,7 @@ export default function Header({ lang }: HeaderProps) {
                     {aboutSubmenuData.map((sub, sIdx) => {
                       const isChildActive = isLinkActive(
                         cleanCurrentPath,
-                        sub.href
+                        sub.href,
                       );
 
                       return (
@@ -606,7 +771,9 @@ export default function Header({ lang }: HeaderProps) {
                             href={sub.href}
                             onClick={() => setIsOpen(false)}
                             className={`text-sm font-bold uppercase ${
-                              isChildActive ? "text-[#C5A059]" : "text-neutral-600 hover:text-black"
+                              isChildActive
+                                ? "text-[#C5A059]"
+                                : "text-neutral-600 hover:text-black"
                             }`}
                           >
                             {sub.name}

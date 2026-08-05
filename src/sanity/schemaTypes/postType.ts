@@ -8,8 +8,6 @@ export const postType = defineType({
   icon: DocumentTextIcon,
   fieldsets: [{ name: "seo", title: "SEO & Social Media Metadata" }],
   fields: [
-    // 1. ADD THE LANGUAGE FIELD
-    // This allows you to differentiate between 'en' and 'es' documents
     defineField({
       name: "language",
       type: "string",
@@ -27,12 +25,14 @@ export const postType = defineType({
     defineField({
       name: "title",
       type: "string",
+      title: "Title",
       description: "The main headline for the article.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
       type: "slug",
+      title: "URL Slug",
       options: {
         source: "title",
         maxLength: 96,
@@ -47,19 +47,16 @@ export const postType = defineType({
         "The 1-2 sentence summary used for blog cards and Google results (Max 160 chars).",
       validation: (Rule) =>
         Rule.max(160).warning(
-          "Longer descriptions will be truncated by Google.",
+          "Longer descriptions will be truncated by Google."
         ),
     }),
-    // 2. TRANSLATION REFERENCE (Optional but highly recommended)
-    // This connects the Spanish version to its English counterpart
     defineField({
       name: "translationOf",
       title: "Translation of",
       type: "reference",
       to: [{ type: "post" }],
       description:
-        "If this is a Spanish post, link it to the original English version.",
-      // Hide this field if we are on the English version to keep UI clean
+        "If this is a translated post, link it to the original English version.",
       hidden: ({ document }) => document?.language === "en",
     }),
     defineField({
@@ -70,6 +67,7 @@ export const postType = defineType({
     defineField({
       name: "mainImage",
       type: "image",
+      title: "Main / Featured Image",
       options: {
         hotspot: true,
       },
@@ -79,7 +77,6 @@ export const postType = defineType({
           type: "string",
           title: "Alternative Text",
           description: "Describe the image for accessibility and SEO.",
-          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "caption",
@@ -96,17 +93,25 @@ export const postType = defineType({
     defineField({
       name: "publishedAt",
       type: "datetime",
+      title: "Published At",
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
       name: "readTime",
       type: "number",
-      title: "Estimated Reading Time",
+      title: "Estimated Reading Time (Minutes)",
     }),
     defineField({
       name: "body",
       type: "blockContent",
-      description: "The main content of your post.",
+      title: "Portable Text Body",
+      description: "The Sanity PortableText content of your post.",
+    }),
+    defineField({
+      name: "htmlBody",
+      type: "text",
+      title: "Legacy WordPress HTML Body",
+      description: "Raw HTML content imported directly from WordPress.",
     }),
     defineField({
       name: "seoTitle",

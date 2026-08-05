@@ -16,21 +16,18 @@ export async function generateMetadata({
   const { slug, lang } = await params;
   const post = await getPost(slug, lang);
 
-  // If the page doesn't exist or is a draft, return clean metadata with NO hreflangs
   if (!post) return {};
 
   const languagesMap: Record<string, string> = {
     [lang]: `${baseUrl}/${lang}/blog/${slug}/`,
   };
 
-  // Only map siblings that actively have a slug and language
   post.translations?.forEach((t: { language: string; slug: string }) => {
     if (t.language && t.slug) {
       languagesMap[t.language] = `${baseUrl}/${t.language}/blog/${t.slug}/`;
     }
   });
 
-  // CRITICAL FIX: Only set x-default to an English version if that English variant ACTUALLY exists
   const explicitEnglishSlug = post.translations?.find((t: any) => t.language === 'en')?.slug;
   
   if (explicitEnglishSlug) {
@@ -38,12 +35,11 @@ export async function generateMetadata({
   } else if (lang === 'en') {
     languagesMap["x-default"] = `${baseUrl}/en/blog/${slug}/`;
   } else {
-    // Fallback safely: If no English version exists, set the current page language as the default template fallback
     languagesMap["x-default"] = `${baseUrl}/${lang}/blog/${slug}/`;
   }
 
   return {
-    title: `${post.title} | TDS 4 Kids`,
+    title: `${post.title} | Tribeca Dental Studio`,
     description: post.excerpt || post.title,
     alternates: {
       canonical: `${baseUrl}/${lang}/blog/${slug}/`,
@@ -109,10 +105,13 @@ async function getPost(slug: string, lang: string) {
       title,
       mainImage,
       body,
+      htmlBody, // Added htmlBody to fetch imported WordPress HTML!
       publishedAt,
-      "excerpt": array::join(string::split((pt::text(body)), "")[0..160], ""),
+      "excerpt": coalesce(
+        excerpt,
+        array::join(string::split((pt::text(body)), "")[0..160], "")
+      ),
       
-      // Filter out Sanity drafts from the translation mapping logic
       "translations": coalesce(
         *[_type == "post" && !(_id in path("drafts.**")) && (translationOf._ref == ^._id || _id == ^.translationOf._ref || (translationOf._ref == ^.translationOf._ref && defined(translationOf._ref)))],
         *[_type == "post" && !(_id in path("drafts.**")) && _id == ^._id]
@@ -125,7 +124,6 @@ async function getPost(slug: string, lang: string) {
         "slug": slug.current, 
         title 
       },
-      // Fixed the 'stimulatedAt' typo to 'publishedAt'
       "previous": *[_type == "post" && !(_id in path("drafts.**")) && language == $lang && publishedAt < ^.publishedAt] | order(publishedAt desc)[0]{ 
         "slug": slug.current, 
         title 
@@ -166,9 +164,9 @@ export default async function PostPage({
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 mb-10 lg:mb-10">
-        <div className="relative aspect-[16/11] w-full overflow-hidden shadow-sm ">
-          {post.mainImage && (
+      {post.mainImage && (
+        <div className="max-w-5xl mx-auto px-6 mb-10 lg:mb-10">
+          <div className="relative aspect-[16/11] w-full overflow-hidden shadow-sm">
             <Image
               src={urlFor(post.mainImage).url()}
               alt={post.title}
@@ -176,13 +174,46 @@ export default async function PostPage({
               className="object-cover"
               priority
             />
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="max-w-5xl mx-auto px-6 font-light leading-relaxed text-zinc-800">
-        <div className="prose prose-zinc lg:prose-xl max-w-none mb-20">
-          <PortableText value={post.body} components={portableTextComponents} />
+      {/* DYNAMIC BODY RENDERER (Supports PortableText OR Imported WordPress HTML) */}
+      <div className="max-w-4xl mx-auto px-6 font-light leading-relaxed text-zinc-800">
+        <div className="prose prose-zinc lg:prose-xl max-w-none mb-20 prose-headings:font-light prose-headings:uppercase prose-[#C5A059]">
+        {post.body ? (
+      <PortableText value={post.body} components={portableTextComponents} />
+    ) : post.htmlBody ? (
+      <div
+        className="legacy-wp-content 
+          /* HEADINGS */
+          [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-light [&>h2]:uppercase [&>h2]:tracking-tight [&>h2]:text-black [&>h2]:mt-12 [&>h2]:mb-6
+          [&>h3]:text-xl [&>h3]:font-medium [&>h3]:uppercase [&>h3]:tracking-widest [&>h3]:text-zinc-900 [&>h3]:mt-8 [&>h3]:mb-4
+          [&>h4]:text-lg [&>h4]:font-semibold [&>h4]:text-black [&>h4]:mt-6 [&>h4]:mb-3
+          
+          /* PARAGRAPHS & LINKS */
+          [&>p]:text-lg [&>p]:leading-relaxed [&>p]:text-zinc-800 [&>p]:font-light [&>p]:mb-6
+          [&_a]:text-[#C5A059] [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-black [&_a]:transition-colors
+          
+          /* LISTS */
+          [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2
+          [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2
+          [&_li]:text-lg [&_li]:text-zinc-800
+          
+          /* TABLES (FULL RESPONSIVE LUXURY STYLING) */
+          [&_table]:w-full [&_table]:my-8 [&_table]:border-collapse [&_table]:border [&_table]:border-zinc-200 [&_table]:text-left [&_table]:text-sm
+          [&_thead]:bg-zinc-100 [&_thead]:border-b [&_thead]:border-zinc-300
+          [&_th]:p-4 [&_th]:font-bold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-black [&_th]:border-r [&_th]:border-zinc-200
+          [&_td]:p-4 [&_td]:border-b [&_td]:border-r [&_td]:border-zinc-200 [&_td]:text-zinc-700
+          [&_tr:nth-child(even)]:bg-zinc-50/50
+          [&_tr:hover]:bg-zinc-100/50 [&_tr]:transition-colors
+          
+          /* BLOCKQUOTES & MEDIA */
+          [&_blockquote]:border-l-2 [&_blockquote]:border-[#C5A059] [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_blockquote]:text-zinc-600
+          [&_img]:rounded-md [&_img]:my-8 [&_img]:w-full [&_img]:h-auto"
+        dangerouslySetInnerHTML={{ __html: post.htmlBody }}
+      />
+    ) : null}
         </div>
 
         {/* Navigation Footer */}
