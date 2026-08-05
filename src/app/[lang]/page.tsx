@@ -10,6 +10,7 @@ import ContactForm from "@/components/ContactForm";
 import { getAlternates } from "@/hooks/helper";
 import TribecaAestheticShowcase from "@/components/TribecaShowcase";
 import TribecaHeart from "@/components/TribecaHeart";
+import { FEATURED_SERVICES } from "@/constants/services";
 
 export async function generateMetadata({
   params,
@@ -51,7 +52,7 @@ export default async function Home({
       <Hero lang={l} />
       <TribecaAestheticShowcase lang={l} />
       <SmileCTA lang={l} />
-      <Services lang={l} />
+      {/* <Services lang={l} /> */}
       <Provider lang={l} />
       <Philosophy lang={l} />
       <TribecaHeart lang={l}/>
