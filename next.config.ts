@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
       
     ],
   },
+  async redirects() {
+  return [
+    {
+      // Matches any single-level path (excluding standard system folders) and sends it to /blog/:path/
+      source: '/:slug((?!blog|studio|api|_next|favicon.ico).*)',
+      destination: '/blog/:slug/',
+      permanent: true,
+    },
+  ];
+}
 };
 
 export default nextConfig;
