@@ -21,7 +21,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       },
       {
         name: lang === "zh" ? "牙齿粘接" : lang === "es" ? "Adhesión Dental" : "Dental Bonding",
-        href: `/${lang}/services/dental-bonding`,
+        href: `/${lang}/services/direct-bonding`,
       },
     ],
   },

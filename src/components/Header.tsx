@@ -55,7 +55,7 @@ export const SERVICE_CATEGORIES = (lang: string) => [
             : lang === "es"
               ? "Adhesión Dental"
               : "Dental Bonding",
-        href: `/${lang}/services/dental-bonding`,
+        href: `/${lang}/services/direct-bonding`,
       },
     ],
   },
@@ -354,6 +354,17 @@ export default function Header({ lang }: HeaderProps) {
       id: "blog",
       label: lang === "zh" ? "博客文章" : lang === "es" ? "Blog" : "Blog",
       href: `/${lang}/blog`,
+      hasDropdown: false,
+    },
+    {
+      id: "testimonials",
+      label:
+        lang === "zh"
+          ? "患者评价"
+          : lang === "es"
+            ? "Testimonios"
+            : "Testimonials",
+      href: `/${lang}/testimonials`,
       hasDropdown: false,
     },
   ];

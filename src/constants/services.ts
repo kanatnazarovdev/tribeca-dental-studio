@@ -32,7 +32,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "04",
     titleEn: "Dental Bonding",
     titleEs: "Adhesión Dental",
-    slug: "dental-bonding",
+    slug: "direct-bonding",
     image: "/services/dental-bonding.webp",
   },
   {

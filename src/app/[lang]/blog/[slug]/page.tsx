@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
 import { baseUrl } from "@/hooks/helper";
+export const revalidate = 120
 
 export async function generateMetadata({
   params,
@@ -130,6 +131,11 @@ async function getPost(slug: string, lang: string) {
       }
     }`,
     { slug, lang }, 
+    {
+      next: {
+        tags: [`post:${slug}`, "posts-list"], // Tagged for instant purge!
+      },
+    }
   );
 }
 
