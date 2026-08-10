@@ -1,16 +1,13 @@
 import { Metadata } from "next";
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
 import Provider from "@/components/Provider";
 import SmileCTA from "@/components/SmileCTA";
 import Philosophy from "@/components/Philosophy";
 import Team from "@/components/Team";
 import Instagram from "@/components/Instagram";
-import ContactForm from "@/components/ContactForm";
 import { getAlternates } from "@/hooks/helper";
 import TribecaAestheticShowcase from "@/components/TribecaShowcase";
 import TribecaHeart from "@/components/TribecaHeart";
-import { FEATURED_SERVICES } from "@/constants/services";
 
 export async function generateMetadata({
   params,
@@ -52,15 +49,11 @@ export default async function Home({
       <Hero lang={l} />
       <TribecaAestheticShowcase lang={l} />
       <SmileCTA lang={l} />
-      {/* <Services lang={l} /> */}
       <Provider lang={l} />
       <Philosophy lang={l} />
       <TribecaHeart lang={l}/>
       <Team lang={l} />
       <Instagram lang={l} />
-      {/* <section id="leadForm">
-        <ContactForm />
-      </section> */}
     </main>
   );
 }

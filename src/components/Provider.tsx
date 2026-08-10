@@ -110,7 +110,7 @@ export default function Provider({ lang }: ProviderProps) {
             </ul>
 
             <Link
-              href={`/${l}/about/`}
+              href={`/${l}/team/dr-nina-izhaky`}
               className="group mt-12 inline-flex items-center gap-3 border-b border-black/20 pb-2 text-[11px] uppercase tracking-[0.3em] text-black transition-colors hover:border-[#C5A059] hover:text-[#C5A059]"
             >
               {t.cta}

@@ -123,15 +123,15 @@ export const SERVICE_CATEGORIES = (lang: string) => [
         href: `/${lang}/services/wisdom-tooth-removal`,
         aliases: [`/${lang}/services/wisdom-teeth-removal`],
       },
-      {
-        name:
-          lang === "zh"
-            ? "Curodont™ 牙齿再生修复"
-            : lang === "es"
-              ? "Reparación Curodont™"
-              : "Curodont™ Tooth Repair",
-        href: `/${lang}/services/curodont-regenerative-tooth-repair`,
-      },
+      // {
+      //   name:
+      //     lang === "zh"
+      //       ? "Curodont™ 牙齿再生修复"
+      //       : lang === "es"
+      //         ? "Reparación Curodont™"
+      //         : "Curodont™ Tooth Repair",
+      //   href: `/${lang}/services/curodont-regenerative-tooth-repair`,
+      // },
       {
         name:
           lang === "zh"

@@ -229,5 +229,8 @@ module.exports = async function getRedirects() {
     { source: '/be-picky-when-finding-your-insurance-policy-heres-why/', destination: '/blog/be-picky-when-finding-your-insurance-policy-heres-why/', permanent: true },
     { source: '/answer-your-questions-with-a-visit-instead-of-a-phone-call/', destination: '/blog/answer-your-questions-with-a-visit-instead-of-a-phone-call/', destination: '/blog/answer-your-questions-with-a-visit-instead-of-a-phone-call/', permanent: true },
     { source: '/is-it-worth-the/', destination: '/blog/is-it-worth-the/', permanent: true },
+    // services
+    { source: '/root-canal-therapy/', destination: '/services/root-canal-therapy/', permanent: true },
+
   ];
 };
