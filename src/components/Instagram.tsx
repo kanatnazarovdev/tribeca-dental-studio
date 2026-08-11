@@ -7,6 +7,7 @@ interface InstagramProps {
   lang: string;
 }
 
+
 const HANDLE = "tribeca_dental_studio";
 const PROFILE = `https://www.instagram.com/${HANDLE}`;
 
