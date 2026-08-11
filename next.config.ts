@@ -10,8 +10,22 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "scontent.cdninstagram.com" },
     ],
   },
+
   async redirects() {
     return await getRedirects();
+  },
+  async headers() {
+    return [
+      {
+        source: "/llms.txt",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "text/markdown; charset=utf-8",
+          },
+        ],
+      },
+    ];
   },
 };
 

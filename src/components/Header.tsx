@@ -456,21 +456,19 @@ export default function Header({ lang }: HeaderProps) {
                 >
                   <Link
                     href={item.href}
-                    className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${
-                      isNavActive
+                    className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${isNavActive
                         ? "text-[#C5A059]"
                         : shouldBeActive
                           ? "text-black hover:text-[#C5A059]"
                           : "text-white hover:text-[#C5A059]"
-                    }`}
+                      }`}
                   >
                     {item.label}
                     {item.hasDropdown && (
                       <ChevronDown
                         size={14}
-                        className={`transition-transform duration-300 ${
-                          isHovered ? "rotate-180 text-[#C5A059]" : ""
-                        }`}
+                        className={`transition-transform duration-300 ${isHovered ? "rotate-180 text-[#C5A059]" : ""
+                          }`}
                       />
                     )}
                   </Link>
@@ -504,11 +502,10 @@ export default function Header({ lang }: HeaderProps) {
                                       <li key={sIdx}>
                                         <Link
                                           href={svc.href}
-                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
-                                            isSubActive
+                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${isSubActive
                                               ? "text-[#C5A059]"
                                               : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                          }`}
+                                            }`}
                                         >
                                           {svc.name}
                                         </Link>
@@ -563,11 +560,10 @@ export default function Header({ lang }: HeaderProps) {
                                 <li key={subIdx}>
                                   <Link
                                     href={sub.href}
-                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${
-                                      isChildActive
+                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${isChildActive
                                         ? "text-[#C5A059]"
                                         : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                    }`}
+                                      }`}
                                   >
                                     {sub.name}
                                   </Link>
@@ -589,13 +585,12 @@ export default function Header({ lang }: HeaderProps) {
             <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
               <button
                 onClick={() => toggleLanguage("en")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "en"
+                className={`text-[12px] font-bold transition-colors ${lang === "en"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                }`}
+                  }`}
               >
                 EN
               </button>
@@ -606,13 +601,12 @@ export default function Header({ lang }: HeaderProps) {
               </span>
               <button
                 onClick={() => toggleLanguage("es")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "es"
+                className={`text-[12px] font-bold transition-colors ${lang === "es"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                }`}
+                  }`}
               >
                 ES
               </button>
@@ -623,13 +617,12 @@ export default function Header({ lang }: HeaderProps) {
               </span>
               <button
                 onClick={() => toggleLanguage("zh")}
-                className={`text-[12px] font-bold transition-colors ${
-                  lang === "zh"
+                className={`text-[12px] font-bold transition-colors ${lang === "zh"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                }`}
+                  }`}
               >
                 中文
               </button>
@@ -654,6 +647,19 @@ export default function Header({ lang }: HeaderProps) {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={
+                isOpen
+                  ? lang === "zh"
+                    ? "关闭导航菜单"
+                    : lang === "es"
+                      ? "Cerrar menú de navegación"
+                      : "Close navigation menu"
+                  : lang === "zh"
+                    ? "打开导航菜单"
+                    : lang === "es"
+                      ? "Abrir menú de navegación"
+                      : "Open navigation menu"
+              }
               className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -697,11 +703,10 @@ export default function Header({ lang }: HeaderProps) {
               <div>
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/services") || pathname.includes("/pain-free-dentistry")
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${pathname.includes("/services") || pathname.includes("/pain-free-dentistry")
                       ? "text-[#C5A059]"
                       : "text-black"
-                  }`}
+                    }`}
                 >
                   <span>
                     {lang === "zh"
@@ -712,9 +717,8 @@ export default function Header({ lang }: HeaderProps) {
                   </span>
                   <ChevronDown
                     size={28}
-                    className={`transition-transform duration-300 ${
-                      mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
-                    }`}
+                    className={`transition-transform duration-300 ${mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
+                      }`}
                   />
                 </button>
 
@@ -738,11 +742,10 @@ export default function Header({ lang }: HeaderProps) {
                                 <Link
                                   href={svc.href}
                                   onClick={() => setIsOpen(false)}
-                                  className={`text-sm font-bold uppercase ${
-                                    isSubActive
+                                  className={`text-sm font-bold uppercase ${isSubActive
                                       ? "text-[#C5A059]"
                                       : "text-neutral-600 hover:text-black"
-                                  }`}
+                                    }`}
                                 >
                                   {svc.name}
                                 </Link>
@@ -760,9 +763,8 @@ export default function Header({ lang }: HeaderProps) {
               <Link
                 href={`/${lang}/cases`}
                 onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${
-                  pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
-                }`}
+                className={`text-3xl font-bold uppercase tracking-tight ${pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
+                  }`}
               >
                 {lang === "zh"
                   ? "案例展示"
@@ -775,16 +777,15 @@ export default function Header({ lang }: HeaderProps) {
               <div>
                 <button
                   onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/about") ||
-                    pathname.includes("/team") ||
-                    pathname.includes("/your-first-visit") ||
-                    pathname.includes("/insurance") ||
-                    pathname.includes("/leading-edge-technology") ||
-                    pathname.includes("/best-dentist-in-nyc")
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${pathname.includes("/about") ||
+                      pathname.includes("/team") ||
+                      pathname.includes("/your-first-visit") ||
+                      pathname.includes("/insurance") ||
+                      pathname.includes("/leading-edge-technology") ||
+                      pathname.includes("/best-dentist-in-nyc")
                       ? "text-[#C5A059]"
                       : "text-black"
-                  }`}
+                    }`}
                 >
                   <span>
                     {lang === "zh"
@@ -795,9 +796,8 @@ export default function Header({ lang }: HeaderProps) {
                   </span>
                   <ChevronDown
                     size={28}
-                    className={`transition-transform duration-300 ${
-                      mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
-                    }`}
+                    className={`transition-transform duration-300 ${mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
+                      }`}
                   />
                 </button>
 
@@ -815,11 +815,10 @@ export default function Header({ lang }: HeaderProps) {
                           <Link
                             href={sub.href}
                             onClick={() => setIsOpen(false)}
-                            className={`text-sm font-bold uppercase ${
-                              isChildActive
+                            className={`text-sm font-bold uppercase ${isChildActive
                                 ? "text-[#C5A059]"
                                 : "text-neutral-600 hover:text-black"
-                            }`}
+                              }`}
                           >
                             {sub.name}
                           </Link>
@@ -834,9 +833,8 @@ export default function Header({ lang }: HeaderProps) {
               <Link
                 href={`/${lang}/team`}
                 onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${
-                  pathname.includes("/team") ? "text-[#C5A059]" : "text-black"
-                }`}
+                className={`text-3xl font-bold uppercase tracking-tight ${pathname.includes("/team") ? "text-[#C5A059]" : "text-black"
+                  }`}
               >
                 {lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team"}
               </Link>
