@@ -66,7 +66,6 @@ export default async function RootLayout(props: {
   const lang = ["es", "zh"].includes(params.lang) ? params.lang : "en";
   const dict = await getDictionary(lang);
 
-  // --- MAXIMUM SEO / GOOGLE KNOWLEDGE GRAPH JSON-LD SCHEMA ---
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -182,33 +181,14 @@ export default async function RootLayout(props: {
       `}
     >
       <head>
-        <Script
-          id="gtm-script"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-NQV9585B');
-      `,
-          }}
-        />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="bg-white text-foreground antialiased selection:bg-[#C5A059] selection:text-white">
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NQV9585B"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
+
 
         <NextTopLoader
           color="#C5A059"
