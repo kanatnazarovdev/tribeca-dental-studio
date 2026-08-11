@@ -1,7 +1,8 @@
 "use client";
-import { useParams } from "next/navigation";
+
+import { useParams, usePathname } from "next/navigation";
+import Link from "next/link";
 import Container from "./Container";
-import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const params = useParams();
@@ -20,14 +21,13 @@ export default function Footer() {
       id="contact"
       className="bg-white border-t border-black/5 pt-24 pb-8"
     >
-      
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-24">
           <div className="relative h-[400px] w-full bg-gray-100 overflow-hidden group border border-black/5">
             {/* TODO(security): this Maps Embed API key is hardcoded and public in the bundle — restrict it by HTTP referrer in Google Cloud console. */}
             <iframe
               src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDZvkuB9PQa9z_GLSZD_FBuIbAUWWTjHRg&q=Tribeca+Dental+Studio,54+Warren+St,New+York,NY+10007`}
-              className="absolute inset-0 w-full h-full contrast-125 opacity-80  group-hover:opacity-100 transition-all duration-1000"
+              className="absolute inset-0 w-full h-full contrast-125 opacity-80 group-hover:opacity-100 transition-all duration-1000"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -73,7 +73,7 @@ export default function Footer() {
                     </a>
                   </div>
 
-                  {/* Added: Instagram Social Link Block */}
+                  {/* Instagram Social Link Block */}
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1">
                       {isZh
@@ -145,6 +145,7 @@ export default function Footer() {
             <a
               href="https://kanatnazarov.com"
               target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-black transition-colors"
             >
               <strong>
@@ -156,20 +157,18 @@ export default function Footer() {
           </p>
 
           <div className="flex gap-8">
-            <a
-              href="https://tribecadentalstudio.com/privacy-policy/"
-              target="_blank"
-              className="text-[9px] uppercase tracking-[0.4em] text-gray-300 hover:text-black"
+            <Link
+              href={`/${lang}/privacy-policy`}
+              className="text-[9px] uppercase tracking-[0.4em] text-gray-300 hover:text-black transition-colors"
             >
               {isZh ? "隐私权政策" : isEs ? "Privacidad" : "Privacy"}
-            </a>
-            <a
-              href="https://tribecadentalstudio.com/terms-conditions/"
-              target="_blank"
-              className="text-[9px] uppercase tracking-[0.4em] text-gray-300 hover:text-black"
+            </Link>
+            <Link
+              href={`/${lang}/terms-conditions`}
+              className="text-[9px] uppercase tracking-[0.4em] text-gray-300 hover:text-black transition-colors"
             >
               {isZh ? "使用条款" : isEs ? "Términos" : "Terms"}
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

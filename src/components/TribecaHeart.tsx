@@ -39,7 +39,7 @@ export default function TribecaHeart({ lang }: TribecaHeartProps) {
       {/* LEFT PANEL: 50% FULL SCREEN EDITORIAL IMAGE CANVAS */}
       <div className="relative w-full h-[45vh] lg:h-auto min-h-[400px] overflow-hidden bg-neutral-900 order-1 lg:order-1">
         <Image
-          src="/tribeca.webp" // Swap with your clean street asset or clinic shot
+          src="/tribeca.webp" 
           alt="The architectural fabric of Tribeca, NYC"
           fill
           priority

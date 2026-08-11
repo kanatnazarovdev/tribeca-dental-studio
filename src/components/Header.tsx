@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../public/tribeca-logo-text.svg";
@@ -116,6 +116,15 @@ export const SERVICE_CATEGORIES = (lang: string) => [
       {
         name:
           lang === "zh"
+            ? "无痛牙科与镇静"
+            : lang === "es"
+              ? "Odontología Sin Dolor"
+              : "Pain Free Dentistry",
+        href: `/${lang}/pain-free-dentistry`,
+      },
+      {
+        name:
+          lang === "zh"
             ? "智齿拔除"
             : lang === "es"
               ? "Extracción de Muelas del Juicio"
@@ -123,15 +132,6 @@ export const SERVICE_CATEGORIES = (lang: string) => [
         href: `/${lang}/services/wisdom-tooth-removal`,
         aliases: [`/${lang}/services/wisdom-teeth-removal`],
       },
-      // {
-      //   name:
-      //     lang === "zh"
-      //       ? "Curodont™ 牙齿再生修复"
-      //       : lang === "es"
-      //         ? "Reparación Curodont™"
-      //         : "Curodont™ Tooth Repair",
-      //   href: `/${lang}/services/curodont-regenerative-tooth-repair`,
-      // },
       {
         name:
           lang === "zh"
@@ -208,6 +208,25 @@ export const ABOUT_SUBMENU = (lang: string) => [
   {
     name:
       lang === "zh"
+        ? "初次就诊指南"
+        : lang === "es"
+          ? "Su Primera Visita"
+          : "Your First Visit",
+    href: `/${lang}/your-first-visit`,
+  },
+  {
+    name:
+      lang === "zh"
+        ? "保险与理财方案"
+        : lang === "es"
+          ? "Seguros y Financiación"
+          : "Insurance & Financing",
+    href: `/${lang}/insurance`,
+    aliases: [`/${lang}/insurance`],
+  },
+  {
+    name:
+      lang === "zh"
         ? "前沿齿科科技"
         : lang === "es"
           ? "Tecnología de Vanguardia"
@@ -229,7 +248,7 @@ export const ABOUT_SUBMENU = (lang: string) => [
 function isLinkActive(
   currentPath: string,
   targetHref: string,
-  aliases: string[] = [],
+  aliases: string[] = []
 ): boolean {
   const cleanCurrent = currentPath.replace(/\/$/, "");
   const cleanTarget = targetHref.replace(/\/$/, "");
@@ -277,7 +296,12 @@ export default function Header({ lang }: HeaderProps) {
     pathname.includes(`/team`) ||
     pathname.includes(`/cases`) ||
     pathname.includes(`/leading-edge-technology`) ||
-    pathname.includes(`/best-dentist-in-nyc`);
+    pathname.includes(`/best-dentist-in-nyc`) ||
+    pathname.includes(`/insurance`) ||
+    pathname.includes(`/pain-free-dentistry`) ||
+    pathname.includes(`/your-first-visit`) ||
+    pathname.includes(`/terms-conditions`) ||
+    pathname.includes(`/privacy-policy`)
 
   const shouldBeActive =
     isScrolled ||
@@ -397,9 +421,14 @@ export default function Header({ lang }: HeaderProps) {
               const itemCleanHref = item.href.replace(/\/$/, "");
               const isNavActive =
                 cleanCurrentPath === itemCleanHref ||
-                (item.id === "services" && pathname.includes("/services")) ||
+                (item.id === "services" &&
+                  (pathname.includes("/services") ||
+                    pathname.includes("/pain-free-dentistry"))) ||
                 (item.id === "about" &&
                   (pathname.includes("/about") ||
+                    pathname.includes("/team") ||
+                    pathname.includes("/your-first-visit") ||
+                    pathname.includes("/insurance") ||
                     pathname.includes("/leading-edge-technology") ||
                     pathname.includes("/best-dentist-in-nyc")));
 
@@ -468,7 +497,7 @@ export default function Header({ lang }: HeaderProps) {
                                     const isSubActive = isLinkActive(
                                       cleanCurrentPath,
                                       svc.href,
-                                      (svc as any).aliases,
+                                      (svc as any).aliases
                                     );
 
                                     return (
@@ -520,13 +549,14 @@ export default function Header({ lang }: HeaderProps) {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
                           transition={{ duration: 0.25, ease: "easeOut" }}
-                          className="absolute top-[80px] left-0 w-64 bg-white border border-neutral-200 shadow-2xl text-black py-4 px-6 z-50 font-ddin"
+                          className="absolute top-[80px] left-0 w-72 bg-white border border-neutral-200 shadow-2xl text-black py-4 px-6 z-50 font-ddin"
                         >
                           <ul className="space-y-3">
                             {aboutSubmenuData.map((sub, subIdx) => {
                               const isChildActive = isLinkActive(
                                 cleanCurrentPath,
                                 sub.href,
+                                (sub as any).aliases
                               );
 
                               return (
@@ -668,7 +698,7 @@ export default function Header({ lang }: HeaderProps) {
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                   className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
-                    pathname.includes("/services")
+                    pathname.includes("/services") || pathname.includes("/pain-free-dentistry")
                       ? "text-[#C5A059]"
                       : "text-black"
                   }`}
@@ -700,7 +730,7 @@ export default function Header({ lang }: HeaderProps) {
                             const isSubActive = isLinkActive(
                               cleanCurrentPath,
                               svc.href,
-                              (svc as any).aliases,
+                              (svc as any).aliases
                             );
 
                             return (
@@ -747,6 +777,9 @@ export default function Header({ lang }: HeaderProps) {
                   onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
                   className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
                     pathname.includes("/about") ||
+                    pathname.includes("/team") ||
+                    pathname.includes("/your-first-visit") ||
+                    pathname.includes("/insurance") ||
                     pathname.includes("/leading-edge-technology") ||
                     pathname.includes("/best-dentist-in-nyc")
                       ? "text-[#C5A059]"
@@ -774,6 +807,7 @@ export default function Header({ lang }: HeaderProps) {
                       const isChildActive = isLinkActive(
                         cleanCurrentPath,
                         sub.href,
+                        (sub as any).aliases
                       );
 
                       return (
@@ -796,7 +830,7 @@ export default function Header({ lang }: HeaderProps) {
                 )}
               </div>
 
-              {/* Team */}
+              {/* Team Direct Link */}
               <Link
                 href={`/${lang}/team`}
                 onClick={() => setIsOpen(false)}
