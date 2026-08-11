@@ -1,11 +1,11 @@
+import fs from 'fs';
 import { createClient } from "@sanity/client";
 
 const client = createClient({
   projectId: "sz25tzp7",
   dataset: "production",
   apiVersion: "2024-03-01",
-  token:
-    "sk0nvK2KCQ9pOHUgvaz5JrkGB8QR0L1SXA22GTnaie2hKQcErqoPJ664S4x08kMGMXCYhDDWPK5l0G7oGoBCM1YQk5c966jWD6zquNIMYNPPPuwrpYSlUENu0xqkO5NByNnWACHnB55y2S8HoD2hPASsXZIlAvBdeOvwHv6MXfXNWus6vOMR", // Your Sanity Write Token
+  token: "skoFsVVcHZBU79efDAzGzwUrX4CuDkgfejw54rPnVJ0JTQP7YJ8WzNcHhwZJFau9lqDm8WB60hoqH8NXTcjbqAyc1I4qXPFHbT4Z4B6BKhwfL9V0GIRjv5E1IubsPX9WOEuJsm9NA9dBxgDdFyyHDprOv65SzgW9ZyExgXnIuHX31S6fxsaY",
   useCdn: false,
 });
 
@@ -16,86 +16,50 @@ async function uploadImageToSanity(imageUrl) {
     const arrayBuffer = await res.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const asset = await client.assets.upload("image", buffer, {
-      filename: imageUrl.split("/").pop() || "team-member.jpg",
+      filename: imageUrl.split("/").pop() || "team.jpg",
     });
     return {
       _type: "image",
       asset: { _type: "reference", _ref: asset._id },
     };
   } catch (err) {
-    console.error("Image upload failed for:", imageUrl, err);
     return null;
   }
 }
 
-async function migrateTeamAutomatically() {
-  const endpoint =
-    "https://tribecadentalstudio.com/wp-json/wp/v2/posts?post_type=team&per_page=100";
-  console.log(`Fetching team members automatically from: ${endpoint}`);
+async function importTeam() {
+  const rawData = fs.readFileSync('team-data.json', 'utf8');
+  const teamMembers = JSON.parse(rawData);
 
-  const response = await fetch(endpoint);
-  if (!response.ok) {
-    console.error(
-      `❌ API failed with status: ${response.status} ${response.statusText}`,
-    );
-    return;
-  }
+  console.log(`Importing ${teamMembers.length} team members into Sanity...`);
 
-  const members = await response.json();
-  if (!Array.isArray(members)) {
-    console.error("❌ Response is not an array:", members);
-    return;
-  }
-
-  console.log(`Found ${members.length} team members. Starting migration...`);
-
-  for (const [index, member] of members.entries()) {
-    const name = member.title?.rendered || "Unknown Doctor";
-    const slug = member.slug || `doctor-${index}`;
-
-    // Extract featured image from WordPress
+  for (const [index, member] of teamMembers.entries()) {
     let imageRef = null;
-    const imageUrl =
-      member.featured_image_url || member.yoast_head_json?.og_image?.[0]?.url;
-    if (imageUrl) {
-      console.log(`Uploading image for "${name}"...`);
-      imageRef = await uploadImageToSanity(imageUrl);
+    if (member.imageUrl) {
+      imageRef = await uploadImageToSanity(member.imageUrl);
     }
 
+    const isDoctor = member.name.toLowerCase().startsWith("dr.");
+
     const doc = {
-      _type: "doctor", // Matches your Sanity schema
-      _id: `imported-team-${member.id || index}`,
-      name: name,
-      slug: {
-        _type: "slug",
-        current: slug,
-      },
-      // Maps ACF job title if you used Advanced Custom Fields, or defaults to specialist
-      role: member.acf?.job_title || "Dental Specialist",
+      _type: "doctor",
+      _id: `team-${member.id || index + 1}`,
+      name: member.name,
+      slug: { _type: "slug", current: member.slug },
+      role: isDoctor ? "Dental Specialist" : "Clinical Staff / Hygiene",
       image: imageRef,
-      bio: member.content?.rendered
-        ? [
-            {
-              _type: "block",
-              children: [
-                {
-                  _type: "span",
-                  text: member.content.rendered.replace(/<[^>]*>?/gm, ""),
-                },
-              ],
-            },
-          ]
-        : [],
+      bio: member.bio ? [{
+        _type: "block",
+        children: [{ _type: "span", text: member.bio.replace(/<[^>]*>?/gm, '') }]
+      }] : [],
       order: index + 1,
     };
 
     await client.createOrReplace(doc);
-    console.log(
-      `✅ [${index + 1}/${members.length}] Automatically imported: "${name}"`,
-    );
+    console.log(`✅ [${index + 1}/${teamMembers.length}] Imported: ${member.name}`);
   }
 
-  console.log("🎉 Automated Team Migration Complete!");
+  console.log("🎉 Sanity Team Import Finished!");
 }
 
-migrateTeamAutomatically();
+importTeam();

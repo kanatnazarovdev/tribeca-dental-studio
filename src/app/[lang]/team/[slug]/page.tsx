@@ -36,10 +36,11 @@ export const portableTextComponents: any = {
   },
   marks: {
     link: ({ children, value }: any) => {
-      const isExternal = !value.href.startsWith("/");
+      const href = value?.href || "#";
+      const isExternal = !href.startsWith("/");
       return (
         <Link
-          href={value.href}
+          href={href}
           target={isExternal ? "_blank" : undefined}
           rel={isExternal ? "noopener noreferrer" : undefined}
           className="text-[#C5A059] underline decoration-zinc-300 underline-offset-4 hover:text-black transition-all duration-300 font-medium"
@@ -184,11 +185,15 @@ export default async function DoctorProfile({
               </div>
             </header>
 
+            {/* Render Biography with link styling */}
             <article className="prose prose-sm max-w-none text-gray-600 leading-relaxed tracking-wide space-y-6 mb-12">
-              <PortableText value={doctor.bio} />
+              <PortableText
+                value={doctor.bio}
+                components={portableTextComponents}
+              />
             </article>
 
-            {/* Rendering Education details if they exist in Sanity */}
+            {/* Render Education details */}
             {doctor.education && (
               <div className="mb-8 pb-6 border-b border-gray-100">
                 <p className="text-[9px] tracking-[0.3em] uppercase text-gray-400 font-bold mb-2">

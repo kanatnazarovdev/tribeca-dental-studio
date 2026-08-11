@@ -16,8 +16,8 @@ async function getCaseBySlug(slug: string) {
       treatmentDuration,
       description,
       doctorNotes,
-      "beforeUrl": beforeImage.asset->url + "?w=1400&h=1400&fit=crop&q=100&auto=format",
-      "afterUrl": afterImage.asset->url + "?w=1400&h=1400&fit=crop&q=100&auto=format"
+      "beforeUrl": beforeImage.asset->url + "?w=1600&fit=max&q=100&auto=format",
+      "afterUrl": afterImage.asset->url + "?w=1600&fit=max&q=100&auto=format"
     }`,
     { slug }
   );
@@ -49,17 +49,17 @@ export default async function SingleCasePage({
 
   if (!caseItem) {
     return (
-      <div className="min-h-screen flex items-center justify-center uppercase tracking-widest text-xs text-neutral-400">
+      <div className="min-h-screen flex items-center justify-center uppercase tracking-widest text-xs text-neutral-400 font-ddin">
         Case study not found
       </div>
     );
   }
 
   return (
-    <main className="bg-[#fafaf4] min-h-screen pt-28 pb-24 px-6 md:px-12 lg:px-20 font-ddin text-black">
+    <main className="bg-[#fafaf4] min-h-screen pt-28 pb-24 px-4 md:px-8 lg:px-16 font-ddin text-black">
       <div className="max-w-7xl mx-auto">
         {/* BACK NAVIGATION */}
-        <nav className="mb-12">
+        <nav className="mb-8">
           <Link
             href={`/${lang}/cases`}
             className="group inline-flex items-center text-xs tracking-[0.25em] uppercase font-bold text-neutral-400 hover:text-black transition-colors"
@@ -70,11 +70,11 @@ export default async function SingleCasePage({
         </nav>
 
         {/* TITLE & METADATA BAR */}
-        <div className="mb-12 border-b border-black/10 pb-10">
+        <div className="mb-12 border-b border-black/10 pb-8">
           <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#C5A059] block mb-3">
             {caseItem.category}
           </span>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-black mb-8">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-light uppercase tracking-tight text-black mb-6">
             {caseItem.title}
           </h1>
 
@@ -98,37 +98,37 @@ export default async function SingleCasePage({
           </div>
         </div>
 
-        {/* BEFORE & AFTER COMPARISON IMAGES */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        {/* FULL-WIDTH BEFORE & AFTER COMPARISON */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16 w-full">
           {/* BEFORE CARD */}
-          <div className="flex flex-col">
-            <div className="relative w-full aspect-square bg-neutral-100 border border-neutral-200 overflow-hidden mb-4">
+          <div className="relative w-full overflow-hidden bg-neutral-900 border border-neutral-200 shadow-sm flex flex-col">
+            <div className="relative w-full aspect-[16/11] sm:aspect-[4/3] md:aspect-[16/11]">
               <Image
                 src={caseItem.beforeUrl}
                 alt={`${caseItem.title} - Before`}
                 fill
                 priority
                 unoptimized
-                className="object-cover"
+                className="object-cover object-center"
               />
-              <span className="absolute top-4 left-4 bg-black text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2">
+              <span className="absolute top-4 left-4 z-10 bg-black/90 text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 border border-white/20">
                 Before
               </span>
             </div>
           </div>
 
           {/* AFTER CARD */}
-          <div className="flex flex-col">
-            <div className="relative w-full aspect-square bg-neutral-100 border border-neutral-200 overflow-hidden mb-4">
+          <div className="relative w-full overflow-hidden bg-neutral-900 border border-neutral-200 shadow-sm flex flex-col">
+            <div className="relative w-full aspect-[16/11] sm:aspect-[4/3] md:aspect-[16/11]">
               <Image
                 src={caseItem.afterUrl}
                 alt={`${caseItem.title} - After`}
                 fill
                 priority
                 unoptimized
-                className="object-cover"
+                className="object-cover object-center"
               />
-              <span className="absolute top-4 left-4 bg-[#C5A059] text-black font-bold text-[10px] uppercase tracking-widest px-4 py-2">
+              <span className="absolute top-4 left-4 z-10 bg-[#C5A059] text-black font-bold text-[10px] uppercase tracking-widest px-4 py-2 shadow-sm">
                 After
               </span>
             </div>
@@ -136,18 +136,18 @@ export default async function SingleCasePage({
         </div>
 
         {/* CLINICAL OVERVIEW & DOCTOR NOTES */}
-        <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 border border-neutral-200 shadow-sm mb-16">
+        <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 border border-neutral-200 shadow-sm mb-16">
           <h2 className="text-2xl font-bold uppercase tracking-tight mb-6">
             Clinical Overview
           </h2>
           {caseItem.description && (
-            <p className="font-brandon text-base text-neutral-600 leading-relaxed mb-8">
+            <p className="font-brandon text-base md:text-lg text-neutral-700 leading-relaxed mb-8 font-light">
               {caseItem.description}
             </p>
           )}
 
           {caseItem.doctorNotes && (
-            <div className="prose prose-sm font-brandon text-neutral-600">
+            <div className="prose prose-sm font-brandon text-neutral-600 border-t border-neutral-100 pt-8">
               <h3 className="font-ddin font-bold text-lg uppercase text-black mb-4">
                 Specialist Notes & Treatment Plan
               </h3>
@@ -156,7 +156,7 @@ export default async function SingleCasePage({
           )}
         </div>
 
-        {/* CTA SECTION */}
+        {/* CTA BANNER */}
         <div className="text-center py-12 bg-black text-white p-8 md:p-16">
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-tight mb-6">
             Ready for Your Smile Transformation?
