@@ -8,13 +8,11 @@ interface ProviderProps {
   lang: string;
 }
 
-/* EDIT ME — provider copy. Verify credentials against source before launch. */
 const COPY = {
   en: {
     eyebrow: "Meet Your Dentist",
     name: "Dr. Nina Izhaky",
     role: "Founder & Lead Dentist",
-    // TODO(copy): replace with Dr. Izhaky's verified bio.
     body: "With an artist's eye and a surgeon's precision, Dr. Izhaky founded Tribeca Dental Studio on a simple belief — that world-class dentistry should feel personal. Every treatment plan begins with listening, and ends with a result designed around you.",
     credentials: [
       "Comprehensive & cosmetic dentistry",

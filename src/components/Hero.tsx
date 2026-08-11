@@ -34,7 +34,7 @@ const COPY = {
    Set USE_VIDEO to true once your files are in /public.
    ─────────────────────────────────────────────────────────────────────── */
 const USE_VIDEO = true;
-const VIDEO_MP4 = "/banner.mp4"; //  upload to /public
+const VIDEO_MP4 = "/banner.webm"; //  upload to /public
 const POSTER = "/banner.webp"; // replace with adult still
 
 interface HeroProps {

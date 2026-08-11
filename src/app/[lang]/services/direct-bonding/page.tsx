@@ -154,7 +154,7 @@ export default async function DentalBondingPage({
 
           <div className="relative aspect-[4/3] bg-neutral-900 overflow-hidden shadow-2xl">
             <Image
-              src="/photo1.jpeg"
+              src="/photo1.webp"
               alt="Dental Bonding at Tribeca Dental Studio"
               fill
               className="object-cover"

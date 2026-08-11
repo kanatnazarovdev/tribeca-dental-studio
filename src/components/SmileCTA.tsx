@@ -31,9 +31,9 @@ const COPY = {
 
 // 1. Array of your 3 background images
 const BACKGROUND_IMAGES = [
-  "/tribeca.PNG",
-  "/tribeca2.PNG",
-  "/tribeca3.PNG",
+  "/tribecaHall.webp",
+  "/tribeca2.webp",
+  "/tribeca3.webp",
 ];
 
 export default function SmileCTA({ lang }: SmileCTAProps) {
