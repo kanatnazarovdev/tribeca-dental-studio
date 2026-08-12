@@ -370,8 +370,6 @@ export default async function PorcelainVeneersPage({
 
           {/* HERO CONTENT CONTAINER OVERLAY */}
           <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white pt-20">
-            w
-
             {/* BADGE */}
             <div className="flex items-center justify-center gap-2 text-[#C5A059] mb-4">
               <Sparkles size={18} />

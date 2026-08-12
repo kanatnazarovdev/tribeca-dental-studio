@@ -1,41 +1,47 @@
 "use client";
+
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 /* ────────────────────────────────────────────────────────────────────────
-   EDIT ME — hero copy per locale. EN is the source of truth.
+   Hero copy configuration per locale.
    ─────────────────────────────────────────────────────────────────────── */
 const COPY = {
   en: {
     badge: "Tribeca • New York",
     title: "The Standard of Dental Architecture",
-    tagline: "Uniting advanced multi-specialty care with bespoke aesthetics in the heart of Lower Manhattan.",
+    tagline:
+      "Uniting advanced multi-specialty care with bespoke aesthetics in the heart of Lower Manhattan.",
     cta: "Book Consultation",
     scroll: "Explore Experience",
   },
   es: {
     badge: "Tribeca • Nueva York",
     title: "El Estándar de la Arquitectura Dental",
-    tagline: "Uniendo atención multiespecialidad avanzada con estética personalizada en el corazón de Manhattan.",
+    tagline:
+      "Uniendo atención multiespecialidad avanzada con estética personalizada en el corazón de Manhattan.",
     cta: "Reservar Consulta",
     scroll: "Explorar Experiencia",
   },
   zh: {
     badge: "纽约 • 翠贝卡",
     title: "重塑齿科美学架构标准",
-    tagline: "在曼哈顿核心街区，将尖端多专科诊疗与高定私人美学完美融合。",
+    tagline:
+      "在曼哈顿核心街区，将尖端多专科诊疗与高定私人美学完美融合。",
     cta: "预约私人咨询",
     scroll: "探索品牌体验",
   },
 } as const;
 
 /* ────────────────────────────────────────────────────────────────────────
-   EDIT ME — background media.
-   Set USE_VIDEO to true once your files are in /public.
+   Background media setup.
+   Ensure banner.mp4 is encoded with H.264 codec for iOS Safari support.
    ─────────────────────────────────────────────────────────────────────── */
 const USE_VIDEO = true;
-const VIDEO_MP4 = "/banner.webm"; //  upload to /public
-const POSTER = "/banner.webp"; // replace with adult still
+const VIDEO_MP4 = "/banner.mp4"; // Must be true H.264 MP4 for iOS
+const VIDEO_WEBM = "/banner.webm"; // Optional WebM for desktop/Android
+const POSTER = "/banner.webp"; // Static poster image fallback for Low Power Mode
 
 interface HeroProps {
   lang: string;
@@ -43,13 +49,26 @@ interface HeroProps {
 
 export default function Hero({ lang }: HeroProps) {
   const scrollToId = useSmoothScroll();
-  const t = COPY[(lang as keyof typeof COPY) in COPY ? (lang as keyof typeof COPY) : "en"];
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const t =
+    COPY[(lang as keyof typeof COPY) in COPY ? (lang as keyof typeof COPY) : "en"];
+
+  // Force play trigger for iOS Safari & Android Low Power Mode resilience
+  useEffect(() => {
+    if (USE_VIDEO && videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay was prevented on mobile device:", err);
+      });
+    }
+  }, []);
 
   return (
     <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-[#0B0B0B]">
       {/* Background media */}
       {USE_VIDEO ? (
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
@@ -59,6 +78,7 @@ export default function Hero({ lang }: HeroProps) {
           className="absolute inset-0 z-0 h-full w-full object-cover opacity-70"
         >
           <source src={VIDEO_MP4} type="video/mp4" />
+          <source src={VIDEO_WEBM} type="video/webm" />
         </video>
       ) : (
         <div
@@ -67,9 +87,8 @@ export default function Hero({ lang }: HeroProps) {
         />
       )}
 
-      {/* Cinematic overlays */}
-      {/* <div className="absolute inset-0 z-10 bg-black/40" /> */}
-      {/* <div className="absolute inset-0 z-10 bg-linear-to-b from-black/50 via-transparent to-black/80" /> */}
+      {/* Cinematic Overlays */}
+      <div className="absolute inset-0 z-10 bg-black/30" />
 
       <div className="relative z-20 flex h-full flex-col items-start justify-end px-6 pb-28 text-left text-white md:px-16 md:pb-32 lg:px-24">
         <motion.div
@@ -89,7 +108,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 0.3 }}
-          className="mb-8 max-w-5xl font-ddin font-bold text-4xl leading-[1.05] tracking-tight drop-shadow-md md:text-5xl lg:text-[4.5rem] uppercase"
+          className="mb-8 max-w-5xl font-ddin text-4xl font-bold uppercase leading-[1.05] tracking-tight drop-shadow-md md:text-5xl lg:text-[4.5rem]"
         >
           {t.title}
         </motion.h1>

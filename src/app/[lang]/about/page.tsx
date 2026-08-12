@@ -116,7 +116,7 @@ export default function TribecaDentalStudioPage({
               height={1300}
               src={`/photo${num}.jpg`}
               alt="Smile Architecture"
-              className="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-[1500ms] group-hover:scale-105 group-hover:grayscale-0"
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] group-hover:scale-105 group-hover:grayscale-0"
             />
             <div className="absolute inset-0 bg-black/30 transition-opacity duration-700 group-hover:opacity-0" />
             <div className="absolute bottom-6 left-6 z-10 flex flex-col gap-1">

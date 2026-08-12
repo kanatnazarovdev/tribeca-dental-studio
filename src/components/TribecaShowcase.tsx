@@ -12,7 +12,7 @@ const CARDS_DATA = [
   {
     id: "01",
     slug: "services/cosmetic-dentistry",
-    image: "/photo1.webp",
+    image: "/multispecialty.webp",
     title: {
       en: "Comprehensive Multi-Specialty Care",
       es: "Atención Multiespecialidad Integral",
@@ -27,7 +27,7 @@ const CARDS_DATA = [
   {
     id: "02",
     slug: "services/porcelain-veneers-lumineers",
-    image: "/photo2.webp",
+    image: "/premierDental.webp",
     title: {
       en: "NYC’s Premier Dental Destination",
       es: "El Destino Dental Líder en NYC",
@@ -42,7 +42,7 @@ const CARDS_DATA = [
   {
     id: "03",
     slug: "services/porcelain-veneers",
-    image: "/photo3.webp",
+    image: "/quality.webp",
     title: {
       en: "Uncompromising Quality & Precision",
       es: "Calidad y Precisión Incomparables",

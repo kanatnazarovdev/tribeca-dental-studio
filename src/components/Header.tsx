@@ -244,6 +244,27 @@ export const ABOUT_SUBMENU = (lang: string) => [
   },
 ];
 
+export const GALLERY_SUBMENU = (lang: string) => [
+  {
+    name:
+      lang === "zh"
+        ? "案例展示"
+        : lang === "es"
+          ? "Galería de Sonrisas"
+          : "Smile Gallery",
+    href: `/${lang}/cases`,
+  },
+  {
+    name:
+      lang === "zh"
+        ? "患者评价"
+        : lang === "es"
+          ? "Testimonios"
+          : "Testimonials",
+    href: `/${lang}/testimonials`,
+  },
+];
+
 // Helper function to handle exact path matching including fallback aliases
 function isLinkActive(
   currentPath: string,
@@ -283,8 +304,10 @@ export default function Header({ lang }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesHovered, setIsServicesHovered] = useState(false);
   const [isAboutHovered, setIsAboutHovered] = useState(false);
+  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [mobileGalleryOpen, setMobileGalleryOpen] = useState(false);
 
   const cleanCurrentPath = pathname.replace(/\/$/, "");
 
@@ -301,14 +324,15 @@ export default function Header({ lang }: HeaderProps) {
     pathname.includes(`/pain-free-dentistry`) ||
     pathname.includes(`/your-first-visit`) ||
     pathname.includes(`/terms-conditions`) ||
-    pathname.includes(`/privacy-policy`)
+    pathname.includes(`/privacy-policy`);
 
   const shouldBeActive =
     isScrolled ||
     isOpen ||
     isInteriorRoute ||
     isServicesHovered ||
-    isAboutHovered;
+    isAboutHovered ||
+    isGalleryHovered;
 
   const toggleLanguage = (newLang: string) => {
     if (!pathname) return;
@@ -347,12 +371,15 @@ export default function Header({ lang }: HeaderProps) {
 
   const serviceCategoriesData = SERVICE_CATEGORIES(lang);
   const aboutSubmenuData = ABOUT_SUBMENU(lang);
+  const gallerySubmenuData = GALLERY_SUBMENU(lang);
+
+  const pediatricsLang = lang === "zh" ? "zh" : lang === "es" ? "es" : "en";
 
   const navItems = [
     {
       id: "services",
       label:
-        lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "Services",
+        lang === "zh" ? "诊疗服务" : lang === "es" ? "Servicios" : "What we do",
       href: `/${lang}/services`,
       hasDropdown: true,
       dropdownType: "services",
@@ -364,12 +391,15 @@ export default function Header({ lang }: HeaderProps) {
           ? "案例展示"
           : lang === "es"
             ? "Galería"
-            : "Smile Gallery",
+            : "Our Work",
       href: `/${lang}/cases`,
+      hasDropdown: true,
+      dropdownType: "gallery",
     },
     {
       id: "about",
-      label: lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "About",
+      label:
+        lang === "zh" ? "关于我们" : lang === "es" ? "Nosotros" : "Who we are",
       href: `/${lang}/about`,
       hasDropdown: true,
       dropdownType: "about",
@@ -381,15 +411,12 @@ export default function Header({ lang }: HeaderProps) {
       hasDropdown: false,
     },
     {
-      id: "testimonials",
-      label:
-        lang === "zh"
-          ? "患者评价"
-          : lang === "es"
-            ? "Testimonios"
-            : "Testimonials",
-      href: `/${lang}/testimonials`,
+      id: "4kids",
+      label: lang === "zh" ? "4KIDS" : lang === "es" ? "4Kids" : "4Kids",
+      href: `https://pediatrics.tribecadentalstudio.com/${pediatricsLang}`,
       hasDropdown: false,
+      isExternal: true,
+      isGreen: true,
     },
   ];
 
@@ -424,6 +451,9 @@ export default function Header({ lang }: HeaderProps) {
                 (item.id === "services" &&
                   (pathname.includes("/services") ||
                     pathname.includes("/pain-free-dentistry"))) ||
+                (item.id === "gallery" &&
+                  (pathname.includes("/cases") ||
+                    pathname.includes("/testimonials"))) ||
                 (item.id === "about" &&
                   (pathname.includes("/about") ||
                     pathname.includes("/team") ||
@@ -437,7 +467,17 @@ export default function Header({ lang }: HeaderProps) {
                   ? isServicesHovered
                   : item.dropdownType === "about"
                     ? isAboutHovered
-                    : false;
+                    : item.dropdownType === "gallery"
+                      ? isGalleryHovered
+                      : false;
+
+              const textColorClass = item.isGreen
+                ? "text-[#4add30]"
+                : isNavActive
+                  ? "text-[#C5A059]"
+                  : shouldBeActive
+                    ? "text-black hover:text-[#C5A059]"
+                    : "text-white hover:text-[#C5A059]";
 
               return (
                 <div
@@ -447,31 +487,43 @@ export default function Header({ lang }: HeaderProps) {
                     if (item.dropdownType === "services")
                       setIsServicesHovered(true);
                     if (item.dropdownType === "about") setIsAboutHovered(true);
+                    if (item.dropdownType === "gallery")
+                      setIsGalleryHovered(true);
                   }}
                   onMouseLeave={() => {
                     if (item.dropdownType === "services")
                       setIsServicesHovered(false);
-                    if (item.dropdownType === "about") setIsAboutHovered(false);
+                    if (item.dropdownType === "about")
+                      setIsAboutHovered(false);
+                    if (item.dropdownType === "gallery")
+                      setIsGalleryHovered(false);
                   }}
                 >
-                  <Link
-                    href={item.href}
-                    className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${isNavActive
-                        ? "text-[#C5A059]"
-                        : shouldBeActive
-                          ? "text-black hover:text-[#C5A059]"
-                          : "text-white hover:text-[#C5A059]"
-                      }`}
-                  >
-                    {item.label}
-                    {item.hasDropdown && (
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-300 ${isHovered ? "rotate-180 text-[#C5A059]" : ""
+                  {item.isExternal ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${textColorClass}`}
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`uppercase tracking-[2px] text-[13px] inline-flex items-center gap-1 transition-colors ${textColorClass}`}
+                    >
+                      {item.label}
+                      {item.hasDropdown && (
+                        <ChevronDown
+                          size={14}
+                          className={`transition-transform duration-300 ${
+                            isHovered ? "rotate-180 text-[#C5A059]" : ""
                           }`}
-                      />
-                    )}
-                  </Link>
+                        />
+                      )}
+                    </Link>
+                  )}
 
                   {/* MEGA MENU: SERVICES */}
                   {item.dropdownType === "services" && (
@@ -502,10 +554,11 @@ export default function Header({ lang }: HeaderProps) {
                                       <li key={sIdx}>
                                         <Link
                                           href={svc.href}
-                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${isSubActive
+                                          className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 inline-block ${
+                                            isSubActive
                                               ? "text-[#C5A059]"
                                               : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                            }`}
+                                          }`}
                                         >
                                           {svc.name}
                                         </Link>
@@ -537,6 +590,45 @@ export default function Header({ lang }: HeaderProps) {
                     </AnimatePresence>
                   )}
 
+                  {/* DROPDOWN MENU: OUR WORK */}
+                  {item.dropdownType === "gallery" && (
+                    <AnimatePresence>
+                      {isGalleryHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.25, ease: "easeOut" }}
+                          className="absolute top-[80px] left-0 w-60 bg-white border border-neutral-200 shadow-2xl text-black py-4 px-6 z-50 font-ddin"
+                        >
+                          <ul className="space-y-3">
+                            {gallerySubmenuData.map((sub, subIdx) => {
+                              const isChildActive = isLinkActive(
+                                cleanCurrentPath,
+                                sub.href
+                              );
+
+                              return (
+                                <li key={subIdx}>
+                                  <Link
+                                    href={sub.href}
+                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${
+                                      isChildActive
+                                        ? "text-[#C5A059]"
+                                        : "text-neutral-600 hover:text-black hover:translate-x-1"
+                                    }`}
+                                  >
+                                    {sub.name}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+
                   {/* DROPDOWN MENU: ABOUT */}
                   {item.dropdownType === "about" && (
                     <AnimatePresence>
@@ -560,10 +652,11 @@ export default function Header({ lang }: HeaderProps) {
                                 <li key={subIdx}>
                                   <Link
                                     href={sub.href}
-                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${isChildActive
+                                    className={`text-[12px] font-bold uppercase tracking-wider transition-all duration-200 block py-1 ${
+                                      isChildActive
                                         ? "text-[#C5A059]"
                                         : "text-neutral-600 hover:text-black hover:translate-x-1"
-                                      }`}
+                                    }`}
                                   >
                                     {sub.name}
                                   </Link>
@@ -585,12 +678,13 @@ export default function Header({ lang }: HeaderProps) {
             <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
               <button
                 onClick={() => toggleLanguage("en")}
-                className={`text-[12px] font-bold transition-colors ${lang === "en"
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "en"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                  }`}
+                }`}
               >
                 EN
               </button>
@@ -601,12 +695,13 @@ export default function Header({ lang }: HeaderProps) {
               </span>
               <button
                 onClick={() => toggleLanguage("es")}
-                className={`text-[12px] font-bold transition-colors ${lang === "es"
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "es"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                  }`}
+                }`}
               >
                 ES
               </button>
@@ -617,12 +712,13 @@ export default function Header({ lang }: HeaderProps) {
               </span>
               <button
                 onClick={() => toggleLanguage("zh")}
-                className={`text-[12px] font-bold transition-colors ${lang === "zh"
+                className={`text-[12px] font-bold transition-colors ${
+                  lang === "zh"
                     ? "text-[#C5A059]"
                     : shouldBeActive
                       ? "text-black/40"
                       : "text-white/40"
-                  }`}
+                }`}
               >
                 中文
               </button>
@@ -645,6 +741,7 @@ export default function Header({ lang }: HeaderProps) {
               <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
             </a>
 
+            {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-label={
@@ -663,6 +760,9 @@ export default function Header({ lang }: HeaderProps) {
               className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <span className="sr-only">
+                {isOpen ? "Close navigation menu" : "Open navigation menu"}
+              </span>
             </button>
           </div>
         </div>
@@ -699,26 +799,29 @@ export default function Header({ lang }: HeaderProps) {
             </div>
 
             <div className="flex flex-col gap-6">
-              {/* Accordion for Services */}
+              {/* Accordion for Services (What we do) */}
               <div>
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${pathname.includes("/services") || pathname.includes("/pain-free-dentistry")
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
+                    pathname.includes("/services") ||
+                    pathname.includes("/pain-free-dentistry")
                       ? "text-[#C5A059]"
                       : "text-black"
-                    }`}
+                  }`}
                 >
                   <span>
                     {lang === "zh"
                       ? "诊疗服务"
                       : lang === "es"
                         ? "Servicios"
-                        : "Services"}
+                        : "What we do"}
                   </span>
                   <ChevronDown
                     size={28}
-                    className={`transition-transform duration-300 ${mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
-                      }`}
+                    className={`transition-transform duration-300 ${
+                      mobileServicesOpen ? "rotate-180 text-[#C5A059]" : ""
+                    }`}
                   />
                 </button>
 
@@ -742,10 +845,11 @@ export default function Header({ lang }: HeaderProps) {
                                 <Link
                                   href={svc.href}
                                   onClick={() => setIsOpen(false)}
-                                  className={`text-sm font-bold uppercase ${isSubActive
+                                  className={`text-sm font-bold uppercase ${
+                                    isSubActive
                                       ? "text-[#C5A059]"
                                       : "text-neutral-600 hover:text-black"
-                                    }`}
+                                  }`}
                                 >
                                   {svc.name}
                                 </Link>
@@ -759,45 +863,87 @@ export default function Header({ lang }: HeaderProps) {
                 )}
               </div>
 
-              {/* Smile Gallery */}
-              <Link
-                href={`/${lang}/cases`}
-                onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${pathname.includes("/cases") ? "text-[#C5A059]" : "text-black"
+              {/* Accordion for Our Work (Gallery & Testimonials) */}
+              <div>
+                <button
+                  onClick={() => setMobileGalleryOpen(!mobileGalleryOpen)}
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
+                    pathname.includes("/cases") ||
+                    pathname.includes("/testimonials")
+                      ? "text-[#C5A059]"
+                      : "text-black"
                   }`}
-              >
-                {lang === "zh"
-                  ? "案例展示"
-                  : lang === "es"
-                    ? "Galería"
-                    : "Smile Gallery"}
-              </Link>
+                >
+                  <span>
+                    {lang === "zh"
+                      ? "案例展示"
+                      : lang === "es"
+                        ? "Galería"
+                        : "Our Work"}
+                  </span>
+                  <ChevronDown
+                    size={28}
+                    className={`transition-transform duration-300 ${
+                      mobileGalleryOpen ? "rotate-180 text-[#C5A059]" : ""
+                    }`}
+                  />
+                </button>
 
-              {/* Accordion for About */}
+                {mobileGalleryOpen && (
+                  <div className="mt-4 pl-4 space-y-3 border-l-2 border-[#C5A059]">
+                    {gallerySubmenuData.map((sub, sIdx) => {
+                      const isChildActive = isLinkActive(
+                        cleanCurrentPath,
+                        sub.href
+                      );
+
+                      return (
+                        <div key={sIdx}>
+                          <Link
+                            href={sub.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`text-sm font-bold uppercase ${
+                              isChildActive
+                                ? "text-[#C5A059]"
+                                : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            {sub.name}
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Accordion for About (Who we are) */}
               <div>
                 <button
                   onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
-                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${pathname.includes("/about") ||
-                      pathname.includes("/team") ||
-                      pathname.includes("/your-first-visit") ||
-                      pathname.includes("/insurance") ||
-                      pathname.includes("/leading-edge-technology") ||
-                      pathname.includes("/best-dentist-in-nyc")
+                  className={`w-full flex items-center justify-between text-3xl font-bold uppercase tracking-tight ${
+                    pathname.includes("/about") ||
+                    pathname.includes("/team") ||
+                    pathname.includes("/your-first-visit") ||
+                    pathname.includes("/insurance") ||
+                    pathname.includes("/leading-edge-technology") ||
+                    pathname.includes("/best-dentist-in-nyc")
                       ? "text-[#C5A059]"
                       : "text-black"
-                    }`}
+                  }`}
                 >
                   <span>
                     {lang === "zh"
                       ? "关于我们"
                       : lang === "es"
                         ? "Nosotros"
-                        : "About"}
+                        : "Who we are"}
                   </span>
                   <ChevronDown
                     size={28}
-                    className={`transition-transform duration-300 ${mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
-                      }`}
+                    className={`transition-transform duration-300 ${
+                      mobileAboutOpen ? "rotate-180 text-[#C5A059]" : ""
+                    }`}
                   />
                 </button>
 
@@ -815,10 +961,11 @@ export default function Header({ lang }: HeaderProps) {
                           <Link
                             href={sub.href}
                             onClick={() => setIsOpen(false)}
-                            className={`text-sm font-bold uppercase ${isChildActive
+                            className={`text-sm font-bold uppercase ${
+                              isChildActive
                                 ? "text-[#C5A059]"
                                 : "text-neutral-600 hover:text-black"
-                              }`}
+                            }`}
                           >
                             {sub.name}
                           </Link>
@@ -829,15 +976,27 @@ export default function Header({ lang }: HeaderProps) {
                 )}
               </div>
 
-              {/* Team Direct Link */}
+              {/* Blog Link */}
               <Link
-                href={`/${lang}/team`}
+                href={`/${lang}/blog`}
                 onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold uppercase tracking-tight ${pathname.includes("/team") ? "text-[#C5A059]" : "text-black"
-                  }`}
+                className={`text-3xl font-bold uppercase tracking-tight ${
+                  pathname.includes("/blog") ? "text-[#C5A059]" : "text-black"
+                }`}
               >
-                {lang === "zh" ? "医疗团队" : lang === "es" ? "Equipo" : "Team"}
+                {lang === "zh" ? "博客文章" : lang === "es" ? "Blog" : "Blog"}
               </Link>
+
+              {/* 4KIDS External Link in Green */}
+              <a
+                href={`https://pediatrics.tribecadentalstudio.com/${pediatricsLang}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="text-3xl font-bold uppercase tracking-tight text-[#2E7D32]"
+              >
+                {lang === "zh" ? "4KIDS" : lang === "es" ? "4Kids" : "4Kids"}
+              </a>
             </div>
           </motion.div>
         )}

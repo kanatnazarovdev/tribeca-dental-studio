@@ -148,7 +148,7 @@ export default async function YourFirstVisitPage({
 
           <div className="relative aspect-[4/3] bg-neutral-900 overflow-hidden shadow-2xl">
             <Image
-              src="/photo1.jpg"
+              src="/firstVisit.png"
               alt="Tribeca Dental Studio Luxury Environment"
               fill
               className="object-cover"
