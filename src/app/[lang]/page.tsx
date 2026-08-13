@@ -34,6 +34,7 @@ export async function generateMetadata({
         : "The best dentistry in Tribeca, NY. Comprehensive, family-first dental care — preventive, restorative, cosmetic, implants, and orthodontics.",
     alternates: getAlternates(l, ""),
   };
+  
 }
 
 export default async function Home({

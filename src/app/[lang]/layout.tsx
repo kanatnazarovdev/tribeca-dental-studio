@@ -7,7 +7,6 @@ import { brandonGrotesque, dDin } from "../fonts";
 import Footer from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { baseUrl, getAlternates } from "@/hooks/helper";
-import Script from "next/script";
 import ServiceGrid from "@/components/ServiceGrid";
 
 export async function generateMetadata({
@@ -38,7 +37,8 @@ export async function generateMetadata({
     alternates: getAlternates(lang, ""),
     openGraph: {
       title: "Tribeca Dental Studio | Premier NYC Dentistry",
-      description: "Bespoke cosmetic, airway, surgical, and multi-specialty dental care in Lower Manhattan, NY.",
+      description:
+        "Bespoke cosmetic, airway, surgical, and multi-specialty dental care in Lower Manhattan, NY.",
       url: `${baseUrl}/${lang}/`,
       siteName: "Tribeca Dental Studio",
       images: [
@@ -70,12 +70,14 @@ export default async function RootLayout(props: {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["Dentist", "MedicalBusiness", "MedicalClinic"],
-        "@id": `${baseUrl}#organization`,
+        "@type": ["Dentist", "MedicalClinic", "LocalBusiness"],
+        "@id": `${baseUrl}/#organization`,
         name: "Tribeca Dental Studio",
         url: `${baseUrl}/${lang}/`,
         logo: `${baseUrl}/tribeca-logo-text.svg`,
         image: `${baseUrl}/og-image.webp`,
+        description:
+          "Comprehensive luxury multi-specialty dental practice in Tribeca, NYC.",
         telephone: "+1-212-561-5303",
         priceRange: "$$$$",
         currenciesAccepted: "USD",
@@ -148,26 +150,29 @@ export default async function RootLayout(props: {
       },
       {
         "@type": "Physician",
-        "@id": `${baseUrl}#dr-cameron-lewis`,
+        "@id": `${baseUrl}/#dr-cameron-lewis`,
         name: "Dr. Cameron Lewis, DDS",
         jobTitle: "Oral & Maxillofacial Surgeon",
+        image: `${baseUrl}/og-image.webp`,
         medicalSpecialty: "OralAndMaxillofacialSurgery",
-        worksFor: { "@id": `${baseUrl}#organization` },
+        worksFor: { "@id": `${baseUrl}/#organization` },
       },
       {
         "@type": "Physician",
-        "@id": `${baseUrl}#dr-igor-chikunov`,
+        "@id": `${baseUrl}/#dr-igor-chikunov`,
         name: "Dr. Igor Chikunov, DDS",
         jobTitle: "Cosmetic & Restorative Dentist",
+        image: `${baseUrl}/og-image.webp`,
         medicalSpecialty: "CosmeticDentistry",
-        worksFor: { "@id": `${baseUrl}#organization` },
+        worksFor: { "@id": `${baseUrl}/#organization` },
       },
       {
         "@type": "Physician",
-        "@id": `${baseUrl}#dr-nina-izhaky`,
+        "@id": `${baseUrl}/#dr-nina-izhaky`,
         name: "Dr. Nina Izhaky, DDS",
         jobTitle: "Founder & Airway General Dentist",
-        worksFor: { "@id": `${baseUrl}#organization` },
+        image: `${baseUrl}/og-image.webp`,
+        worksFor: { "@id": `${baseUrl}/#organization` },
       },
     ],
   };
@@ -175,21 +180,15 @@ export default async function RootLayout(props: {
   return (
     <html
       lang={lang}
-      className={`
-        ${brandonGrotesque.variable}
-        ${dDin.variable}
-      `}
+      className={`${brandonGrotesque.variable} ${dDin.variable}`}
     >
       <head>
-        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="bg-white text-foreground antialiased selection:bg-[#C5A059] selection:text-white">
-
-
         <NextTopLoader
           color="#C5A059"
           initialPosition={0.08}
@@ -204,7 +203,7 @@ export default async function RootLayout(props: {
 
         <Header lang={lang} dict={dict} />
         {children}
-        <ServiceGrid lang={lang}/>
+        <ServiceGrid lang={lang} />
         <Footer />
       </body>
     </html>
