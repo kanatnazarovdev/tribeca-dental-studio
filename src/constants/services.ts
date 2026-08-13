@@ -11,7 +11,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "01",
     titleEn: "Cosmetic Dentistry",
     titleEs: "Odontología Estética",
-    slug: "cosmetic-dentistry",
+    slug: "services/cosmetic-dentistry",
     image: "/services/cosmeticServices.jpg",
   },
   {
@@ -25,14 +25,14 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "03",
     titleEn: "Teeth Whitening",
     titleEs: "Blanqueamiento Dental",
-    slug: "teeth-whitening",
+    slug: "services/teeth-whitening",
     image: "/services/teeth-whitening.webp",
   },
   {
     num: "04",
     titleEn: "Dental Bonding",
     titleEs: "Adhesión Dental",
-    slug: "direct-bonding",
+    slug: "services/direct-bonding",
     image: "/services/dental-bonding.webp",
   },
   {
@@ -74,7 +74,7 @@ export const COSMETIC_SERVICES: ServiceItem[] = [
     num: "10",
     titleEn: "Icon Resin Infiltration",
     titleEs: "Infiltración de Resina Icon",
-    slug: "icon-resin-infiltration",
+    slug: "/",
     image: "/services/icon-resin-infiltration.webp",
   },
 ];
@@ -132,7 +132,7 @@ export const GENERAL_SERVICES: ServiceItem[] = [
     num: "18",
     titleEn: "Dental Fillings",
     titleEs: "Empastes Dentales",
-    slug: "services/dental-fillings",
+    slug: "services/tooth-colored-fillings",
     image: "/services/dental-fillings.webp",
   },
   {
@@ -261,7 +261,7 @@ export const SPECIALIZED_SERVICES: ServiceItem[] = [
     num: "36",
     titleEn: "Best Dentist in NYC",
     titleEs: "El Mejor Dentista de NYC",
-    slug: "services/best-dentist-nyc",
+    slug: "/best-dentist-in-nyc",
     image: "/services/best-dentist-nyc.webp",
   },
 ];
@@ -292,7 +292,7 @@ export const AIRWAY_AND_ORTHO_SERVICES: ServiceItem[] = [
     num: "40",
     titleEn: "Myo Munchee Therapy",
     titleEs: "Terapia Myo Munchee",
-    slug: "services/myo-munchee-therapy",
+    slug: "",
     image: "/services/myo-munchee-therapy.webp",
   },
   {
@@ -306,7 +306,7 @@ export const AIRWAY_AND_ORTHO_SERVICES: ServiceItem[] = [
     num: "42",
     titleEn: "Orthodontics",
     titleEs: "Ortodoncia",
-    slug: "services/orthodontics",
+    slug: "services/airway-orthodontics",
     image: "/services/orthodontics.webp",
   },
   {
@@ -320,7 +320,7 @@ export const AIRWAY_AND_ORTHO_SERVICES: ServiceItem[] = [
     num: "44",
     titleEn: "Maxillary Skeletal Expansion (MSE)",
     titleEs: "Expansión Esquelética Maxilar (MSE)",
-    slug: "services/maxillary-skeletal-expansion-mse",
+    slug: "services/maxillary-skeletal-expansion",
     image: "/services/maxillary-skeletal-expansion-mse.webp",
   },
   {

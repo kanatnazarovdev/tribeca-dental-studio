@@ -231,6 +231,11 @@ module.exports = async function getRedirects() {
     { source: '/is-it-worth-the/', destination: '/blog/is-it-worth-the/', permanent: true },
     // services
     { source: '/root-canal-therapy/', destination: '/services/root-canal-therapy/', permanent: true },
-
+    { source: '/services/emergency-dentist/', destination: 'https://emergency.tribecadentalstudio.com/', permanent: true },
+    { source: '/cosmetic-dentistry/', destination: '/services/cosmetic-dentistry/', permanent: true },
+    { source: '/porcelain-veneers-lumineers/', destination: '/services/porcelain-veneers-lumineers/', permanent: true },
+    { source: '/services/nightlase/', destination: 'https://nightlase.tribecadentalstudio.com/', permanent: true },
+    { source: '/services/dental-implants/zygomatic-implants/', destination: '/services/zygomatic-implants/', permanent: true },
+  
   ];
 };

@@ -55,7 +55,7 @@ const CATEGORIES = [
         en: "Dental Fillings",
         es: "Empastes Dentales",
         zh: "牙科补牙",
-        slug: "services/dental-fillings",
+        slug: "services/tooth-colored-fillings",
       },
       {
         en: "Root Canal Treatment",

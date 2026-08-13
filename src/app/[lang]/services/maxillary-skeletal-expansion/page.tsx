@@ -64,7 +64,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: `https://tribecadentalstudio.com/${lang}/services/maxillary-skeletal-expansion-mse`,
+      url: `https://tribecadentalstudio.com/${lang}/services/maxillary-skeletal-expansion`,
       siteName: "Tribeca Dental Studio",
       images: [
         {
@@ -78,11 +78,11 @@ export async function generateMetadata({
       type: "website",
     },
     alternates: {
-      canonical: `https://tribecadentalstudio.com/${lang}/services/maxillary-skeletal-expansion-mse`,
+      canonical: `https://tribecadentalstudio.com/${lang}/services/maxillary-skeletal-expansion`,
       languages: {
-        en: "https://tribecadentalstudio.com/en/services/maxillary-skeletal-expansion-mse",
-        es: "https://tribecadentalstudio.com/es/services/maxillary-skeletal-expansion-mse",
-        zh: "https://tribecadentalstudio.com/zh/services/maxillary-skeletal-expansion-mse",
+        en: "https://tribecadentalstudio.com/en/services/maxillary-skeletal-expansion",
+        es: "https://tribecadentalstudio.com/es/services/maxillary-skeletal-expansion",
+        zh: "https://tribecadentalstudio.com/zh/services/maxillary-skeletal-expansion",
       },
     },
   };

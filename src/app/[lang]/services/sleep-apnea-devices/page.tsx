@@ -217,7 +217,6 @@ export default async function SleepApneaDevicesPage({
 
   return (
     <>
-      {/* SCHEMA.ORG JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -273,7 +272,7 @@ export default async function SleepApneaDevicesPage({
             {/* RIGHT COLUMN: HERO IMAGE CARD */}
             <div className="relative aspect-[4/3] bg-neutral-100 border border-neutral-200 overflow-hidden shadow-sm group">
               <Image
-                src="/about-studio.jpg" // Replace with an appropriate sleep appliance photo if available
+                src="/services/sleep-apnea.webp" // Replace with an appropriate sleep appliance photo if available
                 alt="Custom Sleep Apnea Appliance Therapy Tribeca Dental Studio"
                 fill
                 priority

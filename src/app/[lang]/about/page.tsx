@@ -114,7 +114,7 @@ export default function TribecaDentalStudioPage({
             <Image
               width={1300}
               height={1300}
-              src={`/photo${num}.jpg`}
+              src={`/photo${num}.JPG`}
               alt="Smile Architecture"
               className="absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] group-hover:scale-105 group-hover:grayscale-0"
             />

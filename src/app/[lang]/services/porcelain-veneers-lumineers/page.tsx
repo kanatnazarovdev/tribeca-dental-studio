@@ -351,7 +351,7 @@ export default async function PorcelainVeneersPage({
             loop
             muted
             playsInline
-            poster="/services/veneers.png" // Fallback poster
+            poster="/services/veneers.png" 
             className="absolute inset-0 w-full h-full object-cover filter contrast-[1.08] brightness-[0.6] scale-105"
           >
             <source src="/services/veneers.mp4" type="video/mp4" />
@@ -464,7 +464,7 @@ export default async function PorcelainVeneersPage({
           </div>
         </section>
 
-        {/* 3. BEFORE & AFTER TRANSFORMATION SHOWCASE */}
+        {/* 3. BEFORE & AFTER TRANSFORMATION SHOWCASE WITH EMBEDDED IFRAME */}
         <section className="py-16 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto mb-20" id="case-gallery">
           <header className="max-w-3xl mb-12">
             <div className="flex items-center gap-2 text-[#C5A059] mb-2">
@@ -481,35 +481,35 @@ export default async function PorcelainVeneersPage({
             </p>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {content.cases.map((c, idx) => (
-              <div key={idx} className="bg-white border border-neutral-200 shadow-sm overflow-hidden group">
-                <div className="relative aspect-[16/9] bg-neutral-100 border-b border-neutral-200">
-                  <Image
-                    src="/about-studio.jpg" // Replace with actual Before & After photo
-                    alt={c.title}
-                    fill
-                    unoptimized
-                    className="object-cover object-center filter contrast-[1.03] group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 left-4 bg-black/80 text-[#C5A059] text-[10px] font-bold uppercase tracking-widest px-3 py-1 backdrop-blur-sm">
-                    {c.tag}
-                  </div>
-                </div>
-
-                <div className="p-8">
-                  <h3 className="text-xl font-bold uppercase tracking-tight text-black mb-3">
-                    {c.title}
-                  </h3>
-                  <p className="font-brandon text-s text-neutral-600 leading-relaxed mb-4">
-                    {c.desc}
-                  </p>
-                  <div className="text-[10px] uppercase tracking-wider font-bold text-[#C5A059] bg-[#C5A059]/10 inline-block px-3 py-1 border border-[#C5A059]/20">
-                    {c.details}
-                  </div>
-                </div>
+          {/* EMBEDDED INTERACTIVE CASE VIEWER / IFRAME */}
+          <div className="bg-white border border-neutral-200 p-6 md:p-8 shadow-sm">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 pb-4 border-b border-neutral-200 gap-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#C5A059] font-bold block mb-1">
+                  Interactive Showcase Viewer
+                </span>
+                <h3 className="text-2xl font-light uppercase tracking-tight text-black">
+                  Featured Smile Case: Male Transformation (Case 01)
+                </h3>
               </div>
-            ))}
+              <Link
+                href={`/${lang}/cases/male-1`}
+                target="_blank"
+                className="inline-flex items-center gap-2 bg-black text-white hover:bg-[#C5A059] text-[10px] font-bold uppercase tracking-widest px-6 py-3 transition-colors"
+              >
+                <span>Open Fullscreen Viewer</span>
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="w-full h-[600px] border border-neutral-200 relative bg-neutral-100 overflow-hidden">
+              <iframe
+                src={`/${lang}/cases/male-1`}
+                title="Tribeca Dental Studio Case Study - Male Transformation"
+                className="w-full h-full border-0"
+                loading="lazy"
+              />
+            </div>
           </div>
         </section>
 
