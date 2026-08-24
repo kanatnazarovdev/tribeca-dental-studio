@@ -4,9 +4,6 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
-/* ────────────────────────────────────────────────────────────────────────
-   Hero copy configuration per locale.
-   ─────────────────────────────────────────────────────────────────────── */
 const COPY = {
   en: {
     badge: "Tribeca • New York",
@@ -34,14 +31,10 @@ const COPY = {
   },
 } as const;
 
-/* ────────────────────────────────────────────────────────────────────────
-   Background media setup.
-   Ensure banner.mp4 is encoded with H.264 codec for iOS Safari support.
-   ─────────────────────────────────────────────────────────────────────── */
 const USE_VIDEO = true;
-const VIDEO_MP4 = "/banner.mp4"; // Must be true H.264 MP4 for iOS
-const VIDEO_WEBM = "/banner.webm"; // Optional WebM for desktop/Android
-const POSTER = "/banner.webp"; // Static poster image fallback for Low Power Mode
+const VIDEO_MP4 = "/banner.mp4";
+const VIDEO_WEBM = "/banner.webm";
+const POSTER = "/banner.webp";
 
 interface HeroProps {
   lang: string;
@@ -53,7 +46,6 @@ export default function Hero({ lang }: HeroProps) {
   const t =
     COPY[(lang as keyof typeof COPY) in COPY ? (lang as keyof typeof COPY) : "en"];
 
-  // Force play trigger for iOS Safari & Android Low Power Mode resilience
   useEffect(() => {
     if (USE_VIDEO && videoRef.current) {
       videoRef.current.muted = true;
@@ -73,7 +65,7 @@ export default function Hero({ lang }: HeroProps) {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
           poster={POSTER}
           className="absolute inset-0 z-0 h-full w-full object-cover opacity-70"
         >
@@ -91,56 +83,39 @@ export default function Hero({ lang }: HeroProps) {
       <div className="absolute inset-0 z-10 bg-black/30" />
 
       <div className="relative z-20 flex h-full flex-col items-start justify-end px-6 pb-28 text-left text-white md:px-16 md:pb-32 lg:px-24">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2 }}
-          className="mb-8 flex items-center gap-3"
-        >
+        {/* Badge */}
+        <div className="mb-8 flex items-center gap-3">
           <span className="h-px w-8 bg-[#C5A059]" />
           <span className="text-[10px] font-semibold uppercase tracking-[0.5em] text-[#C5A059]">
             {t.badge}
           </span>
           <span className="h-px w-8 bg-[#C5A059]" />
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.3 }}
-          className="mb-8 max-w-5xl font-ddin text-4xl font-bold uppercase leading-[1.05] tracking-tight drop-shadow-md md:text-5xl lg:text-[4.5rem]"
-        >
+        {/* LCP Target (h1): Rendered immediately without opacity: 0 */}
+        <h1 className="mb-8 max-w-5xl font-ddin text-4xl font-bold uppercase leading-[1.05] tracking-tight drop-shadow-md md:text-5xl lg:text-[4.5rem]">
           {t.title}
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.6 }}
-          className="mb-14 max-w-xl font-serif text-xl font-light italic leading-relaxed text-white/85 md:text-2xl"
-        >
+        {/* Tagline */}
+        <p className="mb-14 max-w-xl font-serif text-xl font-light italic leading-relaxed text-white/85 md:text-2xl">
           {t.tagline}
-        </motion.p>
+        </p>
 
-        <motion.button
+        {/* CTA Button */}
+        <button
           onClick={() => scrollToId("leadForm")}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.1 }}
           className="group relative overflow-hidden border border-white/40 px-12 py-4 transition-colors duration-700 hover:border-[#C5A059]"
         >
           <span className="relative z-10 text-[11px] font-medium uppercase tracking-[0.5em] transition-colors duration-700 group-hover:text-black">
             {t.cta}
           </span>
           <span className="absolute inset-0 translate-y-full bg-[#C5A059] transition-transform duration-700 ease-out group-hover:translate-y-0" />
-        </motion.button>
+        </button>
       </div>
 
       {/* Scroll cue */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1 }}
+      <button
         onClick={() => scrollToId("services")}
         className="group absolute bottom-10 right-6 z-30 hidden flex-col items-center md:right-16 md:flex lg:right-24"
         aria-label={t.scroll}
@@ -155,7 +130,7 @@ export default function Hero({ lang }: HeroProps) {
             className="h-1 w-1 rounded-full bg-[#C5A059]"
           />
         </span>
-      </motion.button>
+      </button>
     </section>
   );
 }
