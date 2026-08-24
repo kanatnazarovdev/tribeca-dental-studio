@@ -3,6 +3,9 @@ import getRedirects from "./redirects.js";
 const nextConfig: NextConfig = {
   reactCompiler: true,
   trailingSlash: true,
+  experimental: {
+    optimizeCss: true,
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.sanity.io" },

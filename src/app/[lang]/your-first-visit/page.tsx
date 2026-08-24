@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Sparkles, CheckCircle2, ArrowRight, ShieldCheck, Clock, FileText, Camera, Scan, Phone } from "lucide-react";
+import { bookingUrl } from "@/hooks/helper";
 
 export async function generateMetadata({
   params,
@@ -130,7 +131,7 @@ export default async function YourFirstVisitPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/${lang}/contact`}
+                                    href={bookingUrl}
                 className="inline-flex items-center justify-center bg-black text-white hover:bg-[#C5A059] text-xs font-bold uppercase tracking-widest px-8 py-4 transition-colors duration-300"
               >
                 <span>{isZh ? "立即预约门诊" : isEs ? "Reservar Cita" : "Schedule Your First Visit"}</span>
@@ -317,7 +318,7 @@ export default async function YourFirstVisitPage({
             Schedule your first appointment today and discover a higher standard of collaborative, comfortable dental care in Lower Manhattan.
           </p>
           <Link
-            href={`/${lang}/contact`}
+                                    href={bookingUrl}
             className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
           >
             Book First Visit

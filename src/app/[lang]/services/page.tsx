@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,8 +22,22 @@ export default function ServicesPage({ params }: PageProps) {
   const { lang } = use(params);
   const isEs = lang === "es";
 
-  // State to capture the user's search query
   const [searchQuery, setSearchQuery] = useState("");
+
+const heroGridPhotos = [
+    { src: "/servicePage/service.webp", label: "01 // CLINICAL" },
+    { src: "/servicePage/service2.webp", label: "02 // AESTHETICS" },
+    { src: "/servicePage/service3.webp", label: "03 // STUDIO" },
+    { src: "/servicePage/service4.webp", label: "04 // PRECISION" },
+    { src: "/servicePage/service5.webp", label: "05 // COMFORT" },
+    { src: "/servicePage/service6.webp", label: "06 // ARCHITECTURE" },
+    { src: "/servicePage/service7.webp", label: "07 // CARE" },
+    { src: "/servicePage/service8.webp", label: "08 // DIGITAL" },
+    { src: "/servicePage/service9.webp", label: "09 // CERAMICS" },
+    { src: "/servicePage/service10.webp", label: "10 // TRIBECA" },
+    { src: "/servicePage/service11.webp", label: "11 // SPECIALISTS" },
+    { src: "/servicePage/service.webp", label: "12 // EXCELLENCE" }, // Reuses service.webp to complete the 12th grid cell
+  ];
 
   // Clean local filter logic supporting both English and Spanish queries
   const filterItems = (items: ServiceItem[]) => {
@@ -72,27 +87,44 @@ export default function ServicesPage({ params }: PageProps) {
 
   return (
     <main className="bg-[#FBFBFA] text-[#1A1A1A] min-h-screen relative">
-      {/* 1. CINEMATIC BACKGROUND HERO */}
-      <section className="relative w-full min-h-[60vh] flex items-center justify-start py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-black text-white">
-        <div className="absolute inset-0 z-0 select-none pointer-events-none scale-110 blur-3xl opacity-30">
-          <Image
-            src="/aboutPage.png"
-            alt="Tribeca Dental Studio Luxury Background"
-            fill
-            priority
-            className="object-cover object-center grayscale"
-          />
-        </div>
-        <div className="absolute inset-0 bg-black/70 z-10 pointer-events-none" />
+      <section className="relative w-full min-h-[75vh] md:min-h-[85vh] flex items-center justify-center bg-[#0B0B0B] text-white overflow-hidden py-32 px-6 md:px-12 lg:px-24">
+        
+<div className="absolute inset-0 z-0 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 pointer-events-none select-none">
+  {heroGridPhotos.map((item, idx) => (
+    <div
+      key={idx}
+      className="relative w-full h-full overflow-hidden bg-neutral-950 border border-white/5"
+    >
+      <Image
+        src={item.src}
+        alt={item.label}
+        fill
+        priority={idx < 6}
+        className="object-cover filter brightness-[0.95] contrast-[1.05]"
+        sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
+      />
+      {/* Subtle Individual Shadow Overlay */}
+      <div className="absolute inset-0 bg-black/15" />
+    </div>
+  ))}
+</div>
 
-        <div className="relative z-20 max-w-3xl text-left flex flex-col items-start lg:pl-6">
-          <span className="text-[10px] uppercase tracking-[0.6em] text-[#C5A059] font-bold block mb-4">
+{/* OVERALL TEXT VIGNETTE: Keeps center text readable while leaving photos rich & visible */}
+<div className="absolute inset-0 z-10 bg-black/1 backdrop-brightness-100 pointer-events-none" />
+
+        {/* OVERALL GRADIENT VIGNETTE: Ensures crystal-clear text readability over photos */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0B0B0B] via-black/40 to-[#0B0B0B]/80 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-black/50 pointer-events-none" />
+
+        {/* FOREGROUND CONTENT: Text layered directly ON TOP of shadowed photo grid */}
+        <div className="relative z-20 max-w-4xl mx-auto text-center flex flex-col items-center">
+          <span className="text-[10px] uppercase tracking-[0.6em] text-[#C5A059] font-bold block mb-4 drop-shadow-md">
             {isEs ? "Menú de Servicios de Élite" : "Elite Menu of Services"}
           </span>
-          <h1 className="text-4xl md:text-6xl font-sans font-bold tracking-tight uppercase mb-6 leading-[1.1]">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-ddin font-bold tracking-tight uppercase mb-6 leading-[1.05] drop-shadow-xl text-white">
             {isEs ? "Nuestros Servicios" : "Our Services"}
           </h1>
-          <p className="text-base md:text-lg font-light leading-relaxed text-neutral-300 max-w-2xl tracking-wide">
+          <p className="text-base md:text-xl font-light leading-relaxed text-neutral-200 max-w-2xl font-brandon drop-shadow-md">
             {isEs ? (
               <>
                 Un menú excepcional de configuraciones dentales avanzadas
@@ -171,10 +203,11 @@ export default function ServicesPage({ params }: PageProps) {
                         </div>
                       </motion.div>
                     )}
+
                     {activeImplants.length > 0 && (
                       <motion.div layout>
                         <span className="text-[10px] font-mono text-[#C5A059] mb-4 block">
-                          DENTAL IMPLANTS 
+                          DENTAL IMPLANTS
                         </span>
                         <h2 className="text-lg tracking-widest uppercase font-light text-neutral-400 mb-6">
                           {isEs ? "Cirugía e Implantes" : "Dental Implants"}

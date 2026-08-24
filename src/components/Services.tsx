@@ -79,7 +79,7 @@ const CATEGORIES = [
         en: "Dentures",
         es: "Dentaduras Postizas",
         zh: "活动假牙与全口义齿",
-        slug: "services/dentures",
+        slug: "services/all-on-4-dentures",
       },
     ],
   },

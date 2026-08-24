@@ -3,6 +3,7 @@
     import Link from "next/link";
     import { Metadata } from "next";
     import { Sparkles, CheckCircle2, ArrowRight, ShieldCheck, DollarSign, CreditCard, Phone, FileText } from "lucide-react";
+import { bookingUrl } from "@/hooks/helper";
 
     export async function generateMetadata({
         params,
@@ -132,7 +133,7 @@
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <Link
-                                    href={`/${lang}/contact`}
+                                    href={bookingUrl}
                                     className="inline-flex items-center justify-center bg-black text-white hover:bg-[#C5A059] text-xs font-bold uppercase tracking-widest px-8 py-4 transition-colors duration-300"
                                 >
                                     <span>{isZh ? "咨询理财方案" : isEs ? "Consultar Financiación" : "Discuss Your Plan"}</span>
@@ -359,7 +360,7 @@
                             Our experienced administrative team will personally verify your insurance or guide you through our membership and financing options.
                         </p>
                         <Link
-                            href={`/${lang}/contact`}
+                                    href={bookingUrl}
                             className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
                         >
                             Contact Financial Team

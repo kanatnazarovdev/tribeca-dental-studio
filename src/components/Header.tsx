@@ -242,6 +242,16 @@ export const ABOUT_SUBMENU = (lang: string) => [
           : "Best Dentist in NYC",
     href: `/${lang}/best-dentist-in-nyc`,
   },
+  {
+    name:
+      lang === "zh"
+        ? "无痛齿科与镇静"
+        : lang === "es"
+          ? "Odontología Sin Dolor"
+          : "Pain Free Dentistry",
+    href: `/${lang}/pain-free-dentistry`,
+  },
+  
 ];
 
 export const GALLERY_SUBMENU = (lang: string) => [
@@ -799,7 +809,6 @@ export default function Header({ lang }: HeaderProps) {
             </div>
 
             <div className="flex flex-col gap-6">
-              {/* Accordion for Services (What we do) */}
               <div>
                 <button
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}

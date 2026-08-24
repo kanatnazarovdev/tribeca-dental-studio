@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Sparkles, CheckCircle2, ArrowRight, ShieldCheck, Clock, Layers, Anchor } from "lucide-react";
+import { bookingUrl } from "@/hooks/helper";
 
 export async function generateMetadata({
   params,
@@ -137,7 +138,7 @@ export default async function DentalCrownsBridgesPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/${lang}/contact`}
+                href={bookingUrl}
                 className="inline-flex items-center justify-center bg-black text-white hover:bg-[#C5A059] text-xs font-bold uppercase tracking-widest px-8 py-4 transition-colors duration-300"
               >
                 <span>{isZh ? "预约咨询" : isEs ? "Reservar Cita" : "Book Your Consultation"}</span>
@@ -339,8 +340,8 @@ export default async function DentalCrownsBridgesPage({
               : "Schedule a consultation with our experienced Manhattan specialists to determine the optimal crown or bridge solution for your bite."}
           </p>
           <Link
-            href={`/${lang}/contact`}
-            className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
+                                    href={bookingUrl}
+              className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
           >
             {isZh ? "预约门诊" : isEs ? "Agendar Cita" : "Schedule Appointment"}
           </Link>

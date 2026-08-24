@@ -236,6 +236,14 @@ module.exports = async function getRedirects() {
     { source: '/porcelain-veneers-lumineers/', destination: '/services/porcelain-veneers-lumineers/', permanent: true },
     { source: '/services/nightlase/', destination: 'https://nightlase.tribecadentalstudio.com/', permanent: true },
     { source: '/services/dental-implants/zygomatic-implants/', destination: '/services/zygomatic-implants/', permanent: true },
-  
+    { source: '/services/dental-implants/sinus-lift/', destination: '/services/sinus-lift/', permanent: true },
+    { source: '/services/root-canal-therapy/apicoectomy-procedure/', destination: '/services/apicoectomy-procedure/', permanent: true },
+    { source: '/services/periodontal-disease-treatment/gum-grafting-surgery/', destination: '/services/apicoectomy-procedure/', permanent: true },
+    { source: '/oral-surgery/', destination: '/services/oral-surgery/', permanent: true },
+    { source: '/services/periodontal-disease-treatment/', destination: 'services/gum-disease-treatment', permanent: true },
+    { source: '/services/dental-implants/bone-grafting/', destination: 'services/bone-grafting/', permanent: true },
+ 
+    
+    
   ];
 };

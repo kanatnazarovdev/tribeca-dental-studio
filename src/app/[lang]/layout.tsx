@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { baseUrl, getAlternates } from "@/hooks/helper";
 import ServiceGrid from "@/components/ServiceGrid";
+// 1. Import the Next.js Script component
+import Script from "next/script"; 
 
 export async function generateMetadata({
   params,
@@ -24,15 +26,15 @@ export async function generateMetadata({
       default: isZh
         ? "翠贝卡牙科诊所 | 纽约翠贝卡高级多专科牙医"
         : isEs
-          ? "Tribeca Dental Studio | Dentista de Lujo en Tribeca, NYC"
-          : "Tribeca Dental Studio | Multi-Specialty Dentist in Tribeca, NYC",
+        ? "Tribeca Dental Studio | Dentista de Lujo en Tribeca, NYC"
+        : "Tribeca Dental Studio | Multi-Specialty Dentist in Tribeca, NYC",
       template: "%s | Tribeca Dental Studio",
     },
     description: isZh
       ? "位于纽约翠贝卡的高端多专科综合牙科诊所。提供隐形高定瓷贴面、气道正畸扩弓 (MSE)、无痛微创拔牙与口腔外科、种植牙及儿童牙科。"
       : isEs
-        ? "Consultorio dental multi-especializado de lujo en Tribeca, NYC. Carillas de porcelana, ortodoncia de vías respiratorias, implantes dentales, cirugía oral y odontopediatría."
-        : "Comprehensive luxury multi-specialty dental practice in Tribeca, NYC. Specializing in handcrafted porcelain veneers, airway orthodontics (MSE), painless oral surgery, dental implants, and pediatric dentistry.",
+      ? "Consultorio dental multi-especializado de lujo en Tribeca, NYC. Carillas de porcelana, ortodoncia de vías respiratorias, implantes dentales, cirugía oral y odontopediatría."
+      : "Comprehensive luxury multi-specialty dental practice in Tribeca, NYC. Specializing in handcrafted porcelain veneers, airway orthodontics (MSE), painless oral surgery, dental implants, and pediatric dentistry.",
     metadataBase: new URL(baseUrl),
     alternates: getAlternates(lang, ""),
     openGraph: {
@@ -124,7 +126,13 @@ export default async function RootLayout(props: {
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+            ],
             opens: "08:00",
             closes: "18:00",
           },
@@ -200,11 +208,17 @@ export default async function RootLayout(props: {
           speed={200}
           shadow="0 0 10px #C5A059,0 0 5px #C5A059"
         />
-
         <Header lang={lang} dict={dict} />
         {children}
         <ServiceGrid lang={lang} />
         <Footer />
+
+        {/* 2. Embedded UserWay script with standard lazy loading optimization */}
+        <Script
+          src="https://cdn.userway.org/widget.js"
+          data-account="6UqkIDMjrt"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

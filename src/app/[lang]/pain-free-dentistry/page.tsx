@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Sparkles, CheckCircle2, ArrowRight, ShieldCheck, HeartPulse, Sparkle, Smile, Phone, ShieldAlert } from "lucide-react";
+import { bookingUrl } from "@/hooks/helper";
 
 export async function generateMetadata({
   params,
@@ -161,7 +162,7 @@ export default async function PainFreeDentistryPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/${lang}/contact`}
+                                    href={bookingUrl}
                 className="inline-flex items-center justify-center bg-black text-white hover:bg-[#C5A059] text-xs font-bold uppercase tracking-widest px-8 py-4 transition-colors duration-300"
               >
                 <span>{isZh ? "预约舒缓就诊" : isEs ? "Reservar Consulta" : "Book Your Pain-Free Visit"}</span>
@@ -305,7 +306,7 @@ export default async function PainFreeDentistryPage({
             Don't let anxiety or pain aversion stop you from receiving essential oral healthcare. Contact our team today to customize your sedation plan.
           </p>
           <Link
-            href={`/${lang}/contact`}
+                                    href={bookingUrl}
             className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
           >
             Schedule Consultation

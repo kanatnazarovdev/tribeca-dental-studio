@@ -14,6 +14,7 @@ import {
   Clock,
   HeartHandshake,
 } from "lucide-react";
+import { bookingUrl } from "@/hooks/helper";
 
 export async function generateMetadata({
   params,
@@ -157,7 +158,7 @@ export default async function TraditionalBracesPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/${lang}/contact`}
+                                    href={bookingUrl}
                 className="inline-flex items-center justify-center bg-black text-white hover:bg-[#C5A059] text-xs font-bold uppercase tracking-widest px-8 py-4 transition-colors duration-300"
               >
                 <span>{isZh ? "预约正畸评估" : isEs ? "Reservar Evaluación" : "Schedule Consultation"}</span>
@@ -443,7 +444,7 @@ export default async function TraditionalBracesPage({
             Book an appointment today to start a conversation with our Tribeca orthodontic team about achieving your optimal smile.
           </p>
           <Link
-            href={`/${lang}/contact`}
+                                    href={bookingUrl}
             className="inline-block bg-[#C5A059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest px-10 py-4 transition-colors duration-300"
           >
             Book Orthodontic Visit
