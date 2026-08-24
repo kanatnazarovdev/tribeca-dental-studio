@@ -23,6 +23,7 @@ export const brandonGrotesque = localFont({
   display: "swap", // Ensures instant text render using fallback while font loads
 });
 
+
 export const dDin = localFont({
   src: [
     {
