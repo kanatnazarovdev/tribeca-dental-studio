@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, Phone } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../public/tribeca-logo-text.svg";
@@ -251,7 +251,6 @@ export const ABOUT_SUBMENU = (lang: string) => [
           : "Pain Free Dentistry",
     href: `/${lang}/pain-free-dentistry`,
   },
-  
 ];
 
 export const GALLERY_SUBMENU = (lang: string) => [
@@ -275,7 +274,6 @@ export const GALLERY_SUBMENU = (lang: string) => [
   },
 ];
 
-// Helper function to handle exact path matching including fallback aliases
 function isLinkActive(
   currentPath: string,
   targetHref: string,
@@ -433,21 +431,24 @@ export default function Header({ lang }: HeaderProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-[60] transition-all duration-500 py-2 h-[100px] flex items-center
+        className={`fixed top-0 w-full z-[60] transition-all duration-500 py-2 h-[80px] md:h-[100px] flex items-center
         ${shouldBeActive ? "bg-white/95 backdrop-blur-md border-b border-black/5" : "bg-transparent text-white"}`}
       >
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
-          {/* Logo */}
-          <Link href={`/${lang}`} className="z-[70]">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex items-center justify-between">
+          {/* Logo (Smaller on mobile with w-[130px] sm:w-[160px] md:w-[200px]) */}
+          <Link href={`/${lang}`} className="z-[70] flex-shrink-0">
             <span
-              className={`text-[20px] md:text-[24px] font-serif tracking-tight leading-[1.1]
+              className={`text-[18px] md:text-[24px] font-serif tracking-tight leading-[1.1]
               ${shouldBeActive ? "text-black" : "text-white"}`}
             >
               <Image
                 width={200}
                 src={logo}
                 alt="Tribeca Logo"
-                className={`transition-all duration-500 ${shouldBeActive ? "" : "invert brightness-0"}`}
+                priority
+                className={`w-[130px] sm:w-[160px] md:w-[200px] h-auto transition-all duration-500 ${
+                  shouldBeActive ? "" : "invert brightness-0"
+                }`}
               />
             </span>
           </Link>
@@ -684,8 +685,9 @@ export default function Header({ lang }: HeaderProps) {
           </div>
 
           {/* Right Side Actions */}
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 mr-4 border-r border-black/10 pr-4 font-ddin">
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Language Switcher (Desktop) */}
+            <div className="hidden md:flex items-center gap-2 mr-2 border-r border-black/10 pr-4 font-ddin">
               <button
                 onClick={() => toggleLanguage("en")}
                 className={`text-[12px] font-bold transition-colors ${
@@ -734,11 +736,25 @@ export default function Header({ lang }: HeaderProps) {
               </button>
             </div>
 
+            {/* Phone Icon Button */}
+            <a
+              href="tel:2125615303"
+              aria-label="Call Tribeca Dental Studio"
+              className={`p-2 rounded-full border transition-all duration-300 flex items-center justify-center hover:scale-105 ${
+                shouldBeActive
+                  ? "border-black/20 text-black hover:border-[#C5A059] hover:text-[#C5A059]"
+                  : "border-white/30 text-white hover:border-[#C5A059] hover:text-[#C5A059]"
+              }`}
+            >
+              <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </a>
+
+            {/* Booking Button */}
             <a
               target="_blank"
               rel="noopener noreferrer"
               href={bookingUrl}
-              className={`px-6 py-2 border text-[10px] uppercase tracking-[0.3em] relative overflow-hidden group font-ddin font-bold
+              className={`px-3 py-1.5 sm:px-6 sm:py-2 border text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] relative overflow-hidden group font-ddin font-bold whitespace-nowrap
               ${shouldBeActive ? "border-black text-black" : "border-white/30 text-white"}`}
             >
               <span className="relative z-10 group-hover:text-white">
@@ -767,9 +783,9 @@ export default function Header({ lang }: HeaderProps) {
                       ? "Abrir menú de navegación"
                       : "Open navigation menu"
               }
-              className={`lg:hidden p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
+              className={`lg:hidden p-1.5 sm:p-2 z-[70] ${shouldBeActive ? "text-black" : "text-white"}`}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
               <span className="sr-only">
                 {isOpen ? "Close navigation menu" : "Open navigation menu"}
               </span>
@@ -787,25 +803,36 @@ export default function Header({ lang }: HeaderProps) {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 bg-white z-[55] flex flex-col justify-start pt-28 pb-12 px-8 overflow-y-auto font-ddin"
           >
-            <div className="flex gap-6 mb-8 border-b border-neutral-100 pb-6">
-              <button
-                onClick={() => toggleLanguage("en")}
-                className={`text-xl font-bold ${lang === "en" ? "text-[#C5A059]" : "text-black/40"}`}
+            <div className="flex items-center justify-between mb-8 border-b border-neutral-100 pb-6">
+              <div className="flex gap-6">
+                <button
+                  onClick={() => toggleLanguage("en")}
+                  className={`text-xl font-bold ${lang === "en" ? "text-[#C5A059]" : "text-black/40"}`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => toggleLanguage("es")}
+                  className={`text-xl font-bold ${lang === "es" ? "text-[#C5A059]" : "text-black/40"}`}
+                >
+                  Español
+                </button>
+                <button
+                  onClick={() => toggleLanguage("zh")}
+                  className={`text-xl font-bold ${lang === "zh" ? "text-[#C5A059]" : "text-black/40"}`}
+                >
+                  中文
+                </button>
+              </div>
+
+              {/* Call Link inside Mobile Drawer */}
+              <a
+                href="tel:2125615303"
+                className="flex items-center gap-2 text-sm font-bold text-[#C5A059]"
               >
-                English
-              </button>
-              <button
-                onClick={() => toggleLanguage("es")}
-                className={`text-xl font-bold ${lang === "es" ? "text-[#C5A059]" : "text-black/40"}`}
-              >
-                Español
-              </button>
-              <button
-                onClick={() => toggleLanguage("zh")}
-                className={`text-xl font-bold ${lang === "zh" ? "text-[#C5A059]" : "text-black/40"}`}
-              >
-                中文
-              </button>
+                <Phone size={18} />
+                <span>212-561-5303</span>
+              </a>
             </div>
 
             <div className="flex flex-col gap-6">

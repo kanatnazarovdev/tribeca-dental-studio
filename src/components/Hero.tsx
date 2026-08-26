@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+import Link from "next/link";
+import { bookingUrl } from "@/hooks/helper";
 
 const COPY = {
   en: {
@@ -101,17 +103,22 @@ export default function Hero({ lang }: HeroProps) {
         <p className="mb-14 max-w-xl font-serif text-xl font-light italic leading-relaxed text-white/85 md:text-2xl">
           {t.tagline}
         </p>
-
-        {/* CTA Button */}
-        <button
-          onClick={() => scrollToId("leadForm")}
-          className="group relative overflow-hidden border border-white/40 px-12 py-4 transition-colors duration-700 hover:border-[#C5A059]"
+        <Link
+          href={bookingUrl}
+          target="_blank"
+          
         >
-          <span className="relative z-10 text-[11px] font-medium uppercase tracking-[0.5em] transition-colors duration-700 group-hover:text-black">
-            {t.cta}
-          </span>
-          <span className="absolute inset-0 translate-y-full bg-[#C5A059] transition-transform duration-700 ease-out group-hover:translate-y-0" />
-        </button>
+          <button
+            onClick={() => scrollToId("leadForm")}
+            className="group relative overflow-hidden border border-white/40 px-12 py-4 transition-colors duration-700 hover:border-[#C5A059]"
+          >
+            <span className="relative z-10 text-[11px] font-medium uppercase tracking-[0.5em] transition-colors duration-700 group-hover:text-black">
+              {t.cta}
+            </span>
+            <span className="absolute inset-0 translate-y-full bg-[#C5A059] transition-transform duration-700 ease-out group-hover:translate-y-0" />
+          </button>
+        </Link>
+
       </div>
 
       {/* Scroll cue */}
